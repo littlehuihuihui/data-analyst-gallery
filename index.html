@@ -814,11 +814,16 @@
       margin-bottom: 0.75rem;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .metrics-highlight-panel .mhp-chart {
+    .metrics-highlight-panel .mhp-chart-shell {
+      position: relative;
       width: 100%;
       height: 400px;
       min-height: 400px;
-      position: relative;
+    }
+    .metrics-highlight-panel .mhp-chart {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
     }
     .metrics-highlight-panel .mhp-chart-loading {
       position: absolute;
@@ -828,8 +833,10 @@
       justify-content: center;
       color: #9CA3AF;
       font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 1;
     }
-    .metrics-highlight-panel .mhp-chart.is-ready .mhp-chart-loading { display: none; }
+    .metrics-highlight-panel .mhp-chart-shell.is-ready .mhp-chart-loading { display: none !important; }
     .metrics-highlight-panel .mhp-sankey-legend {
       display: flex;
       flex-wrap: wrap;
@@ -1573,7 +1580,8 @@
               </div>
             </div>
             <div class="mhp-chart-wrap">
-              <div id="chart-220w-metrics" class="mhp-chart" role="img" aria-label="用户规模桑基流向图">
+              <div class="mhp-chart-shell">
+                <div id="chart-220w-metrics" class="mhp-chart" role="img" aria-label="用户规模桑基流向图"></div>
                 <div class="mhp-chart-loading" id="chart-220w-loading">图表加载中…</div>
               </div>
             </div>
@@ -2627,9 +2635,12 @@
     if (typeof echarts !== "undefined") return Promise.resolve();
     if (echartsLoadPromise) return echartsLoadPromise;
     echartsLoadPromise = new Promise(function (resolve, reject) {
+      // Prefer local vendor (GitHub Pages / 国内 CDN 常超时导致一直「图表加载中」)
       const urls = [
+        "vendor/echarts.min.js",
+        "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js",
         "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
-        "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+        "https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"
       ];
       let i = 0;
       function tryNext() {
@@ -2638,11 +2649,31 @@
           reject(new Error("echarts load failed"));
           return;
         }
+        const src = urls[i++];
         const s = document.createElement("script");
-        s.src = urls[i++];
+        s.src = src;
         s.async = true;
-        s.onload = function () { resolve(); };
-        s.onerror = tryNext;
+        let settled = false;
+        const timer = setTimeout(function () {
+          if (settled) return;
+          settled = true;
+          s.onload = s.onerror = null;
+          try { s.remove(); } catch (e) {}
+          tryNext();
+        }, 8000);
+        s.onload = function () {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          if (typeof echarts !== "undefined") resolve();
+          else tryNext();
+        };
+        s.onerror = function () {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          tryNext();
+        };
         document.head.appendChild(s);
       }
       tryNext();
@@ -2709,31 +2740,41 @@
     };
   }
 
+  let chart220wSizeRetries = 0;
+
   function ensureChart220wMetrics() {
     if (!isCase220wVisible()) return;
 
     const el = document.getElementById("chart-220w-metrics");
+    const shell = el && el.parentElement;
     const loading = document.getElementById("chart-220w-loading");
     if (!el) return;
 
     if (el.clientWidth < 40 || el.clientHeight < 40) {
-      requestAnimationFrame(ensureChart220wMetrics);
-      return;
+      chart220wSizeRetries += 1;
+      if (chart220wSizeRetries < 60) {
+        requestAnimationFrame(ensureChart220wMetrics);
+        return;
+      }
+      // fall through: still try init after retries
     }
+    chart220wSizeRetries = 0;
+
+    if (loading) loading.textContent = "图表加载中…";
 
     loadEchartsScript().then(function () {
       if (!isCase220wVisible()) return;
+      if (typeof echarts === "undefined") throw new Error("echarts missing");
 
       if (chart220wInstance) {
         chart220wInstance.dispose();
         chart220wInstance = null;
       }
 
-      if (loading) loading.style.display = "none";
-
       chart220wInstance = echarts.init(el, null, { renderer: "canvas" });
       chart220wInstance.setOption(getChart220wOption());
-      el.classList.add("is-ready");
+      if (shell) shell.classList.add("is-ready");
+      if (loading) loading.style.display = "none";
 
       if (!chart220wResizeBound) {
         chart220wResizeBound = true;
@@ -2743,8 +2784,10 @@
       }
       chart220wInstance.resize();
     }).catch(function () {
+      if (shell) shell.classList.remove("is-ready");
       if (loading) {
-        loading.textContent = "图表库加载失败，请检查网络后刷新";
+        loading.style.display = "flex";
+        loading.textContent = "图表库加载失败，请刷新重试";
         loading.style.color = "#F87171";
       }
     });
