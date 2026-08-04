@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTT视频行业 · 知识框架</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0E17;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #00D4FF;
+      --positive: #10B981;
+      --danger: #EF4444;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --font-mono: "JetBrains Mono", Consolas, monospace;
+      --radius: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      min-height: 100vh;
+    }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    .breadcrumb {
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      opacity: 0.85;
+    }
+    .breadcrumb a:hover { opacity: 1; text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; opacity: 0.5; }
+
+    .mono-prefix {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .header h1 {
+      margin: 0.5rem 0 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .header .sub {
+      margin: 0.5rem 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .btn-export {
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--text);
+      padding: 0.65rem 1.1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    }
+
+    .btn-export:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 212, 255, 0.15);
+      border-color: rgba(0, 212, 255, 0.6);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+      margin-bottom: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .tab-btn {
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: transparent;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      border-color: rgba(0, 212, 255, 0.4);
+      background: rgba(0, 212, 255, 0.12);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-card {
+      padding: 1rem 1.1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .metric-card h3 {
+      margin: 0 0 0.75rem;
+      font-size: 0.95rem;
+      color: #F9FAFB;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .metric-card .field {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-card .field span {
+      color: var(--text);
+      display: block;
+      margin-top: 3px;
+      line-height: 1.55;
+      font-size: 0.85rem;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      color: #D1D5DB;
+      margin: 0 0 0.75rem;
+      padding-left: 0.5rem;
+      border-left: 3px solid var(--accent);
+      font-weight: 600;
+    }
+
+    .table-wrap {
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      min-width: 480px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0.5rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    @media (max-width: 900px) {
+      .tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 16px 12px 32px; }
+      .metric-grid { grid-template-columns: 1fr; }
+      .tabs { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.2rem; }
+      .header { padding: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="breadcrumb">
+      <a href="../index.html#industry-knowledge">数字展馆</a>
+      <span>/</span>
+      <a href="index.html">行业知识库</a>
+      <span>/</span>
+      <span style="color:var(--text);">OTT视频行业</span>
+    </div>
+
+    <header class="header">
+      <div>
+        <div class="mono-prefix">&gt;_ ott_video_industry</div>
+        <h1>OTT视频行业 · 知识框架</h1>
+        <p class="sub">用户画像 · 内容与播放 · 营收与广告 —— 三大模块 23 个核心指标，覆盖从用户规模到商业变现的完整分析维度</p>
+      </div>
+      <button type="button" class="btn-export" id="btnExport">📦 导出 AI 知识库 (JSON)</button>
+    </header>
+
+    <nav class="tabs" id="tabNav" aria-label="指标模块">
+      <button type="button" class="tab-btn active" data-tab="tab1">用户画像指标</button>
+      <button type="button" class="tab-btn" data-tab="tab2">内容与播放指标</button>
+      <button type="button" class="tab-btn" data-tab="tab3">营收与广告指标</button>
+    </nav>
+
+    <section id="tab1" class="tab-panel active" data-module="用户画像指标"></section>
+    <section id="tab2" class="tab-panel" data-module="内容与播放指标"></section>
+    <section id="tab3" class="tab-panel" data-module="营收与广告指标"></section>
+  </div>
+
+  <script>
+    const INDUSTRY = "OTT视频行业";
+    const EXPORT_FILE = "OTT视频行业_知识库.json";
+
+    const tabData = {
+      tab1: [
+        { name: "月活用户(MAU)", formula: "月内至少传一次PB日志到后台的用户数", scene: "衡量用户规模", definition: "统计月度内至少上报一次PB日志到后台的去重用户规模" },
+        { name: "日活用户(DAU)", formula: "日内至少传一次PB日志到后台的用户数", scene: "衡量日常活跃度", definition: "统计单日内至少上报一次PB日志到后台的去重活跃用户数" },
+        { name: "DAU/MAU比值", formula: "DAU / MAU", scene: "衡量用户粘性，越高越好", definition: "日活与月活的比值，反映用户使用频率与粘性" },
+        { name: "新增用户数", formula: "首次激活APP的用户数", scene: "衡量拉新效果", definition: "统计周期内首次激活应用的新用户数量" },
+        { name: "留存率", formula: "第N天仍活跃的用户 / 新增用户", scene: "衡量用户留存质量", definition: "新增用户在第N日仍保持活跃的比例" },
+        { name: "用户活跃时段分布", formula: "分时段统计活跃用户占比", scene: "指导内容排播与推送时机", definition: "按小时或时段划分活跃用户占比的分布结构" },
+        { name: "用户地域分布", formula: "分省份/城市统计用户占比", scene: "指导区域运营策略", definition: "按地理区域统计用户数量或占比的分布情况" },
+        { name: "用户设备分布", formula: "分终端类型统计用户占比", scene: "指导产品适配与优化", definition: "按手机、平板、TV等终端类型统计用户占比" }
+      ],
+      tab2: [
+        { name: "播放量(VV)", formula: "视频播放次数", scene: "衡量内容消费规模", definition: "视频被成功起播的次数统计" },
+        { name: "播放时长", formula: "用户观看总时长", scene: "衡量用户沉浸度", definition: "用户有效观看视频累计的总时长" },
+        { name: "人均播放时长", formula: "总播放时长 / 活跃用户数", scene: "衡量内容吸引力", definition: "平均每位活跃用户贡献的观看时长" },
+        { name: "完播率", formula: "完整看完视频用户 / 开始播放用户", scene: "衡量内容质量", definition: "完整观看至结尾的用户占起播用户的比例" },
+        { name: "内容启动率", formula: "点击播放次数 / 内容曝光次数", scene: "衡量封面和标题吸引力", definition: "曝光后产生点击播放行为的转化比例" },
+        { name: "播放中断率", formula: "未播完退出次数 / 总播放次数", scene: "识别体验问题", definition: "未完整播放即退出的次数占总播放次数的比例" },
+        { name: "热门内容TOP榜", formula: "按播放量排序的内容", scene: "指导内容采购与制作", definition: "按播放量等指标排序的热门内容榜单" },
+        { name: "内容类型偏好", formula: "各类型播放占比", scene: "指导内容策略", definition: "不同内容品类在总播放中的占比结构" }
+      ],
+      tab3: [
+        { name: "CPM（千次展示成本）", formula: "广告收入 / 广告展示量 × 1000", scene: "衡量广告定价能力", definition: "每千次广告展示对应的收入单价" },
+        { name: "广告填充率", formula: "实际售出广告位 / 可售广告位", scene: "衡量广告销售效率", definition: "可售广告位中被实际填充售卖的比例" },
+        { name: "订阅收入", formula: "付费用户数 × ARPU", scene: "衡量订阅业务规模", definition: "会员订阅业务产生的总收入规模" },
+        { name: "付费转化率", formula: "付费用户 / 活跃用户", scene: "衡量免费转付费效率", definition: "活跃用户中转化为付费用户的比例" },
+        { name: "ARPU（每用户平均收入）", formula: "总收入 / 活跃用户数", scene: "衡量用户变现效率", definition: "平均每位活跃用户贡献的收入金额" },
+        { name: "用户终身价值(LTV)", formula: "用户生命周期内贡献的总收入", scene: "衡量用户长期价值", definition: "单个用户在整个生命周期内累计贡献的收入" },
+        { name: "客户获取成本(CAC)", formula: "营销费用 / 新增付费用户", scene: "衡量拉新效率", definition: "获取一名新增付费用户所花费的平均营销成本" }
+      ]
+    };
+
+    function esc(s) {
+      return String(s).replace(/"/g, "&quot;");
+    }
+
+    function renderMetricCard(m, moduleName) {
+      return `
+        <article class="metric-card metric-export"
+          data-name="${esc(m.name)}"
+          data-module="${esc(moduleName)}"
+          data-type="indicator"
+          data-formula="${esc(m.formula)}"
+          data-definition="${esc(m.definition)}"
+          data-business-scene="${esc(m.scene)}">
+          <h3>${m.name}</h3>
+          <div class="field">计算口径 <span>${m.formula}</span></div>
+          <div class="field">业务用途 <span>${m.scene}</span></div>
+        </article>`;
+    }
+
+    function renderTable(moduleName, items) {
+      const rows = items.map(m =>
+        `<tr><td>${m.name}</td><td>${m.formula}</td><td>${m.scene}</td></tr>`
+      ).join("");
+      return `
+        <h2 class="section-title">指标一览表 · ${moduleName}</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>指标名称</th><th>计算口径</th><th>业务用途</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function renderTab(tabId, items, moduleName) {
+      const panel = document.getElementById(tabId);
+      panel.innerHTML = `
+        <div class="metric-grid">
+          ${items.map(m => renderMetricCard(m, moduleName)).join("")}
+        </div>
+        ${renderTable(moduleName, items)}`;
+    }
+
+    Object.keys(tabData).forEach(tabId => {
+      const panel = document.getElementById(tabId);
+      renderTab(tabId, tabData[tabId], panel.dataset.module);
+    });
+
+    document.querySelectorAll("#tabNav .tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#tabNav .tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    document.getElementById("btnExport").addEventListener("click", () => {
+      const elements = document.querySelectorAll("[data-name]");
+      const indicators = [];
+      elements.forEach(el => {
+        indicators.push({
+          name: el.getAttribute("data-name") || "",
+          module: el.getAttribute("data-module") || "",
+          type: el.getAttribute("data-type") || "",
+          formula: el.getAttribute("data-formula") || "",
+          definition: el.getAttribute("data-definition") || "",
+          business_scene: el.getAttribute("data-business-scene") || ""
+        });
+      });
+      const payload = {
+        industry: INDUSTRY,
+        version: "2.0",
+        export_time: new Date().toISOString(),
+        knowledge_base: { indicators }
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = EXPORT_FILE;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

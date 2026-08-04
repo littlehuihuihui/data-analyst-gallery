@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行业知识库 · 麦焕晖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0E17;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #00D4FF;
+      --positive: #10B981;
+      --danger: #EF4444;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --font-mono: "JetBrains Mono", Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 40px;
+    }
+
+    .back-link {
+      align-self: flex-start;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .back-link:hover { opacity: 1; text-decoration: underline; }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .mono-prefix {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      margin: 8px 0 12px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      padding: 1.75rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: block;
+    }
+
+    .card-link:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 212, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+    }
+
+    .card-link .icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card-link h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.25rem;
+      color: #F9FAFB;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-link h2 .tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .card-link .desc {
+      margin: 0 0 1rem;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .card-link .metrics {
+      display: flex;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .metric-item {
+      text-align: center;
+    }
+
+    .metric-item .num {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .metric-item .label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-link .enter-hint {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      opacity: 0.8;
+    }
+
+    footer {
+      margin-top: 56px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 32px 16px; }
+      h1 { font-size: 22px; }
+      .cards { grid-template-columns: 1fr; gap: 1rem; }
+      .card-link { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../index.html#industry-knowledge">← 返回数字展馆</a>
+  <a class="back-link" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener" style="margin-left:1rem;">多行业数据平台 ↗</a>
+
+  <header class="page-header">
+    <div class="mono-prefix">&gt;_ industry_knowledge_base</div>
+    <h1>行业知识库</h1>
+    <p class="subtitle">系统化沉淀的行业指标体系与知识框架，每个指标均包含口径定义、计算公式与业务场景，支持一键导出 AI 知识库 JSON</p>
+  </header>
+
+  <nav class="cards" aria-label="行业知识框架入口">
+    <a class="card-link" href="ott-knowledge-framework.html">
+      <span class="icon" aria-hidden="true">📺</span>
+      <h2>OTT视频行业 <span class="tag">23 指标</span></h2>
+      <p class="desc">
+        <strong style="color:var(--text)">用户画像</strong>：MAU / DAU / 留存率 / 地域设备分布<br />
+        <strong style="color:var(--text)">内容播放</strong>：VV / 播放时长 / 完播率 / 中断率<br />
+        <strong style="color:var(--text)">营收广告</strong>：CPM / 填充率 / ARPU / LTV / CAC
+      </p>
+      <div class="metrics">
+        <div class="metric-item">
+          <div class="num">3</div>
+          <div class="label">核心模块</div>
+        </div>
+        <div class="metric-item">
+          <div class="num">23</div>
+          <div class="label">指标定义</div>
+        </div>
+        <div class="metric-item">
+          <div class="num">JSON</div>
+          <div class="label">一键导出</div>
+        </div>
+      </div>
+      <div class="enter-hint">进入知识框架 →</div>
+    </a>
+
+    <a class="card-link" href="telecom-knowledge-framework.html">
+      <span class="icon" aria-hidden="true">📡</span>
+      <h2>通信设备监测 <span class="tag">19 节点</span></h2>
+      <p class="desc">
+        <strong style="color:var(--text)">告警检测</strong>：产生量 / 关闭量 / 持续天数 / 重复率<br />
+        <strong style="color:var(--text)">处理流程</strong>：8 步自动化闭环可视化<br />
+        <strong style="color:var(--text)">运维指标</strong>：成功率 / 覆盖率 / 自动关闭率
+      </p>
+      <div class="metrics">
+        <div class="metric-item">
+          <div class="num">3</div>
+          <div class="label">核心模块</div>
+        </div>
+        <div class="metric-item">
+          <div class="num">19</div>
+          <div class="label">知识节点</div>
+        </div>
+        <div class="metric-item">
+          <div class="num">JSON</div>
+          <div class="label">一键导出</div>
+        </div>
+      </div>
+      <div class="enter-hint">进入知识框架 →</div>
+    </a>
+  </nav>
+
+  <footer>// 持续迭代中 · 更多行业框架建设中</footer>
+</body>
+</html>

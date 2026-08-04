@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="麦焕晖 · 数据分析能力数字展馆：近9年 OTT / 通信制造实战案例，数据治理、用户增长、BI 体系与 AI 协作。串联多行业数据平台与行业百科。" />
+  <meta name="author" content="麦焕晖" />
+  <title>麦焕晖 · 数据分析能力数字展馆</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" /></noscript>
+  <style>
+    /* ========== 全局变量与重置 ========== */
+    :root {
+      --bg: #0A0E17;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #00D4FF;
+      --positive: #10B981;
+      --danger: #EF4444;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --chart-1: #00D4FF;
+      --chart-2: #1E3A5F;
+      --font-mono: "JetBrains Mono", Consolas, monospace;
+    }
+
+    /* ========== 亮色主题 ========== */
+    body.light-theme {
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --accent: #0284C7;
+      --positive: #059669;
+      --danger: #DC2626;
+      --text: #1E293B;
+      --muted: #64748B;
+      --chart-1: #0284C7;
+      --chart-2: #BAE6FD;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    }
+    body.light-theme .hero-title {
+      background: linear-gradient(135deg, #0F172A 0%, #0284C7 50%, #0F172A 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    body.light-theme #site-nav {
+      background: rgba(248, 250, 252, 0.85);
+    }
+    body.light-theme .placeholder-box {
+      background: rgba(0,0,0,0.02);
+      border-color: rgba(0,0,0,0.1);
+    }
+    body.light-theme .metrics-highlight-panel {
+      background: linear-gradient(135deg, #F0F9FF, #FFFFFF);
+      border-color: #BAE6FD;
+    }
+    body.light-theme .mhp-title { color: #0C4A6E; }
+    body.light-theme .mhp-subtitle { color: #0369A1; }
+    body.light-theme .case-tags span {
+      background: rgba(2, 132, 199, 0.1);
+      color: #0369A1;
+    }
+    body.light-theme .framework-table th {
+      background: rgba(2, 132, 199, 0.08);
+    }
+    body.light-theme .framework-table tr:nth-child(even) {
+      background: rgba(2, 132, 199, 0.03);
+    }
+    body.light-theme ::-webkit-scrollbar-track { background: var(--bg); }
+    body.light-theme ::-webkit-scrollbar-thumb { background: rgba(2, 132, 199, 0.3); }
+    body.light-theme ::-webkit-scrollbar-thumb:hover { background: rgba(2, 132, 199, 0.5); }
+    body.light-theme ::selection {
+      background: rgba(2, 132, 199, 0.2);
+      color: #0F172A;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      /* 细微网格纹理 */
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ========== 等宽标题前缀 >_ ========== */
+    .mono-prefix {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ========== 通用区块标题 ========== */
+    .section-head {
+      font-size: 1.35rem;
+      margin: 0 0 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ========== 卡片 ========== */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(0, 212, 255, 0.35);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+    }
+    .card.active-track {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(0, 212, 255, 0.25);
+    }
+
+    /* ========== Hero 首屏 ========== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.5rem 5rem;
+      position: relative;
+    }
+    .hero-name {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .hero-title {
+      font-size: clamp(1.35rem, 4vw, 2.25rem);
+      font-weight: 700;
+      color: #fff;
+      max-width: 920px;
+      line-height: 1.35;
+      margin: 0 0 1rem;
+    }
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--muted);
+      max-width: 880px;
+      margin: 0 0 1rem;
+    }
+    .hero-pain-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      max-width: 720px;
+      margin: 1.5rem 0 1.5rem;
+    }
+    @media (max-width: 700px) {
+      .hero-pain-points { grid-template-columns: 1fr; max-width: 400px; }
+    }
+    .pain-card {
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pain-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    .pain-card .pain-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.35rem;
+    }
+    .pain-card .pain-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .pain-card .pain-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .hero-ai-tag {
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      display: inline-block;
+      max-width: 640px;
+    }
+    .scroll-down {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--accent);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .scroll-down:hover {
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
+      background: rgba(0, 212, 255, 0.15);
+    }
+
+    /* ========== 顶部导航（滚动后出现） ========== */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0.65rem 1rem;
+      background: rgba(10, 14, 23, 0.55);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s;
+    }
+    #site-nav.visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #site-nav.scrolled-deep {
+      background: rgba(10, 14, 23, 0.92);
+    }
+    #site-nav a {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 0.35rem 0.6rem;
+      border-bottom: 2px solid transparent;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #site-nav a:hover { color: var(--text); }
+    #site-nav a.nav-active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ========== 主内容区边距（为固定导航留空） ========== */
+    main { padding-top: 0; }
+    .section {
+      padding: 3rem 1.25rem;
+      max-width: 1180px;
+      margin: 0 auto;
+      scroll-margin-top: 72px;
+    }
+
+    /* ========== 双轨职业切换 ========== */
+    #career-switch .switch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 767px) {
+      #career-switch .switch-grid { grid-template-columns: 1fr; }
+    }
+    .career-card {
+      cursor: pointer;
+      text-align: left;
+    }
+    .career-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .career-card p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ========== 核心成果仪表盘 ========== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      padding: 1.25rem 1rem;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover {
+      border-color: rgba(0, 212, 255, 0.35);
+      transform: translateY(-2px);
+    }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .stat-card .stat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      opacity: 0.7;
+    }
+    .career-intro {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(0, 212, 255, 0.02));
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: 14px;
+    }
+    .career-intro p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .career-intro .mono-prefix {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+    .growth-timeline {
+      display: flex;
+      gap: 0;
+      margin-top: 1.25rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .growth-stage {
+      flex: 1;
+      min-width: 140px;
+      padding: 0.85rem 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      position: relative;
+      text-align: center;
+    }
+    .growth-stage + .growth-stage {
+      margin-left: 0.5rem;
+    }
+    .growth-stage .stage-period {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .growth-stage .stage-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .growth-stage .stage-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ========== 逻辑链 ========== */
+    .logic-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .logic-node {
+      flex: 1 1 200px;
+      max-width: 260px;
+      cursor: pointer;
+    }
+    .logic-node h4 {
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+    .logic-node p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .logic-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      padding: 0 0.25rem;
+    }
+    @media (max-width: 900px) {
+      .logic-row { flex-direction: column; align-items: center; }
+      .logic-arrow { transform: rotate(90deg); padding: 0.25rem 0; }
+      .logic-node { max-width: 100%; width: 100%; }
+    }
+
+    /* ========== 方法论文档库 ========== */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 1023px) {
+      .method-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .method-grid { grid-template-columns: 1fr; }
+    }
+    .method-card summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text);
+      list-style: none;
+    }
+    .method-card summary::-webkit-details-marker { display: none; }
+    .method-card details[open] summary { color: var(--accent); }
+    .method-body { margin-top: 0.75rem; font-size: 0.88rem; color: var(--muted); }
+
+    /* ========== 分析框架区表格 ========== */
+    .framework-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin: 1rem 0;
+    }
+    .framework-table th, .framework-table td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+    }
+    .framework-table th {
+      background: rgba(30, 58, 95, 0.35);
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+
+    /* ========== 标签云 ========== */
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .tag-category {
+      margin-bottom: 1rem;
+    }
+    .tag-category-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tag-category-title::before {
+      content: "//";
+      opacity: 0.6;
+    }
+    .tag-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tag-btn.selected {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 212, 255, 0.12);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+    }
+    .tag-btn.core {
+      border-color: rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.06);
+      color: #BAE6FD;
+    }
+    .tag-btn.differentiator {
+      border-color: rgba(139, 92, 246, 0.4);
+      background: rgba(139, 92, 246, 0.1);
+      color: #C4B5FD;
+    }
+    .tag-btn.differentiator:hover {
+      border-color: #8B5CF6;
+      color: #C4B5FD;
+      background: rgba(139, 92, 246, 0.18);
+    }
+    .tag-btn.differentiator.selected {
+      border-color: #8B5CF6;
+      color: #C4B5FD;
+      background: rgba(139, 92, 246, 0.2);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+    .tag-result-card {
+      margin-top: 0.75rem;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .tag-result-card h4 { margin: 0 0 0.35rem; font-size: 0.95rem; }
+    .tag-result-card .hl {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .btn-expand-case {
+      margin-top: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+    }
+    .btn-expand-case:hover { background: rgba(0, 212, 255, 0.12); }
+
+    /* ========== 案例导航 ========== */
+    .case-nav-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .case-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 212, 255, 0.08);
+      transform: translateY(-1px);
+    }
+    .case-nav-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 212, 255, 0.12);
+    }
+    @media (max-width: 768px) {
+      .case-nav-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .case-nav-btn { font-size: 0.68rem; padding: 0.4rem 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .case-nav-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* ========== 深度复盘区 ========== */
+    #deep-dive .case-block {
+      display: none;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    #deep-dive .case-block.visible {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); }
+      50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .animate-delay-1 { transition-delay: 0.1s; }
+    .animate-delay-2 { transition-delay: 0.2s; }
+    .animate-delay-3 { transition-delay: 0.3s; }
+    .animate-delay-4 { transition-delay: 0.4s; }
+    .animate-delay-5 { transition-delay: 0.5s; }
+    .case-block h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.3rem;
+      color: #fff;
+      border-left: 3px solid var(--accent);
+      padding-left: 0.65rem;
+    }
+    .case-section-title {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin: 1rem 0 0.35rem;
+    }
+    .case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+    }
+    .case-tags span {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(30, 58, 95, 0.5);
+      color: var(--muted);
+    }
+    .result-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 0.35rem 0;
+    }
+    .result-pill.positive { color: var(--positive); }
+    .result-pill.danger { color: var(--danger); }
+
+    /* ========== 图表通用 ========== */
+    .chart-wrap {
+      margin: 1rem 0;
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+    }
+    .chart-legend {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+
+    /* ========== 220万案例 · 可量化结果（桑基图 · 黑色高亮） ========== */
+    .metrics-highlight-panel {
+      margin: 1rem 0;
+      padding: 1.5rem;
+      border-radius: 16px;
+      font-family: "PingFang SC", "Inter", system-ui, -apple-system, sans-serif;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      color: #E5E7EB;
+    }
+    .metrics-highlight-panel .mhp-inner {
+      background: transparent;
+      border-radius: 16px;
+      padding: 0;
+      box-shadow: none;
+    }
+    .metrics-highlight-panel .mhp-title {
+      margin: 0 0 0.25rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #F1F5F9;
+    }
+    .metrics-highlight-panel .mhp-subtitle {
+      margin: 0 0 1.1rem;
+      font-size: 0.85rem;
+      color: #9CA3AF;
+    }
+    .metrics-highlight-panel .mhp-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+    @media (max-width: 640px) {
+      .metrics-highlight-panel .mhp-kpi-row { grid-template-columns: 1fr; }
+      .metrics-highlight-panel { padding: 1rem; }
+      .metrics-highlight-panel .mhp-inner { padding: 1rem; }
+    }
+    .metrics-highlight-panel .mhp-kpi {
+      text-align: center;
+      padding: 1rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .metrics-highlight-panel .mhp-kpi.highlight {
+      border: 2px solid transparent;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)) padding-box,
+        linear-gradient(135deg, #10B981, #34D399) border-box;
+      position: relative;
+    }
+    .metrics-highlight-panel .mhp-kpi.highlight::after {
+      content: "↑";
+      position: absolute;
+      top: 0.6rem;
+      right: 0.7rem;
+      color: #10B981;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .metrics-highlight-panel .mhp-kpi-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #9CA3AF;
+      margin-bottom: 0.35rem;
+    }
+    .metrics-highlight-panel .mhp-kpi-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #F9FAFB;
+    }
+    .metrics-highlight-panel .mhp-kpi-value.blue { color: #60A5FA; }
+    .metrics-highlight-panel .mhp-kpi-value.green { color: #34D399; }
+    .metrics-highlight-panel .mhp-kpi-value.purple { color: #A78BFA; }
+    .metrics-highlight-panel .mhp-kpi-delta {
+      font-size: 0.75rem;
+      color: #9CA3AF;
+      margin-top: 0.35rem;
+    }
+    .metrics-highlight-panel .mhp-kpi.highlight .mhp-kpi-delta { color: #10B981; }
+    .metrics-highlight-panel .mhp-chart-wrap {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .metrics-highlight-panel .mhp-chart {
+      width: 100%;
+      height: 400px;
+      min-height: 400px;
+      position: relative;
+    }
+    .metrics-highlight-panel .mhp-chart-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      font-size: 0.85rem;
+    }
+    .metrics-highlight-panel .mhp-chart.is-ready .mhp-chart-loading { display: none; }
+    .metrics-highlight-panel .mhp-sankey-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      font-size: 0.72rem;
+      color: #9CA3AF;
+      margin-bottom: 0.85rem;
+    }
+    .metrics-highlight-panel .mhp-sankey-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .metrics-highlight-panel .mhp-sankey-legend i {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .metrics-highlight-panel .mhp-notes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    @media (max-width: 640px) {
+      .metrics-highlight-panel .mhp-notes { grid-template-columns: 1fr; }
+    }
+    .metrics-highlight-panel .mhp-note-box {
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      line-height: 1.55;
+    }
+    .metrics-highlight-panel .mhp-note-box strong {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+    .metrics-highlight-panel .mhp-footer {
+      margin-top: 0.85rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .metrics-highlight-panel .case-tags span {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+    }
+
+    /* ========== 占位框 ========== */
+    .placeholder-box {
+      border: 1px dashed rgba(0, 212, 255, 0.28);
+      border-radius: 10px;
+      padding: 1.1rem 1.15rem;
+      text-align: left;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.55;
+      margin: 0.75rem 0;
+      background: rgba(0, 212, 255, 0.04);
+    }
+    .placeholder-box strong { color: var(--text); font-weight: 600; }
+    .placeholder-box small { display: block; margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.85; }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--accent);
+      background: rgba(0, 212, 255, 0.08);
+      transition: background 0.2s, transform 0.2s, border-color 0.2s;
+    }
+    .hero-cta:hover {
+      background: rgba(0, 212, 255, 0.16);
+      border-color: rgba(0, 212, 255, 0.55);
+      transform: translateY(-1px);
+    }
+    .hero-cta.primary {
+      background: rgba(0, 212, 255, 0.2);
+      color: #e6fbff;
+    }
+    .site-footer {
+      margin: 3rem auto 2rem;
+      max-width: 920px;
+      padding: 1.5rem 1.25rem 2.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .works-card {
+      display: block;
+      padding: 1.1rem 1.15rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .works-card:hover {
+      border-color: rgba(0, 212, 255, 0.45);
+      transform: translateY(-2px);
+    }
+    .works-card h3 { margin: 0 0 0.45rem; font-size: 1rem; color: var(--text); }
+    .works-card p { margin: 0; font-size: 0.84rem; color: var(--muted); line-height: 1.55; }
+    .works-card .works-tag {
+      display: inline-block;
+      margin-top: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    .ott-only, .ericsson-only { display: none; }
+    body.track-ott .ott-only { display: block; }
+    body.track-ott .ott-only.flex { display: flex; }
+    body.track-ericsson .ericsson-only { display: block; }
+    body.track-ericsson .ericsson-only.flex { display: flex; }
+
+    .small-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    /* ========== 响应式优化 ========== */
+    @media (max-width: 768px) {
+      .section { padding: 2.5rem 1rem; }
+      .section-head { font-size: 1.15rem; }
+
+      /* Hero 移动端优化 */
+      #hero { padding: 1.5rem 1rem 4rem; }
+      .hero-name { font-size: 0.8rem; top: 1rem; left: 1rem; }
+      .hero-title { font-size: 1.35rem; line-height: 1.4; }
+      .hero-sub { font-size: 0.9rem; line-height: 1.6; }
+      .hero-pain-points { margin: 1.25rem 0; gap: 0.5rem; }
+      .pain-card { padding: 0.75rem 0.85rem; }
+      .pain-card .pain-icon { font-size: 1.1rem; }
+      .pain-card .pain-title { font-size: 0.82rem; }
+      .pain-card .pain-desc { font-size: 0.72rem; }
+      .hero-ai-tag { font-size: 0.7rem; padding: 0.4rem 0.6rem; }
+
+      /* 导航栏移动端优化 */
+      #site-nav { gap: 0.3rem; padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+      #site-nav a { padding: 0.3rem 0.5rem; }
+
+      /* 职业轨道移动端 */
+      .career-intro { padding: 0.85rem 1rem; margin-bottom: 1rem; }
+      .career-intro p { font-size: 0.82rem; line-height: 1.6; }
+
+      /* 核心成果移动端 */
+      .stat-num { font-size: 1.6rem; }
+      .stat-label { font-size: 0.78rem; }
+      .stat-card .stat-sub { font-size: 0.68rem; }
+
+      /* 成长时间线移动端 */
+      .growth-stage { min-width: 120px; padding: 0.7rem 0.6rem; }
+      .growth-stage .stage-period { font-size: 0.68rem; }
+      .growth-stage .stage-title { font-size: 0.8rem; }
+      .growth-stage .stage-desc { font-size: 0.72rem; }
+
+      /* 逻辑链移动端 */
+      .logic-node h4 { font-size: 0.88rem; }
+      .logic-node p { font-size: 0.78rem; }
+
+      /* 方法论文档库移动端 */
+      .method-grid { grid-template-columns: 1fr; }
+
+      /* AI赋能移动端 */
+      .ai-grid { grid-template-columns: 1fr !important; }
+
+      /* 标签云移动端 */
+      .tag-btn { font-size: 0.68rem; padding: 0.3rem 0.45rem; }
+      .tag-category-title { font-size: 0.72rem; }
+
+      /* 案例复盘移动端 */
+      .case-block h3 { font-size: 1rem; }
+      .case-section-title { font-size: 0.8rem; }
+      .framework-table { font-size: 0.78rem; }
+      .metrics-highlight-panel { padding: 1rem; }
+      .mhp-title { font-size: 0.95rem; }
+    }
+
+    @media (max-width: 480px) {
+      .section { padding: 2rem 0.85rem; }
+      .hero-title { font-size: 1.2rem; }
+      .stat-num { font-size: 1.4rem; }
+      .stat-card { padding: 1rem 0.75rem; }
+      #site-nav { font-size: 0.75rem; gap: 0.2rem; }
+      #site-nav a { padding: 0.25rem 0.4rem; }
+    }
+
+    /* ========== 减少动效（尊重用户偏好） ========== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .animate-on-scroll { opacity: 1; transform: none; }
+    }
+
+    /* ========== 卡片3D悬浮效果（仅桌面端） ========== */
+    @media (min-width: 769px) {
+      .card, .stat-card, .pain-card, .method-card, .growth-stage {
+        transform-style: preserve-3d;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover, .stat-card:hover, .pain-card:hover, .method-card:hover, .growth-stage:hover {
+        box-shadow: 0 8px 30px rgba(0, 212, 255, 0.1);
+      }
+    }
+
+    /* ========== 滚动条美化 ========== */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.2); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 255, 0.4); }
+
+    /* ========== 选中文字样式 ========== */
+    ::selection {
+      background: rgba(0, 212, 255, 0.3);
+      color: #fff;
+    }
+
+    /* ========== 回到顶部按钮 ========== */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    #back-to-top:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(0, 212, 255, 0.3);
+    }
+    body.light-theme #back-to-top {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    body.light-theme #back-to-top:hover {
+      box-shadow: 0 6px 25px rgba(2, 132, 199, 0.25);
+    }
+    @media (max-width: 768px) {
+      #back-to-top {
+        width: 42px;
+        height: 42px;
+        bottom: 1.25rem;
+        right: 1.25rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    /* ========== 滚动进度条 ========== */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #8B5CF6);
+      z-index: 9999;
+      transition: width 0.1s linear;
+      width: 0%;
+    }
+
+    /* ========== 页面加载渐入 ========== */
+    body {
+      opacity: 0;
+      animation: pageFadeIn 0.8s ease forwards;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ========== Hero 标题微光效果 ========== */
+    .hero-title {
+      background: linear-gradient(135deg, #fff 0%, #E0F2FE 50%, #fff 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ========== 滚动按钮呼吸效果 ========== */
+    .scroll-down {
+      animation: float 2s ease-in-out infinite;
+    }
+
+  </style>
+</head>
+<body class="track-ott">
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <button type="button" id="back-to-top" aria-label="回到顶部">↑</button>
+
+  <!-- ========== 顶部导航（滚动过 Hero 后显示） ========== -->
+  <nav id="site-nav" aria-label="页面主导航">
+    <a href="#logic-chain" data-section="logic-chain">逻辑链</a>
+    <a href="#methodology" data-section="methodology">方法论文档</a>
+    <a href="#portfolio-works" data-section="portfolio-works">作品入口</a>
+    <a href="#ai-empower" data-section="ai-empower">AI 赋能</a>
+    <a href="#case-deep-dive" data-section="case-deep-dive">案例复盘</a>
+    <a href="#skills" data-section="skills">能力标签</a>
+    <button type="button" id="theme-toggle" aria-label="切换主题" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0.35rem 0.5rem;border-radius:6px;transition:all 0.2s;">
+      <span id="theme-icon">☀️</span>
+    </button>
+  </nav>
+
+  <!-- ========== 1. Hero 首屏 ========== -->
+  <header id="hero">
+    <div class="hero-name">麦焕晖</div>
+    <div>
+      <h1 class="hero-title">不止于看板，我交付的是业务增长的确定性</h1>
+      <p class="hero-sub">近9年数据分析经验 · OTT互联网电视 + 通信设备制造 · 把业务问题翻译成数据问题，再翻译回去推动解决</p>
+      
+      <div class="hero-pain-points">
+        <div class="pain-card">
+          <div class="pain-icon">🔍</div>
+          <div class="pain-title">数据不准？</div>
+          <div class="pain-desc">口径混乱、质量堪忧，连「有多少用户」都说不清——我帮你建立数据治理体系</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">🎯</div>
+          <div class="pain-title">问题找不到根因？</div>
+          <div class="pain-desc">业务波动、指标异常，不知道为什么——我帮你逐层拆解定位真实原因</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">🚀</div>
+          <div class="pain-title">分析完推不动？</div>
+          <div class="pain-desc">报告写了一堆，业务没变化——我帮你推动落地、建立机制、预防重演</div>
+        </div>
+      </div>
+
+      <div class="hero-cta-row">
+        <a class="hero-cta primary" href="#case-deep-dive">看深度案例复盘</a>
+        <a class="hero-cta" href="#ai-empower">AI 协作跃迁</a>
+        <a class="hero-cta" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener">多行业数据平台 ↗</a>
+        <a class="hero-cta" href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">行业百科 ↗</a>
+      </div>
+    </div>
+    <button type="button" class="scroll-down" id="hero-scroll-btn" aria-label="滚动到逻辑链">↓</button>
+  </header>
+
+  <main>
+    <!-- ========== 3. 双轨职业切换 ========== -->
+    <section id="career-switch" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 职业轨道</h2>
+      
+      <div class="career-intro">
+        <span class="mono-prefix">&gt;_ cross_industry_methodology</span>
+        <p>近9年跨行业经验 —— 从通信设备监测到OTT用户行为分析，底层都是同一套方法论：<strong style="color:var(--accent);">发现问题 → 数据诊断 → 体系化解决 → 推动落地</strong>。行业在变，数据驱动的核心能力不变。</p>
+      </div>
+
+      <div class="switch-grid">
+        <button type="button" class="card career-card active-track" id="track-ott" data-track="ott">
+          <h3>OTT互联网电视 · 银河互联网 · 3年</h3>
+          <p>数据治理 · 用户增长 · 归因分析 · BI体系</p>
+        </button>
+        <button type="button" class="card career-card" id="track-ericsson" data-track="ericsson">
+          <h3>通信设备制造 · 爱立信 · 5年</h3>
+          <p>异常检测 · 设备告警 · 分级诊断 · 闭环跟踪</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== 3.5 核心成果仪表盘 ========== -->
+    <section id="key-results" class="section" style="padding-top: 0;">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 核心成果</h2>
+      <div class="stats-grid" id="stats-grid">
+        <!-- 成果数字由 JS 根据轨道切换渲染 -->
+      </div>
+      <div class="growth-timeline" id="growth-timeline">
+        <!-- 成长阶段由 JS 根据轨道切换渲染 -->
+      </div>
+    </section>
+
+    <!-- ========== 4. 逻辑链 ========== -->
+    <section id="logic-chain" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 工作逻辑链</h2>
+      <div class="logic-row" id="logic-chain-inner">
+        <!-- 节点内容由 JS 根据轨道切换 -->
+      </div>
+    </section>
+
+    <!-- ========== 5. 方法论文档库 ========== -->
+    <section id="methodology" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 方法论文档库</h2>
+      <div class="method-grid">
+        <details class="card method-card">
+          <summary>数据治理三阶段</summary>
+          <div class="method-body">
+            <p><strong style="color:var(--text)">发现层</strong>：识别异常，判断口径问题还是质量问题 → <strong style="color:var(--text)">诊断层</strong>：数据血缘追溯，定位采集/加工/应用/定义层 → <strong style="color:var(--text)">固化层</strong>：推动修复并建立机制防止复发。</p>
+            <p class="mono-prefix" style="margin-top:0.5rem;font-size:0.8rem;">案例：#220万虚假用户 #华为40万异常 #0播放时长诊断</p>
+          </div>
+        </details>
+        <details class="card method-card">
+          <summary>业务分析五步法</summary>
+          <div class="method-body">
+            <p>定义问题（模糊→可验证）→ 拆解维度（时间/地域/产品/用户分层）→ 定位根因（逐层排除）→ 量化影响（支撑决策）→ 推动落地（方案/资源/效果跟踪）。</p>
+            <p class="mono-prefix" style="margin-top:0.5rem;font-size:0.8rem;">案例：#一键登录 #业务见顶预警 #0播放收入评估 #用户偏好标签体系</p>
+          </div>
+        </details>
+        <details class="card method-card">
+          <summary>数据基建五步法</summary>
+          <div class="method-body">
+            <p>梳理（字典/埋点/口径）→ 打通（多源整合/统一标识）→ 搭建（看板覆盖核心场景）→ 自动化（报表推送替代人工）→ 交付（团队自助、不依赖个人）。</p>
+            <p class="mono-prefix" style="margin-top:0.5rem;font-size:0.8rem;">案例：#三方数据打通 #8个Datart看板 #Python自动化</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ========== 5.3 AI赋能体系 ========== -->
+    <section id="ai-empower" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> AI 协作跃迁</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin:0 0 1.5rem;">在银河 / 爱立信两段业务深耕之上，把 AI 嵌进同一套「发现问题 → 诊断 → 固化」闭环：加速探索与交付，口径与结论仍由人把关。下面是可点击验证的作品，不是工具名清单。</p>
+
+      <div class="ai-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;">
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-family:var(--font-mono);color:var(--accent);font-size:0.8rem;margin-bottom:0.75rem;">// 01 工具定位</div>
+          <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--text);">分析向 AI 工具</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.75rem;">
+            <span style="font-family:var(--font-mono);font-size:0.72rem;padding:0.2rem 0.5rem;border-radius:6px;background:rgba(0,212,255,0.1);color:var(--accent);">Cursor</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;padding:0.2rem 0.5rem;border-radius:6px;background:rgba(0,212,255,0.1);color:var(--accent);">ChatGPT</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;padding:0.2rem 0.5rem;border-radius:6px;background:rgba(0,212,255,0.1);color:var(--accent);">Quick BI Agent</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;padding:0.2rem 0.5rem;border-radius:6px;background:rgba(0,212,255,0.1);color:var(--accent);">Copilot</span>
+          </div>
+          <p style="margin:0;font-size:0.82rem;color:var(--muted);line-height:1.6;">侧重：工程协作、SQL/Python 加速、看板 Agent、文档结构化。不做与分析主线无关的「工具墙」。</p>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-family:var(--font-mono);color:var(--accent);font-size:0.8rem;margin-bottom:0.75rem;">// 02 可感知变化</div>
+          <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--text);">相对传统流程</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div>
+              <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent);">3天→4h</div>
+              <div style="font-size:0.75rem;color:var(--muted);">Agent 看板搭建（新能源案例）</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent);">并行假说</div>
+              <div style="font-size:0.75rem;color:var(--muted);">同题多路径验证再收敛</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent);">可交付站</div>
+              <div style="font-size:0.75rem;color:var(--muted);">平台 / 百科 / 展馆可在线打开</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent);">人审口径</div>
+              <div style="font-size:0.75rem;color:var(--muted);">AI 加速，结论不外包</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-family:var(--font-mono);color:var(--accent);font-size:0.8rem;margin-bottom:0.75rem;">// 03 工作流</div>
+          <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--text);">对齐原方法论</h3>
+          <div style="font-size:0.82rem;color:var(--muted);line-height:1.8;">
+            <div><strong style="color:var(--text);">① 问题</strong>：业务语言 → 可验证指标</div>
+            <div><strong style="color:var(--text);">② 探索</strong>：AI 提假说 / 辅助 SQL</div>
+            <div><strong style="color:var(--text);">③ 人审</strong>：口径、边界、误区</div>
+            <div><strong style="color:var(--text);">④ 固化</strong>：看板 / 文档 / 机制</div>
+            <div><strong style="color:var(--text);">⑤ 资产</strong>：可复用知识库与作品站</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--text);">可验证作品（点击进入）</h3>
+      <div class="works-grid" style="margin-bottom:1.25rem;">
+        <a class="works-card" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener">
+          <h3>多行业数据平台</h3>
+          <p>Cursor 协作落地：零售 / 互联网 / 制造三套数仓 + 看板 + 六层方法论与工具箱演示图。简历「深度工程」主链。</p>
+          <span class="works-tag">打开平台 Pages ↗</span>
+        </a>
+        <a class="works-card" href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">
+          <h3>多行业数据百科</h3>
+          <p>行业知识结构化 + 指标 / 方法论 / 学习路径；含 RAG 智能搜索入口，展示广度与检索能力。</p>
+          <span class="works-tag">打开百科 Pages ↗</span>
+        </a>
+        <a class="works-card" href="#portfolio-works">
+          <h3>本展馆 · 叙事入口</h3>
+          <p>AI 辅助搭建的能力数字展馆：双轨案例复盘 + 能力矩阵。简历二维码可指向本站。</p>
+          <span class="works-tag">本页作品入口 ↓</span>
+        </a>
+      </div>
+
+      <div class="card" style="padding:1.25rem;">
+        <div style="font-family:var(--font-mono);color:var(--accent);font-size:0.8rem;margin-bottom:0.75rem;">// 补充案例 · Quick BI Agent</div>
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--text);">新能源汽车销售分析</h3>
+        <p style="margin:0 0 1rem;font-size:0.85rem;color:var(--muted);line-height:1.6;"><strong style="color:var(--text);">问题</strong>：快速搭一套可讲的新能源销售分析看板。<br /><strong style="color:var(--text);">做法</strong>：Quick BI Agent 辅助维度识别、图表推荐与结论草稿 → 人工校正口径。<br /><strong style="color:var(--text);">结果</strong>：搭建周期约 3 天压缩到约 4 小时；产出 15+ 图表、8 个分析维度。</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem;">
+          <div style="text-align:center;padding:0.75rem;background:rgba(0,212,255,0.06);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent);">3天 → 4h</div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:0.25rem;">搭建周期</div>
+          </div>
+          <div style="text-align:center;padding:0.75rem;background:rgba(16,185,129,0.06);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:#10B981;">15+</div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:0.25rem;">自动生成图表</div>
+          </div>
+          <div style="text-align:center;padding:0.75rem;background:rgba(139,92,246,0.06);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:#8B5CF6;">8个</div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:0.25rem;">分析维度</div>
+          </div>
+        </div>
+        <div style="padding:1rem;background:rgba(255,255,255,0.02);border-radius:10px;border:1px dashed var(--border);text-align:left;">
+          <p style="margin:0;font-size:0.82rem;color:var(--muted);"><strong style="color:var(--text);">证据位</strong>：可补 Quick BI 只读链接或脱敏截图；主证据链以「多行业平台 + 百科」在线站为准。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 5.45 作品入口（串联三站） ========== -->
+    <section id="portfolio-works" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 作品入口</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin:0 0 1rem;">简历三件套：展馆讲故事 · 平台讲深度 · 百科讲广度。以下均为在线地址，可互相跳转。</p>
+      <div class="works-grid">
+        <a class="works-card" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener">
+          <h3>多行业数据平台</h3>
+          <p>零售财务 · 互联网 OTT · 制造业：统一入口、行业数仓、六层方法论、主题看板与演示数据。</p>
+          <span class="works-tag">depth · GitHub Pages ↗</span>
+        </a>
+        <a class="works-card" href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">
+          <h3>多行业数据百科</h3>
+          <p>多行业知识框架、指标字典、方法论与学习路径；含智能搜索入口。</p>
+          <span class="works-tag">breadth · GitHub Pages ↗</span>
+        </a>
+        <a class="works-card" href="https://littlehuihuihui.github.io/data-analyst-gallery/" target="_blank" rel="noopener">
+          <h3>本展馆（在线版）</h3>
+          <p>能力数字展馆在线地址（与本地 index 同源）。简历二维码建议指向此处。</p>
+          <span class="works-tag">story · GitHub Pages ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== 5.5 行业知识库 ========== -->
+    <section id="industry-knowledge" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 行业知识库</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin:0 0 1rem;">系统化沉淀的行业指标体系与知识框架，支持一键导出 AI 知识库 JSON，可直接投喂大模型做行业分析助手</p>
+      <div class="method-grid" style="grid-template-columns:repeat(2,1fr);">
+        <a href="knowledge/index.html" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card method-card" style="padding:1rem;transition:border-color 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,212,255,0.4)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+            <div style="font-weight:600;color:var(--text);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+              <span style="font-size:1.2rem;">📺</span> OTT视频行业知识框架
+            </div>
+            <div class="method-body">
+              <p><strong style="color:var(--text)">用户画像</strong>：MAU / DAU / 留存 / 地域设备分布 → <strong style="color:var(--text)">内容播放</strong>：VV / 播放时长 / 完播率 / 中断率 → <strong style="color:var(--text)">营收广告</strong>：CPM / ARPU / LTV / CAC</p>
+              <p class="mono-prefix" style="margin-top:0.75rem;font-size:0.78rem;color:var(--accent);">23 个核心指标 · 三大模块 · 支持 JSON 导出 →</p>
+            </div>
+          </div>
+        </a>
+        <a href="knowledge/telecom-knowledge-framework.html" style="text-decoration:none;color:inherit;display:block;">
+          <div class="card method-card" style="padding:1rem;transition:border-color 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,212,255,0.4)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+            <div style="font-weight:600;color:var(--text);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+              <span style="font-size:1.2rem;">📡</span> 通信设备监测知识框架
+            </div>
+            <div class="method-body">
+              <p><strong style="color:var(--text)">告警检测</strong>：产生量 / 关闭量 / 持续天数 / 重复告警率 → <strong style="color:var(--text)">处理流程</strong>：8 步自动化闭环（脚本→日志→报表→邮件→修复→复查） → <strong style="color:var(--text)">运维指标</strong>：成功率 / 覆盖率 / 自动关闭率</p>
+              <p class="mono-prefix" style="margin-top:0.75rem;font-size:0.78rem;color:var(--accent);">19 个知识节点 · 流程可视化 · 支持 JSON 导出 →</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== 6. 分析框架速览 ========== -->
+    <section id="framework" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 分析框架速览</h2>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">① 问题拆解框架</h3>
+      <p style="color:var(--muted);font-size:0.9rem;">业务问题 → 口径定义 → 数据诊断 → 根因定位 → 方案推动 → 效果验证 → 机制固化</p>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">② 常用分析模型</h3>
+      <ul style="color:var(--muted);font-size:0.88rem;padding-left:1.2rem;">
+        <li><strong style="color:var(--text)">漏斗分析</strong>：用户生命周期（开户→激活→活跃）+ 行为（开机→点播→播放）+ 订购（浏览→下单→支付→开通）</li>
+        <li><strong style="color:var(--text)">分层分析</strong>：用户价值金字塔 + R×F×M + 告警分级</li>
+        <li><strong style="color:var(--text)">同期群分析</strong>：按批次对比；首批用户到期流失高峰约第13个月</li>
+        <li><strong style="color:var(--text)">对比分析</strong>：对照组评估策略（一键登录优化前后）</li>
+        <li><strong style="color:var(--text)">行为占比分析</strong>：播放次数/时长占比构建内容偏好</li>
+        <li><strong style="color:var(--text)">流失预估</strong>：优惠到期、仅开机一次、沉默月份数三类特征分层</li>
+      </ul>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">③ 口径定义原则</h3>
+      <p style="color:var(--muted);font-size:0.88rem;">从业务定义出发 → 找到数据源 → 验证质量 → 统一标准 → 固化为看板指标。入职初期梳理数据字典与埋点文档，明确核心字段定义、来源与关联。</p>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">④ 数据血缘追溯</h3>
+      <p style="color:var(--muted);font-size:0.88rem;">利用字典与埋点文档梳理核心业务线数据链路：</p>
+      <table class="framework-table">
+        <thead>
+          <tr><th>产品线</th><th>应用层</th><th>加工层</th><th>采集层</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>点播</td><td>用户点播明细表（一天一条）</td><td>点播记录表（一次播放一条）</td><td>点播日志（播放/停止/快进/心跳）</td></tr>
+          <tr><td>订购</td><td>订购明细表</td><td>订购记录表</td><td>订购日志（新增/续订/退订）</td></tr>
+          <tr><td>Launcher</td><td>行为明细表</td><td>行为记录表</td><td>日志（点击/曝光/跳转）</td></tr>
+          <tr><td>直播</td><td>观看明细表</td><td>观看记录表</td><td>直播日志（进入/退出/切台）</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--muted);font-size:0.88rem;">能力体现：异常时判断归属（采集/加工/应用/定义）；上游变更预判下游；交叉验证发现隐患；变更时同步更新范围。典型案例：华为40万→加工层同步链路；0播放时长→采集层埋点+路径；220万→口径定义层。</p>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">⑤ 数据资产沉淀</h3>
+      <p style="color:var(--muted);font-size:0.88rem;"><strong style="color:var(--text)">爱立信</strong>：原始告警表上建 issue-record-tracking；5字段组合唯一键；每日增量比对四状态（新增/持续/待观察/已解决），告警全生命周期闭环。状态机与 OTT 用户状态表（新增激活/持续活跃/沉默/流失）底层方法论一致。</p>
+      <p style="color:var(--muted);font-size:0.88rem;"><strong style="color:var(--text)">银河OTT</strong>：8 个 Datart 看板替代人工取数、数据字典可查口径、三方关联框架复用；陪产假前客服查询上线 BI，团队免 SQL 自助，休假业务未受影响。</p>
+
+      <h3 class="mono-prefix" style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">⑥ 协作模式</h3>
+      <p style="color:var(--muted);font-size:0.88rem;">与运营分工：数据挖掘与异常定位（数据侧）+ 策略与报告（运营侧），共同完成用户质量、活跃度等报告。</p>
+    </section>
+
+    <!-- ========== 7. 能力标签检索 ========== -->
+    <section id="skills" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 能力矩阵</h2>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem;">按层级分类展示，可多选标签，下方展开相关案例摘要；点击「深度复盘」跳转至完整案例。</p>
+      <div id="tag-categories">
+        <!-- 分类标签由 JS 渲染 -->
+      </div>
+      <div id="tag-results" style="margin-top:1rem;"></div>
+    </section>
+
+    <!-- ========== 8. 深度复盘区（每案例唯一 id） ========== -->
+    <section id="case-deep-dive" class="section">
+      <h2 class="section-head"><span class="mono-prefix">&gt;_</span> 深度复盘</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1rem;">点击下方案例直接展开，结构统一：场景还原 → 发现问题 → 定位根因 → 推动解决与防再发 → 可量化结果。</p>
+      
+      <div class="case-nav" style="margin-bottom:1.5rem;">
+        <div class="case-nav-group" style="margin-bottom:1rem;">
+          <div style="font-family:var(--font-mono);font-size:0.78rem;color:var(--accent);margin-bottom:0.5rem;">// OTT互联网电视 · 12个案例</div>
+          <div class="case-nav-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;">
+            <button type="button" class="case-nav-btn" data-case="case-220w">220万虚假用户</button>
+            <button type="button" class="case-nav-btn" data-case="case-huawei40">华为40万数据异常</button>
+            <button type="button" class="case-nav-btn" data-case="case-zero-play">0播放时长诊断</button>
+            <button type="button" class="case-nav-btn" data-case="case-120w-low">120万低质量激活</button>
+            <button type="button" class="case-nav-btn" data-case="case-triple-data">三方数据打通</button>
+            <button type="button" class="case-nav-btn" data-case="case-bi-dashboard">BI看板体系</button>
+            <button type="button" class="case-nav-btn" data-case="case-python-auto">Python报表自动化</button>
+            <button type="button" class="case-nav-btn" data-case="case-oneclick">一键登录日活+200%</button>
+            <button type="button" class="case-nav-btn" data-case="case-churn-warning">业务见顶预警</button>
+            <button type="button" class="case-nav-btn" data-case="case-zero-revenue">0播放时长收入评估</button>
+            <button type="button" class="case-nav-btn" data-case="case-preference-tags">用户偏好标签体系</button>
+            <button type="button" class="case-nav-btn" data-case="case-lifecycle-rf">用户生命周期RFM</button>
+          </div>
+        </div>
+        <div class="case-nav-group">
+          <div style="font-family:var(--font-mono);font-size:0.78rem;color:var(--accent);margin-bottom:0.5rem;">// 通信设备制造 · 2个案例</div>
+          <div class="case-nav-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;">
+            <button type="button" class="case-nav-btn" data-case="case-ericsson-tracking">告警跟踪闭环</button>
+            <button type="button" class="case-nav-btn" data-case="case-ericsson-automation">异常检测与自动化</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 案例1：220万虚假用户 -->
+      <article class="case-block" id="case-220w" data-track="ott">
+        <h3>220万虚假用户 · 口径对齐与真实活跃率</h3>
+        <p><strong style="color:var(--text)">场景还原</strong>：刚入职时，移动质疑运营能力——400万用户、活跃仅约40万；银河后台激活设备约180万。两队口径不一，无人能说清差异。</p>
+        <p class="case-section-title">&gt; 思维路径</p>
+        <ol style="color:var(--muted);font-size:0.88rem;padding-left:1.2rem;">
+          <li>抛出问题：400万 vs 180万，活跃率无法确定</li>
+          <li>还原口径：移动营业厅登记（手机号，意向）vs 银河设备首次 PB 日志（MAC，行为）</li>
+          <li>数据定位：按口径找表；两套标识需设备绑定验证映射</li>
+          <li>推动共识：用数据证明流程差异非单方错误；统一为「激活设备」</li>
+          <li>落地：合规下不能批量销户，优惠到期逐步处理，对外解释为正常流失</li>
+        </ol>
+        <p class="case-section-title">&gt; 口径对比</p>
+        <table class="framework-table" style="max-width:640px;">
+          <tr><th>来源</th><th>规模</th><th>判定</th><th>标识</th><th>本质</th></tr>
+          <tr><td>移动</td><td>400万</td><td>营业厅登记</td><td>手机号</td><td>意向</td></tr>
+          <tr><td>银河</td><td>180万</td><td>设备首次 PB 日志</td><td>MAC</td><td>行为</td></tr>
+        </table>
+        <p class="case-section-title">&gt; 可量化结果（高亮）</p>
+        <div class="metrics-highlight-panel">
+          <div class="mhp-inner">
+            <h4 class="mhp-title">口径修复 · 用户规模流向</h4>
+            <p class="mhp-subtitle">从旧口径 400万 拆解至有效激活、低质量与其他差异，并还原真实活跃率</p>
+            <div class="mhp-kpi-row">
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">旧口径分母</span>
+                <div class="mhp-kpi-value blue">400<small style="font-size:1rem;font-weight:600">万</small></div>
+                <div class="mhp-kpi-delta">移动营业厅登记</div>
+              </div>
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">新口径分母</span>
+                <div class="mhp-kpi-value green">180<small style="font-size:1rem;font-weight:600">万</small></div>
+                <div class="mhp-kpi-delta">银河激活设备</div>
+              </div>
+              <div class="mhp-kpi highlight">
+                <span class="mhp-kpi-label">真实活跃率</span>
+                <div class="mhp-kpi-value purple">22<small style="font-size:1rem;font-weight:600">%</small></div>
+                <div class="mhp-kpi-delta">较旧口径约10%修复</div>
+              </div>
+            </div>
+            <div class="mhp-chart-wrap">
+              <div id="chart-220w-metrics" class="mhp-chart" role="img" aria-label="用户规模桑基流向图">
+                <div class="mhp-chart-loading" id="chart-220w-loading">图表加载中…</div>
+              </div>
+            </div>
+            <div class="mhp-sankey-legend">
+              <span><i style="background:#1E3A8A"></i>旧口径</span>
+              <span><i style="background:#10B981"></i>有效激活</span>
+              <span><i style="background:#F97316"></i>仅开机一次</span>
+              <span><i style="background:#9CA3AF"></i>其他差异</span>
+              <span><i style="background:#8B5CF6"></i>真实活跃</span>
+            </div>
+            <div class="mhp-notes">
+              <div class="mhp-note-box">
+                <strong>口径定义</strong>
+                旧口径=移动营业厅登记（手机号，意向用户）；新口径=银河设备首次PB日志（MAC，行为激活）。
+              </div>
+              <div class="mhp-note-box">
+                <strong>差异诊断</strong>
+                400万-180万=220万差异中，约120万为「仅开机一次」低质量用户；其余为未激活/未绑定等设备映射差异。
+              </div>
+            </div>
+            <footer class="mhp-footer">
+              <div class="case-tags"><span>#口径定义</span><span>#数据源还原</span><span>#差异诊断</span></div>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 案例2：华为40万 -->
+      <article class="case-block" id="case-huawei40" data-track="ott">
+        <h3>华为40万数据异常 · 链路诊断与校验机制</h3>
+        <p><strong style="color:var(--text)">场景</strong>：监控发现用户规模由约90万骤降至40万，大量用户凌晨被误标销户。</p>
+        <p><strong style="color:var(--text)">定位</strong>：表级排查 → 华为侧数据同步故障，误将部分全量识别为销户（加工层）。</p>
+        <p><strong style="color:var(--text)">推动</strong>：协同修复后，推动每月全量数据校验。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill positive">数据恢复至正常水位</span> · <span class="result-pill positive">流程增加校验，同类问题难再静默发生</span></p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 340 120" width="100%" height="120">
+            <line x1="30" y1="90" x2="310" y2="90" stroke="#374151" />
+            <polyline points="40,30 120,30 160,85 220,85 280,35 300,35" fill="none" stroke="#00D4FF" stroke-width="2" />
+            <line x1="120" y1="30" x2="160" y2="85" stroke="#EF4444" stroke-width="3" stroke-dasharray="4 3" />
+            <text x="125" y="65" fill="#EF4444" font-size="9">骤降</text>
+            <line x1="220" y1="85" x2="280" y2="35" stroke="#10B981" stroke-width="2" />
+            <text x="230" y="55" fill="#10B981" font-size="9">修复</text>
+            <text x="8" y="20" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono">用户规模趋势（示意）</text>
+          </svg>
+          <div class="chart-legend"><span><i class="legend-dot" style="background:#00D4FF"></i>正常段</span><span><i class="legend-dot" style="background:#EF4444"></i>异常段</span><span><i class="legend-dot" style="background:#10B981"></i>恢复</span></div>
+        </div>
+        <div class="case-tags"><span>#数据血缘</span><span>#链路诊断</span><span>#闭环修复</span></div>
+      </article>
+
+      <!-- 案例3：0播放时长 -->
+      <article class="case-block" id="case-zero-play" data-track="ott">
+        <h3>0播放时长 · 双重根因诊断</h3>
+        <p><strong style="color:var(--text)">场景</strong>：后台有用户进入点播产品线但播放时长为 0。需要定位是用户没看，还是数据没上报。</p>
+        <p class="case-section-title">&gt; 思维路径</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0 0 0.5rem;"><strong style="color:var(--text)">步骤1：漏斗拆解</strong><br />开机用户 → 进入 Launcher 界面 → 点击模块 → 跳转对应界面 → 播放 / 未播放</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0 0 0.5rem;"><strong style="color:var(--text)">步骤2：定位根因一（产品逻辑层）</strong><br />Launcher 界面中不同模块行为不同——部分模块进入后自动拉起播放，部分不自动拉起。进入不自动拉起的模块时，用户停留在界面但未触发播放，播放时长为 0。</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0 0 0.75rem;"><strong style="color:var(--text)">步骤3：定位根因二（数据采集层）</strong><br />即使用户触发了播放，若播放后断网或关机，结束日志未上报到后台，播放时长同样会被记为 0。</p>
+        <p class="case-section-title">&gt; 根因总结</p>
+        <ul style="color:var(--muted);font-size:0.88rem;padding-left:1.2rem;margin:0.35rem 0 0.75rem;">
+          <li><strong style="color:var(--text)">根因一</strong>：Launcher 模块的自动拉起机制不一致，属于<strong style="color:var(--text)">产品逻辑</strong>问题</li>
+          <li><strong style="color:var(--text)">根因二</strong>：播放结束日志在异常退出时丢失，属于<strong style="color:var(--text)">埋点采集</strong>问题</li>
+        </ul>
+        <p class="case-section-title">&gt; 影响</p>
+        <p style="color:var(--muted);font-size:0.88rem;">两个根因叠加，使「播放时长为 0」的用户占比偏高，影响活跃指标准确性，也影响后续合作方关于「按有播放用户结算」口径的讨论。</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 300 310" width="100%" height="310" aria-label="纵向漏斗：四层主干至拉起分支与0播放双根因">
+            <text x="110" y="14" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono">纵向漏斗（示意）</text>
+            <!-- 层1 开机用户 -->
+            <polygon points="30,22 270,22 250,48 50,48" fill="#1E3A5F" stroke="#374151" />
+            <text x="150" y="40" fill="#E5E7EB" font-size="10" text-anchor="middle">开机用户</text>
+            <!-- 层2 进入Launcher -->
+            <polygon points="50,54 250,54 235,78 65,78" fill="#1E3A5F" stroke="#374151" />
+            <text x="150" y="71" fill="#E5E7EB" font-size="10" text-anchor="middle">进入 Launcher</text>
+            <!-- 层3 点击模块 -->
+            <polygon points="70,84 230,84 218,108 82,108" fill="#1E3A5F" stroke="#374151" />
+            <text x="150" y="100" fill="#E5E7EB" font-size="10" text-anchor="middle">点击模块</text>
+            <!-- 层4 自动拉起 / 未拉起 -->
+            <polygon points="85,114 145,114 140,138 90,138" fill="#00D4FF" opacity="0.9" />
+            <text x="115" y="131" fill="#0A0E17" font-size="9" text-anchor="middle">自动拉起</text>
+            <polygon points="155,114 215,114 210,138 160,138" fill="#1E3A5F" stroke="#374151" />
+            <text x="185" y="131" fill="#E5E7EB" font-size="9" text-anchor="middle">未拉起</text>
+            <line x1="150" y1="108" x2="115" y2="114" stroke="#6B7280" stroke-width="1" />
+            <line x1="150" y1="108" x2="185" y2="114" stroke="#6B7280" stroke-width="1" />
+            <!-- 层5 有播放 / 0播放 -->
+            <polygon points="90,148 135,148 130,175 95,175" fill="#10B981" />
+            <text x="112" y="166" fill="#0A0E17" font-size="9" text-anchor="middle">有播放</text>
+            <polygon points="165,148 210,148 205,175 170,175" fill="#EF4444" stroke="#FCA5A5" />
+            <text x="187" y="166" fill="#fff" font-size="9" text-anchor="middle">0播放</text>
+            <line x1="115" y1="138" x2="112" y2="148" stroke="#6B7280" /><line x1="185" y1="138" x2="187" y2="148" stroke="#6B7280" />
+            <!-- 0播放 延伸诊断 -->
+            <line x1="187" y1="175" x2="187" y2="188" stroke="#EF4444" stroke-width="1.5" />
+            <line x1="187" y1="188" x2="95" y2="200" stroke="#EF4444" stroke-width="1.2" />
+            <line x1="187" y1="188" x2="255" y2="200" stroke="#EF4444" stroke-width="1.2" />
+            <rect x="8" y="202" width="130" height="36" rx="4" fill="rgba(239,68,68,0.15)" stroke="#EF4444" />
+            <text x="73" y="218" fill="#EF4444" font-size="8" text-anchor="middle">产品逻辑问题</text>
+            <text x="73" y="230" fill="#EF4444" font-size="7" text-anchor="middle">（自动拉起缺失）</text>
+            <rect x="162" y="202" width="130" height="36" rx="4" fill="rgba(239,68,68,0.15)" stroke="#EF4444" />
+            <text x="227" y="218" fill="#EF4444" font-size="8" text-anchor="middle">埋点问题</text>
+            <text x="227" y="230" fill="#EF4444" font-size="7" text-anchor="middle">（结束日志丢失）</text>
+            <text x="150" y="258" fill="#9CA3AF" font-size="8" text-anchor="middle">自上而下逐层收窄；0播放 分支接双根因</text>
+          </svg>
+          <div class="chart-legend"><span><i class="legend-dot" style="background:#10B981"></i>有播放</span><span><i class="legend-dot" style="background:#EF4444"></i>0播放 + 红色诊断</span></div>
+        </div>
+        <div class="case-tags"><span>#漏斗分析</span><span>#产品逻辑诊断</span><span>#埋点诊断</span></div>
+      </article>
+
+      <!-- 案例4：120万低质量 -->
+      <article class="case-block" id="case-120w-low" data-track="ott">
+        <h3>120万低质量激活用户识别</h3>
+        <p>口径统一后，激活约180万中约120万「仅开机一次」，占约三分之二；纳入质量监控，优惠到期营业厅主动销户。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill">180万激活中约120万「仅开机一次」</span></p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 300 100" width="100%" height="100">
+            <rect x="20" y="30" width="240" height="36" fill="#1E3A5F" />
+            <rect x="20" y="30" width="160" height="36" fill="#EF4444" opacity="0.85" />
+            <text x="28" y="52" fill="#fff" font-size="11" font-family="JetBrains Mono">120万 仅开机一次</text>
+            <text x="185" y="52" fill="#00D4FF" font-size="10" font-family="JetBrains Mono">其余激活</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#用户质量分层</span><span>#同期群观察</span></div>
+      </article>
+
+      <!-- 案例5：三方数据打通 -->
+      <article class="case-block" id="case-triple-data" data-track="ott">
+        <h3>三方数据打通 · CRM / 设备库 / APK</h3>
+        <p>新业务线吸收机顶盒教训，推动 CRM、设备库、APK 三方标识统一（手机/SN/MAC）。</p>
+        <p><strong style="color:var(--text)">过程</strong>：历时约 5 个月，在无明确负责人、多方推诿与资源受限的情况下，仍逐项推动各方打通接口链路。</p>
+        <p class="case-section-title">&gt; 三方数据详情</p>
+        <table class="framework-table" style="max-width:720px;font-size:0.82rem;">
+          <thead><tr><th>数据源</th><th>唯一标识</th><th>存储内容</th></tr></thead>
+          <tbody>
+            <tr><td>CRM（移动）</td><td>手机号</td><td>用户信息（开户、套餐、优惠等）</td></tr>
+            <tr><td>设备库（杭研）</td><td>SN码</td><td>设备信息、设备基础软件功能使用情况（闹钟、日历等）</td></tr>
+            <tr><td>APK（银河）</td><td>MAC地址</td><td>用户播放行为、屏幕点击行为</td></tr>
+          </tbody>
+        </table>
+        <p class="case-section-title">&gt; 打通逻辑</p>
+        <ul style="color:var(--muted);font-size:0.88rem;padding-left:1.2rem;margin:0.25rem 0 0.75rem;">
+          <li><strong style="color:var(--text)">CRM ↔ 设备库</strong>：通过手机号与 SN 码的绑定关系关联</li>
+          <li><strong style="color:var(--text)">设备库 ↔ APK</strong>：通过 SN 码与 MAC 地址的设备映射关联</li>
+          <li><strong style="color:var(--text)">最终目标</strong>：一个用户（手机号）→ 一台设备（SN码）→ 所有行为（MAC地址）的全链路打通</li>
+          <li><strong style="color:var(--text)">统一用户标识为 SN 码</strong></li>
+        </ul>
+        <p class="case-section-title">&gt; 数据血缘追溯：统一标识落地过程</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0.35rem 0;"><strong style="color:var(--text)">1. 发现问题：</strong>APK 业务表无 SN 字段 → 追溯采集表（日志表），SN 字段位置存在但数据为空 → 追溯 PB 日志，确认该字段未做埋点。</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0.35rem 0;"><strong style="color:var(--text)">2. 治本方案：</strong>提需求更新 APK 版本 → 新增 SN 码埋点 → 数据自动存入采集表 → 再提需求将 SN 码从采集表写入业务表 → 校验数据准确性。</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0.35rem 0;"><strong style="color:var(--text)">3. 兜底方案：</strong>沉默用户未更新 APK 版本，SN 码仍为空。通过三方映射反向补全——移动提供手机号+SN码、杭研提供 SN 码+MAC、银河提供 MAC+手机号，三表联查能关联的补全、无法关联的标记为未知。</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0.35rem 0;"><strong style="color:var(--text)">4. 方法论沉淀：</strong>后续新业务线可提前确定统一标识、提前检查各表关联字段是否完备，从源头避免此类问题。</p>
+        <p style="color:var(--muted);font-size:0.88rem;margin:0.5rem 0 0.75rem;">这部分是数据血缘能力在数据工程中的完整体现——从应用层异常追溯到采集层根因，推动技术侧修复，并设计兜底方案覆盖无法修复的历史数据。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill positive">自动化关联替代手工对账 · 效率约+90%</span> · 支持设备套现预警</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 380 158" width="100%" height="158" aria-label="三方架构与关联字段">
+            <rect x="12" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
+            <text x="20" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">CRM</text>
+            <text x="20" y="48" fill="#E5E7EB" font-size="8">手机号/用户信息</text>
+            <rect x="136" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
+            <text x="144" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">设备库</text>
+            <text x="144" y="48" fill="#E5E7EB" font-size="8">SN码/设备信息+闹钟日历等</text>
+            <rect x="260" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
+            <text x="268" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">APK</text>
+            <text x="268" y="48" fill="#E5E7EB" font-size="8">MAC地址/播放+点击行为</text>
+            <path d="M120 42 L136 42" stroke="#00D4FF" stroke-width="2" />
+            <text x="118" y="14" fill="#9CA3AF" font-size="7" font-family="JetBrains Mono">手机号↔SN码</text>
+            <path d="M244 42 L260 42" stroke="#00D4FF" stroke-width="2" />
+            <text x="242" y="14" fill="#9CA3AF" font-size="7" font-family="JetBrains Mono">SN码↔MAC地址</text>
+            <path d="M66 66 L190 88 L314 66" stroke="#00D4FF" fill="none" stroke-width="1.2" />
+            <rect x="95" y="100" width="190" height="28" rx="4" fill="#00D4FF" />
+            <text x="190" y="118" fill="#0A0E17" font-size="10" font-family="JetBrains Mono" text-anchor="middle">统一用户标识：SN码</text>
+          </svg>
+          <div class="chart-legend"><span>连线为关联字段</span><span><i class="legend-dot" style="background:#00D4FF"></i>汇聚 SN 主键</span></div>
+        </div>
+        <div class="case-tags"><span>#数据工程</span><span>#跨团队协作</span><span>#项目管理</span></div>
+      </article>
+
+      <!-- 案例6：BI看板 -->
+      <article class="case-block" id="case-bi-dashboard" data-track="ott">
+        <h3>BI看板体系 · Datart + 自助查询</h3>
+        <p>8个核心看板 + 15+ 报表自动化，覆盖用户发展、开机查询、订购、增值、地市等。全国通用 BI 与广东 Datart 双栈并行。陪产假前将客服查询部署至看板，团队免 SQL，休假期间业务未受影响。</p>
+        <div class="placeholder-box"><strong>证据位 · 用户发展看板</strong><br />可用脱敏截图或只读 BI 链接替换；当前以案例文字与口径结论为准。<small>不阻塞阅读：结论已在上文量化给出</small></div>
+        <div class="placeholder-box"><strong>证据位 · 定时任务 / 自动化列表</strong><br />展示报表调度与失败告警机制；可后续补图。<small>能力点：自动化交付与休假不停业务</small></div>
+        <p class="mono-prefix" style="font-size:0.8rem;color:var(--muted)">技术栈：Datart / SQL / ClickHouse</p>
+        <div class="case-tags"><span>#可视化搭建</span><span>#自助取数</span><span>#数据资产沉淀</span></div>
+      </article>
+
+      <!-- 案例7：Python自动化 -->
+      <article class="case-block" id="case-python-auto" data-track="ott">
+        <h3>Python报表自动化</h3>
+        <p>流程：库表连接 → 清洗 → 指标计算 → Excel 导出，全流程脚本化。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill positive">4小时 → 10分钟</span></p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 320 100" width="100%" height="100">
+            <text x="20" y="25" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono">Before / After</text>
+            <rect x="30" y="40" width="100" height="40" rx="4" fill="#1E3A5F" /><text x="42" y="66" fill="#E5E7EB" font-size="10">手工 4h/2人</text>
+            <text x="145" y="68" fill="#00D4FF" font-size="16">→</text>
+            <rect x="180" y="40" width="110" height="40" rx="4" fill="#00D4FF" /><text x="192" y="66" fill="#0A0E17" font-size="10">Python 10min</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#自动化</span><span>#Python</span><span>#效率提升</span></div>
+      </article>
+
+      <!-- 案例8：一键登录 -->
+      <article class="case-block" id="case-oneclick" data-track="ott">
+        <h3>一键登录 · 日活提升200%（含双重漏斗分析）</h3>
+        <p class="case-section-title">&gt; 效果高亮</p>
+        <p><span class="result-pill positive">+200%</span></p>
+        <p class="case-section-title">&gt; 过程</p>
+        <p style="color:var(--muted);font-size:0.88rem;">对比游客与登录用户行为 → 定位登录为活跃瓶颈 → 主动提出「自动拉起+一键登录」方案 → 推动上线 → 持续跟踪验证效果。</p>
+        <p class="case-section-title">&gt; 双重漏斗对比</p>
+        <p style="color:var(--text);font-size:0.9rem;margin:0.5rem 0 0.25rem;"><strong>第一层漏斗</strong>：自动拉起上线前后（APK激活 → 设备开机）</p>
+        <table class="framework-table" style="max-width:520px;font-size:0.85rem;">
+          <thead><tr><th>阶段</th><th>APK激活后设备开机比例</th></tr></thead>
+          <tbody>
+            <tr><td>自动拉起上线前</td><td>约40%</td></tr>
+            <tr><td>自动拉起上线后</td><td>约90%</td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.82rem;margin:0.35rem 0 0.75rem;">说明：上线前大量用户激活了APK但设备未成功开机，自动拉起机制解决了设备从激活到开机的转化瓶颈。</p>
+        <p style="color:var(--text);font-size:0.9rem;margin:0.5rem 0 0.25rem;"><strong>第二层漏斗</strong>：一键登录上线前后（开机 → 手机号登录）</p>
+        <table class="framework-table" style="max-width:520px;font-size:0.85rem;">
+          <thead><tr><th>阶段</th><th>手机号登录 : 游客登录</th></tr></thead>
+          <tbody>
+            <tr><td>一键登录上线前</td><td>约50% : 50%</td></tr>
+            <tr><td>一键登录上线后</td><td>约95% : 5%</td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.82rem;margin:0.35rem 0 0.75rem;">说明：上线前一半用户以游客身份使用，无法做个性化运营和精准触达。上线后95%用户完成手机号登录，用户可识别、可运营。</p>
+        <p class="case-section-title">&gt; 叠加效果</p>
+        <p style="color:var(--muted);font-size:0.88rem;">自动拉起（40%→90%）× 一键登录（50%→95%），日活最终提升200%。</p>
+        <p class="case-section-title">&gt; 结果</p>
+        <p style="color:var(--muted);font-size:0.88rem;">方案固化为新用户激活标准流程。</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 300 248" width="100%" height="248" aria-label="纵向双层漏斗：每层左优化前浅蓝、右优化后亮绿">
+            <line x1="150" y1="28" x2="150" y2="220" stroke="#374151" stroke-dasharray="4 4" />
+            <text x="75" y="14" fill="#7dd3fc" font-size="9" text-anchor="middle" font-family="JetBrains Mono">优化前（浅蓝）</text>
+            <text x="225" y="14" fill="#10B981" font-size="9" text-anchor="middle" font-family="JetBrains Mono">优化后（亮绿）</text>
+            <!-- 第一层漏斗 -->
+            <text x="150" y="30" fill="#E5E7EB" font-size="10" text-anchor="middle">APK激活→设备开机</text>
+            <polygon points="20,38 150,38 150,58 70,58" fill="#38bdf8" fill-opacity="0.55" stroke="#7dd3fc" />
+            <text x="95" y="52" fill="#0A0E17" font-size="9" text-anchor="middle">40%</text>
+            <polygon points="150,34 280,34 280,72 150,72" fill="#10B981" stroke="#34d399" />
+            <text x="215" y="56" fill="#0A0E17" font-size="9" text-anchor="middle">90%</text>
+            <text x="95" y="70" fill="#9CA3AF" font-size="7" text-anchor="middle">优化前 40%</text>
+            <text x="215" y="78" fill="#9CA3AF" font-size="7" text-anchor="middle">优化后 90%</text>
+            <!-- 第二层漏斗 -->
+            <text x="150" y="96" fill="#E5E7EB" font-size="10" text-anchor="middle">开机→手机号登录</text>
+            <rect x="22" y="102" width="52" height="48" fill="#38bdf8" fill-opacity="0.55" stroke="#7dd3fc" />
+            <rect x="76" y="102" width="52" height="48" fill="#1E3A5F" stroke="#4b5563" />
+            <text x="48" y="128" fill="#0A0E17" font-size="8" text-anchor="middle">手机50%</text>
+            <text x="102" y="128" fill="#E5E7EB" font-size="8" text-anchor="middle">游客50%</text>
+            <text x="74" y="162" fill="#9CA3AF" font-size="7" text-anchor="middle">优化前 50%:50%</text>
+            <rect x="152" y="102" width="92" height="62" fill="#10B981" stroke="#34d399" />
+            <rect x="246" y="118" width="28" height="46" fill="#374151" stroke="#6b7280" />
+            <text x="198" y="138" fill="#0A0E17" font-size="8" text-anchor="middle">手机95%</text>
+            <text x="260" y="138" fill="#E5E7EB" font-size="8" text-anchor="middle">游客5%</text>
+            <text x="215" y="174" fill="#9CA3AF" font-size="7" text-anchor="middle">优化后 95%:5%</text>
+            <text x="150" y="200" fill="#00D4FF" font-size="9" text-anchor="middle" font-family="JetBrains Mono">纵向两层 · 左右高度差体现转化提升</text>
+            <text x="150" y="218" fill="#9CA3AF" font-size="8" text-anchor="middle">左半幅浅蓝=优化前 · 右半幅亮绿=优化后</text>
+          </svg>
+          <div class="chart-legend"><span><i class="legend-dot" style="background:#38bdf8"></i>优化前（浅蓝）</span><span><i class="legend-dot" style="background:#10B981"></i>优化后（亮绿）</span></div>
+        </div>
+        <div class="case-tags"><span>#对比分析</span><span>#漏斗分析</span><span>#产品优化</span><span>#策略验证</span></div>
+      </article>
+
+      <!-- 案例9：业务见顶+流失 -->
+      <article class="case-block" id="case-churn-warning" data-track="ott">
+        <h3>业务见顶预警 · 流失预估</h3>
+        <p>特征：优惠剩余天数、是否仅开机一次、沉默月份数。组合特征对流失贡献高；分层预估输出到期用户流失规模，高峰在第13个月。提前约一年预警，团队布局新设备，项目成全国转型标杆。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill positive">提前约12个月预警</span></p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 340 130" width="100%" height="130">
+            <line x1="30" y1="100" x2="310" y2="100" stroke="#374151" />
+            <rect x="200" y="35" width="24" height="65" fill="#EF4444" /><text x="188" y="120" fill="#9CA3AF" font-size="8">第13月</text>
+            <text x="175" y="28" fill="#EF4444" font-size="9" font-family="JetBrains Mono">流失高峰</text>
+            <rect x="50" y="75" width="16" height="25" fill="#1E3A5F" /><rect x="75" y="70" width="16" height="30" fill="#1E3A5F" />
+            <rect x="100" y="65" width="16" height="35" fill="#1E3A5F" /><rect x="125" y="60" width="16" height="40" fill="#1E3A5F" />
+            <text x="20" y="20" fill="#9CA3AF" font-size="9">流失率按月（示意柱）</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#同期群分析</span><span>#流失预估</span><span>#业务预警</span></div>
+      </article>
+
+      <!-- 案例10：0播放收入 -->
+      <article class="case-block" id="case-zero-revenue" data-track="ott">
+        <h3>0播放时长 · 收入口径影响评估</h3>
+        <p>梳理一年数据，对比开机 / 进入点播 / 有播放时长三口径；有播放用户约为开机用户一半；测算新口径下全年收入将大幅下滑。负责人综合评估后维持原结算口径，避免收入损失。</p>
+        <p class="case-section-title">&gt; 可量化结果</p>
+        <p><span class="result-pill positive">维持原结算口径 · 避免收入损失</span></p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 300 110" width="100%" height="110">
+            <line x1="30" y1="90" x2="270" y2="90" stroke="#374151" />
+            <rect x="40" y="35" width="50" height="55" fill="#1E3A5F" /><text x="45" y="105" fill="#9CA3AF" font-size="8">开机口径</text>
+            <rect x="120" y="50" width="50" height="40" fill="#00D4FF" /><text x="118" y="105" fill="#9CA3AF" font-size="8">进入点播</text>
+            <rect x="200" y="65" width="50" height="25" fill="#EF4444" /><text x="195" y="105" fill="#9CA3AF" font-size="8">有播放</text>
+            <text x="20" y="20" fill="#9CA3AF" font-size="9">预估收入差异（示意）</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#商业分析</span><span>#口径测算</span><span>#收入影响</span></div>
+      </article>
+
+      <!-- 案例11：兴趣标签 -->
+      <article class="case-block" id="case-preference-tags" data-track="ott">
+        <h3>用户兴趣标签体系（行为占比）</h3>
+        <p>无画像系统前提下，用播放次数占比与播放时长占比双维度判定偏好；输出带标签 MAC 列表给运营，精选屏从千人一面到千人千面的冷启动方案。</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 340 110" width="100%" height="110">
+            <rect x="20" y="40" width="50" height="36" rx="4" fill="#1E3A5F" /><text x="28" y="62" fill="#E5E7EB" font-size="10">用户</text>
+            <text x="78" y="62" fill="#00D4FF">→</text>
+            <rect x="95" y="40" width="70" height="36" rx="4" fill="#00D4FF" /><text x="100" y="62" fill="#0A0E17" font-size="10">行为分析</text>
+            <text x="175" y="62" fill="#00D4FF">→</text>
+            <rect x="190" y="35" width="40" height="22" fill="#10B981" /><rect x="235" y="35" width="40" height="22" fill="#10B981" /><rect x="280" y="35" width="40" height="22" fill="#10B981" />
+            <text x="188" y="85" fill="#9CA3AF" font-size="8">电影/电视剧/综艺偏好</text>
+            <text x="188" y="98" fill="#9CA3AF" font-size="8">差异化精选屏策略</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#用户画像</span><span>#行为占比分析</span><span>#推荐冷启动</span></div>
+      </article>
+
+      <!-- 案例12：全生命周期 -->
+      <article class="case-block" id="case-lifecycle-rf" data-track="ott">
+        <h3>用户全生命周期分析框架</h3>
+        <p>开户→激活→活跃（R×F 四象限）→沉默→离网。四象限：高价值（R近F高）、休眠老用户（R远F高）、新用户/低活跃（R近F低）、流失（R远F低）。特殊：仅开机一次、深度沉默（≥3月）。覆盖开户质量、活跃分层、沉默诊断、离网预警、唤醒效果跟踪。</p>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 380 100" width="100%" height="100">
+            <text x="10" y="20" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono">全链路（示意）</text>
+            <rect x="10" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="22" y="52" fill="#E5E7EB" font-size="9">开户</text>
+            <text x="72" y="50" fill="#00D4FF">→</text>
+            <rect x="85" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="97" y="52" fill="#E5E7EB" font-size="9">激活</text>
+            <text x="147" y="50" fill="#00D4FF">→</text>
+            <rect x="160" y="35" width="58" height="26" rx="3" fill="#00D4FF" /><text x="172" y="52" fill="#0A0E17" font-size="9">活跃</text>
+            <text x="222" y="50" fill="#00D4FF">→</text>
+            <rect x="235" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="247" y="52" fill="#E5E7EB" font-size="9">沉默</text>
+            <text x="297" y="50" fill="#00D4FF">→</text>
+            <rect x="310" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="322" y="52" fill="#E5E7EB" font-size="9">离网</text>
+          </svg>
+          <svg viewBox="0 0 200 120" width="200" height="120" style="margin-top:0.5rem;">
+            <line x1="100" y1="10" x2="100" y2="110" stroke="#374151" /><line x1="10" y1="60" x2="190" y2="60" stroke="#374151" />
+            <text x="120" y="25" fill="#10B981" font-size="8">高价值</text>
+            <text x="25" y="25" fill="#9CA3AF" font-size="8">休眠老用户</text>
+            <text x="120" y="100" fill="#9CA3AF" font-size="8">新/低活跃</text>
+            <text x="25" y="100" fill="#EF4444" font-size="8">流失</text>
+            <text x="55" y="58" fill="#00D4FF" font-size="8" font-family="JetBrains Mono">R×F</text>
+          </svg>
+        </div>
+        <div class="case-tags"><span>#用户生命周期</span><span>#分层分析</span><span>#漏斗分析</span></div>
+      </article>
+
+      <!-- 案例13：爱立信 tracking -->
+      <article class="case-block" id="case-ericsson-tracking" data-track="ericsson">
+        <h3>告警生命周期管理系统（issue-record-tracking）</h3>
+        <p>原始告警无法回答「是否已解决」。在原始表之上建跟踪表；唯一键：省市名+网元类型+网元名称+告警名称+告警描述关键词（正则）。每日增量比对：持续 / 新增 / 待观察 / 已解决。</p>
+        <p style="color:var(--muted);font-size:0.88rem;">与 OTT 用户状态对应：新增→首次激活；持续→持续活跃；待观察→沉默；已解决→流失/销户。</p>
+        <p class="case-section-title">&gt; 可量化结果（高亮）</p>
+        <div class="metrics-highlight-panel">
+          <div class="mhp-inner">
+            <h4 class="mhp-title">告警生命周期 · 闭环管理体系</h4>
+            <p class="mhp-subtitle">从「只记录发生」升级到「全生命周期跟踪」，建立完整的状态机与自动化比对机制</p>
+            <div class="mhp-kpi-row">
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">状态分类</span>
+                <div class="mhp-kpi-value blue">4<small style="font-size:1rem;font-weight:600;">种</small></div>
+                <div class="mhp-kpi-delta">新增/持续/待观察/已解决</div>
+              </div>
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">唯一键维度</span>
+                <div class="mhp-kpi-value green">5<small style="font-size:1rem;font-weight:600;">维</small></div>
+                <div class="mhp-kpi-delta">省市/类型/网元/告警/关键词</div>
+              </div>
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">每日自动比对</span>
+                <div class="mhp-kpi-value purple">100<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-delta">增量比对全自动化</div>
+              </div>
+              <div class="mhp-kpi highlight">
+                <span class="mhp-kpi-label">管理升级</span>
+                <div class="mhp-kpi-value" style="color:#F59E0B;">闭环</div>
+                <div class="mhp-kpi-delta">从记录→管理完整生命周期</div>
+              </div>
+            </div>
+            <div class="mhp-chart-wrap" style="margin-top:1rem;">
+              <svg viewBox="0 0 500 120" width="100%" height="120" style="display:block;">
+                <defs>
+                  <marker id="arrow-tracking" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#00D4FF" />
+                  </marker>
+                  <linearGradient id="grad-new" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:0.9" />
+                  </linearGradient>
+                  <linearGradient id="grad-continue" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:0.9" />
+                    <stop offset="100%" style="stop-color:#0284C7;stop-opacity:1" />
+                  </linearGradient>
+                  <linearGradient id="grad-watch" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#D97706;stop-opacity:0.9" />
+                  </linearGradient>
+                  <linearGradient id="grad-done" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.9" />
+                    <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                  </linearGradient>
+                </defs>
+                <rect x="20" y="30" width="90" height="60" rx="12" fill="url(#grad-new)" />
+                <text x="65" y="58" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">新增</text>
+                <text x="65" y="76" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">首次出现</text>
+                
+                <line x1="110" y1="60" x2="145" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
+                
+                <rect x="145" y="30" width="90" height="60" rx="12" fill="url(#grad-continue)" />
+                <text x="190" y="58" text-anchor="middle" fill="#0A0E17" font-size="14" font-weight="700">持续</text>
+                <text x="190" y="76" text-anchor="middle" fill="rgba(10,14,23,0.6)" font-size="10">连续存在</text>
+                
+                <line x1="235" y1="60" x2="270" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
+                
+                <rect x="270" y="30" width="90" height="60" rx="12" fill="url(#grad-watch)" />
+                <text x="315" y="58" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">待观察</text>
+                <text x="315" y="76" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">间歇出现</text>
+                
+                <line x1="360" y1="60" x2="395" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
+                
+                <rect x="395" y="30" width="90" height="60" rx="12" fill="url(#grad-done)" />
+                <text x="440" y="58" text-anchor="middle" fill="#0A0E17" font-size="14" font-weight="700">已解决</text>
+                <text x="440" y="76" text-anchor="middle" fill="rgba(10,14,23,0.6)" font-size="10">连续消失</text>
+              </svg>
+            </div>
+            <div class="mhp-notes" style="margin-top:1rem;">
+              <div class="mhp-note-box">
+                <strong>📊 数据模型设计</strong>
+                唯一键：省市名 + 网元类型 + 网元名称 + 告警名称 + 告警描述关键词（正则匹配），确保同一告警被正确跟踪
+              </div>
+              <div class="mhp-note-box">
+                <strong>🔄 每日增量比对</strong>
+                自动比对昨日与今日告警状态，自动更新状态标签，无需人工干预
+              </div>
+            </div>
+            <div class="mhp-footer">
+              <div class="case-tags"><span>#数据模型设计</span><span>#状态机</span><span>#生命周期管理</span><span>#闭环跟踪</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 案例14：爱立信自动化 -->
+      <article class="case-block" id="case-ericsson-automation" data-track="ericsson">
+        <h3>设备异常检测与报表自动化</h3>
+        <p>PST Tool：TXT 日志 → 关键词/正则 → 异常判断 → 入库。Psweb：高中低告警处理与日月周统计。</p>
+        <p class="case-section-title">&gt; 可量化结果（高亮）</p>
+        <div class="metrics-highlight-panel">
+          <div class="mhp-inner">
+            <h4 class="mhp-title">效率提升 · 全流程自动化</h4>
+            <p class="mhp-subtitle">从人工日志分析到自动化检测报表，效率数量级提升</p>
+            <div class="mhp-kpi-row">
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">报表生成</span>
+                <div class="mhp-kpi-value green">~95<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-delta">3–4h → 10–15min</div>
+              </div>
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">SQL查询</span>
+                <div class="mhp-kpi-value blue">75<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-delta">月度告警 1h → 15min</div>
+              </div>
+              <div class="mhp-kpi">
+                <span class="mhp-kpi-label">告警分级</span>
+                <div class="mhp-kpi-value purple">3<small style="font-size:1rem;font-weight:600;">级</small></div>
+                <div class="mhp-kpi-delta">高/中/低自动分类</div>
+              </div>
+              <div class="mhp-kpi highlight">
+                <span class="mhp-kpi-label">自动化程度</span>
+                <div class="mhp-kpi-value" style="color:#F59E0B;">全流程</div>
+                <div class="mhp-kpi-delta">日志→检测→报表→推送</div>
+              </div>
+            </div>
+            <div class="mhp-chart-wrap" style="margin-top:1rem;">
+              <svg viewBox="0 0 500 140" width="100%" height="140" style="display:block;">
+                <defs>
+                  <linearGradient id="grad-before" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#EF4444;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#B91C1C;stop-opacity:0.9" />
+                  </linearGradient>
+                  <linearGradient id="grad-after" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.9" />
+                    <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                  </linearGradient>
+                </defs>
+                <text x="20" y="30" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">报表生成</text>
+                <rect x="100" y="18" width="200" height="24" rx="6" fill="url(#grad-before)" />
+                <text x="310" y="35" fill="#EF4444" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">3–4 小时</text>
+                
+                <rect x="100" y="18" width="20" height="24" rx="6" fill="url(#grad-after)" />
+                <text x="130" y="35" fill="#10B981" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">10–15 分钟</text>
+                
+                <text x="20" y="75" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">SQL查询</text>
+                <rect x="100" y="63" width="150" height="24" rx="6" fill="url(#grad-before)" />
+                <text x="260" y="80" fill="#EF4444" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">约 1 小时</text>
+                
+                <rect x="100" y="63" width="37" height="24" rx="6" fill="url(#grad-after)" />
+                <text x="145" y="80" fill="#10B981" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">15 分钟</text>
+                
+                <text x="20" y="120" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">工作流</text>
+                <g transform="translate(100, 108)">
+                  <rect x="0" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
+                  <text x="35" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">TXT日志</text>
+                  
+                  <path d="M75 12 L88 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
+                  
+                  <rect x="92" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
+                  <text x="127" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">正则检测</text>
+                  
+                  <path d="M167 12 L180 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
+                  
+                  <rect x="184" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
+                  <text x="219" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">自动入库</text>
+                  
+                  <path d="M259 12 L272 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
+                  
+                  <rect x="276" y="0" width="70" height="24" rx="6" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
+                  <text x="311" y="16" text-anchor="middle" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace">报表推送</text>
+                </g>
+                <defs>
+                  <marker id="arrow-auto" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 Z" fill="#00D4FF" />
+                  </marker>
+                </defs>
+              </svg>
+            </div>
+            <div class="mhp-notes" style="margin-top:1rem;">
+              <div class="mhp-note-box">
+                <strong>🛠️ PST Tool</strong>
+                TXT 日志 → 关键词/正则匹配 → 异常判断 → 自动入库，支持多种日志格式解析
+              </div>
+              <div class="mhp-note-box">
+                <strong>📊 Psweb 系统</strong>
+                高中低告警分级处理，支持日/月/周多维度统计报表，自动推送运维团队
+              </div>
+            </div>
+            <div class="mhp-footer">
+              <div class="case-tags"><span>#自动化</span><span>#异常检测</span><span>#报表自动化</span><span>#正则匹配</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+  /* ========== 双轨逻辑链配置 ========== */
+  const LOGIC_CHAINS = {
+    ott: [
+      { title: "入职·发现混乱", sub: "连「有多少用户」都说不清", caseId: "case-220w" },
+      { title: "深入·诊断质量", sub: "激活了 ≠ 真用了", caseId: "case-zero-play" },
+      { title: "建体系·预防重演", sub: "不让新业务线再踩坑", caseId: "case-triple-data" },
+      { title: "驱动·影响决策", sub: "从「被动取数」到「主动推动」", caseId: "case-oneclick" }
+    ],
+    ericsson: [
+      { title: "入职·发现混乱", sub: "原始告警无法直接回答「是否已解决」", caseId: "case-ericsson-tracking" },
+      { title: "深入·诊断质量", sub: "日志切割、正则与异常判断链条是否可靠", caseId: "case-ericsson-automation" },
+      { title: "建体系·预防重演", sub: "跟踪表 + 状态机，防止问题反复无人管", caseId: "case-ericsson-tracking" },
+      { title: "驱动·影响决策", sub: "报表与筛查效率数量级提升，支撑日常决策", caseId: "case-ericsson-automation" }
+    ]
+  };
+
+  /* ========== 核心成果数据 ========== */
+  const KEY_RESULTS = {
+    ott: [
+      { num: "220万", label: "识别虚假用户", sub: "口径对齐还原真实活跃率" },
+      { num: "+200%", label: "日活提升", sub: "一键登录项目推动增长" },
+      { num: "8个", label: "BI看板体系", sub: "Datart + 自助查询覆盖全业务" },
+      { num: "3方", label: "数据打通", sub: "CRM / 设备库 / APK 统一标识" }
+    ],
+    ericsson: [
+      { num: "8步", label: "自动化闭环", sub: "脚本→日志→报表→邮件→修复→复查" },
+      { num: "6类", label: "告警检测指标", sub: "产生/关闭/持续/重复/分布/排行" },
+      { num: "5项", label: "运维效率指标", sub: "成功率/覆盖率/耗时/自动关闭率" },
+      { num: "0", label: "人工介入", sub: "常规告警全自动化处理" }
+    ]
+  };
+
+  /* ========== 成长阶段数据 ========== */
+  const GROWTH_STAGES = {
+    ott: [
+      { period: "第1年", title: "诊断期", desc: "发现数据质量问题，推动口径统一" },
+      { period: "第2年", title: "建设期", desc: "搭建BI体系，打通三方数据" },
+      { period: "第3年", title: "驱动期", desc: "主动推动业务增长，影响产品决策" }
+    ],
+    ericsson: [
+      { period: "第1-2年", title: "执行层", desc: "脚本开发，告警检测与基础报表" },
+      { period: "第3-4年", title: "体系层", desc: "自动化闭环，流程标准化建设" },
+      { period: "第5年", title: "优化层", desc: "效率持续提升，预防机制完善" }
+    ]
+  };
+
+  /* ========== 标签列表与映射（多选检索） ========== */
+  /* ========== 标签分类与列表 ========== */
+  const TAG_CATEGORIES = [
+    {
+      name: "核心能力",
+      class: "core",
+      tags: ["数据质量治理", "根因诊断", "数据基建", "商业分析", "业务预警", "风险预判"]
+    },
+    {
+      name: "分析方法",
+      class: "",
+      tags: ["归因分析", "用户分层", "用户生命周期", "用户质量分析", "埋点诊断", "AB测试思维", "口径统一"]
+    },
+    {
+      name: "技术工具",
+      class: "",
+      tags: ["SQL", "Python", "BI看板", "可视化搭建", "报表自动化"]
+    },
+    {
+      name: "差异化优势",
+      class: "differentiator",
+      tags: ["AI辅助分析", "跨团队协作", "项目管理", "行业迁移"]
+    }
+  ];
+
+  const TAG_LIST = TAG_CATEGORIES.flatMap(c => c.tags);
+
+  const TAG_TO_CASES = {
+    "数据质量治理": ["case-220w", "case-huawei40", "case-zero-play"],
+    "口径统一": ["case-220w", "case-zero-revenue"],
+    "根因诊断": ["case-huawei40", "case-zero-play"],
+    "用户质量分析": ["case-120w-low", "case-lifecycle-rf"],
+    "用户分层": ["case-120w-low", "case-lifecycle-rf", "case-preference-tags"],
+    "用户生命周期": ["case-lifecycle-rf", "case-ericsson-tracking"],
+    "归因分析": ["case-zero-play", "case-zero-revenue", "case-preference-tags"],
+    "埋点诊断": ["case-zero-play"],
+    "AB测试思维": ["case-preference-tags"],
+    "业务预警": ["case-churn-warning", "case-lifecycle-rf"],
+    "风险预判": ["case-churn-warning", "case-zero-revenue", "case-zero-play"],
+    "商业分析": ["case-zero-revenue", "case-220w"],
+    "BI看板": ["case-bi-dashboard", "case-python-auto"],
+    "可视化搭建": ["case-bi-dashboard"],
+    "数据基建": ["case-triple-data", "case-python-auto", "case-ericsson-tracking"],
+    "SQL": ["case-bi-dashboard"],
+    "Python": ["case-python-auto"],
+    "报表自动化": ["case-python-auto", "case-ericsson-automation"],
+    "跨团队协作": ["case-triple-data"],
+    "项目管理": ["case-triple-data"],
+    "行业迁移": ["case-lifecycle-rf", "case-ericsson-tracking", "case-ericsson-automation"],
+    "AI辅助分析": ["case-bi-dashboard", "case-preference-tags"]
+  };
+
+  /* 案例摘要（标签结果卡片） */
+  const CASE_SUMMARIES = {
+    "case-220w": { title: "220万虚假用户", line: "口径对齐：移动登记 vs 银河激活设备。", hl: "活跃率 ~10% → ~22%" },
+    "case-huawei40": { title: "华为40万异常", line: "同步故障导致误标销户，加工层定位。", hl: "恢复 + 月度校验" },
+    "case-zero-play": { title: "0播放时长双重根因", line: "Launcher 自动拉起不一致 + 异常退出埋点丢失。", hl: "产品+埋点双根因" },
+    "case-120w-low": { title: "120万低质量激活", line: "仅开机一次用户识别与处置。", hl: "180万中约120万" },
+    "case-triple-data": { title: "三方数据打通", line: "手机号↔SN↔MAC 全链路关联。", hl: "效率约 +90%" },
+    "case-bi-dashboard": { title: "BI看板体系", line: "8看板 +15 自动化 + 自助客服查询。", hl: "Datart + ClickHouse" },
+    "case-python-auto": { title: "Python报表自动化", line: "全流程脚本化导出。", hl: "4h → 10min" },
+    "case-oneclick": { title: "一键登录+自动拉起", line: "双漏斗：开机转化与登录转化叠加。", hl: "日活 +200%" },
+    "case-churn-warning": { title: "业务见顶与流失预估", line: "三类特征分层，第13月高峰。", hl: "提前约12个月" },
+    "case-zero-revenue": { title: "0播放收入影响", line: "三口径测算，维持结算口径。", hl: "避免收入损失" },
+    "case-preference-tags": { title: "兴趣标签体系", line: "行为占比冷启动分群。", hl: "千人千面初步" },
+    "case-lifecycle-rf": { title: "全生命周期框架", line: "开户到离网 + R×F 四象限。", hl: "全链路" },
+    "case-ericsson-tracking": { title: "告警跟踪表", line: "5字段键 + 四状态机。", hl: "闭环管理" },
+    "case-ericsson-automation": { title: "异常检测与报表", line: "PST + Psweb 工具链。", hl: "3–4h → 10–15min" }
+  };
+
+  let currentTrack = "ott";
+  const selectedTags = new Set();
+
+  function renderLogicChain() {
+    const wrap = document.getElementById("logic-chain-inner");
+    const nodes = LOGIC_CHAINS[currentTrack];
+    wrap.innerHTML = "";
+    nodes.forEach((n, i) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "card logic-node";
+      card.dataset.caseId = n.caseId;
+      card.innerHTML = "<h4>" + n.title + "</h4><p>" + n.sub + "</p>";
+      card.addEventListener("click", () => showCase(n.caseId));
+      wrap.appendChild(card);
+      if (i < nodes.length - 1) {
+        const ar = document.createElement("div");
+        ar.className = "logic-arrow";
+        ar.textContent = "→";
+        ar.setAttribute("aria-hidden", "true");
+        wrap.appendChild(ar);
+      }
+    });
+  }
+
+  function renderKeyResults() {
+    const grid = document.getElementById("stats-grid");
+    const results = KEY_RESULTS[currentTrack];
+    grid.innerHTML = results.map(r => `
+      <div class="stat-card">
+        <div class="stat-num">${r.num}</div>
+        <div class="stat-label">${r.label}</div>
+        <div class="stat-sub">${r.sub}</div>
+      </div>
+    `).join("");
+
+    // 切换轨道时也触发数字动画
+    if (window.requestAnimationFrame) {
+      setTimeout(() => animateNumbers(grid), 100);
+    }
+  }
+
+  function renderGrowthTimeline() {
+    const wrap = document.getElementById("growth-timeline");
+    const stages = GROWTH_STAGES[currentTrack];
+    wrap.innerHTML = stages.map(s => `
+      <div class="growth-stage">
+        <div class="stage-period">${s.period}</div>
+        <div class="stage-title">${s.title}</div>
+        <div class="stage-desc">${s.desc}</div>
+      </div>
+    `).join("");
+  }
+
+  function setTrack(track) {
+    currentTrack = track;
+    document.body.classList.toggle("track-ott", track === "ott");
+    document.body.classList.toggle("track-ericsson", track === "ericsson");
+    document.getElementById("track-ott").classList.toggle("active-track", track === "ott");
+    document.getElementById("track-ericsson").classList.toggle("active-track", track === "ericsson");
+    document.querySelectorAll(".case-block.visible").forEach((el) => {
+      el.classList.remove("visible");
+      el.style.display = "none";
+    });
+    renderLogicChain();
+    renderKeyResults();
+    renderGrowthTimeline();
+    refreshTagResults();
+  }
+
+  function showCase(caseId) {
+    document.querySelectorAll(".case-block").forEach((el) => {
+      el.classList.remove("visible");
+      el.style.display = "none";
+    });
+    const el = document.getElementById(caseId);
+    if (!el) return;
+    const t = el.getAttribute("data-track");
+    if (t && t !== currentTrack) {
+      setTrack(t);
+    }
+    el.style.display = "block";
+    el.classList.add("visible");
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function refreshTagResults() {
+    const box = document.getElementById("tag-results");
+    if (selectedTags.size === 0) {
+      box.innerHTML = "<p style=\"color:var(--muted);font-size:0.85rem;\">请选择上方标签（可多选）。</p>";
+      return;
+    }
+    const ids = new Set();
+    selectedTags.forEach((tag) => {
+      (TAG_TO_CASES[tag] || []).forEach((id) => ids.add(id));
+    });
+    const frag = document.createDocumentFragment();
+    ids.forEach((id) => {
+      const info = CASE_SUMMARIES[id];
+      if (!info) return;
+      const article = document.getElementById(id);
+      if (article && article.getAttribute("data-track") !== currentTrack) return;
+      const div = document.createElement("div");
+      div.className = "tag-result-card";
+      div.innerHTML =
+        "<h4>" + info.title + "</h4>" +
+        "<p style=\"color:var(--muted);font-size:0.88rem;margin:0;\">" + info.line + "</p>" +
+        "<div class=\"hl\">" + info.hl + "</div>" +
+        "<button type=\"button\" class=\"btn-expand-case\" data-case=\"" + id + "\">展开深度复盘</button>";
+      frag.appendChild(div);
+    });
+    box.innerHTML = "";
+    box.appendChild(frag);
+    if (box.children.length === 0) {
+      box.innerHTML = "<p style=\"color:var(--muted);font-size:0.85rem;\">当前职业轨道下暂无匹配案例，可切换到另一轨道或更换标签。</p>";
+    }
+    box.querySelectorAll(".btn-expand-case").forEach((btn) => {
+      btn.addEventListener("click", () => showCase(btn.getAttribute("data-case")));
+    });
+  }
+
+  function initTags() {
+    const container = document.getElementById("tag-categories");
+    TAG_CATEGORIES.forEach((cat) => {
+      const catDiv = document.createElement("div");
+      catDiv.className = "tag-category";
+      
+      const title = document.createElement("div");
+      title.className = "tag-category-title";
+      title.textContent = cat.name;
+      catDiv.appendChild(title);
+      
+      const cloud = document.createElement("div");
+      cloud.className = "tag-cloud";
+      
+      cat.tags.forEach((tag) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tag-btn" + (cat.class ? " " + cat.class : "");
+        b.textContent = "#" + tag;
+        b.dataset.tag = tag;
+        b.addEventListener("click", () => {
+          if (selectedTags.has(tag)) selectedTags.delete(tag);
+          else selectedTags.add(tag);
+          b.classList.toggle("selected", selectedTags.has(tag));
+          refreshTagResults();
+        });
+        cloud.appendChild(b);
+      });
+      
+      catDiv.appendChild(cloud);
+      container.appendChild(catDiv);
+    });
+    refreshTagResults();
+  }
+
+  /* ========== 导航：滚动后出现 + 背景加深 + IntersectionObserver 高亮 ========== */
+  const siteNav = document.getElementById("site-nav");
+  const hero = document.getElementById("hero");
+
+  function onScrollNav() {
+    const past = window.scrollY > hero.offsetHeight - 40;
+    siteNav.classList.toggle("visible", past);
+    siteNav.classList.toggle("scrolled-deep", window.scrollY > hero.offsetHeight + 200);
+
+    // 更新滚动进度条
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.getElementById("scroll-progress").style.width = progress + "%";
+
+    // 回到顶部按钮显示/隐藏
+    const backToTop = document.getElementById("back-to-top");
+    if (scrollTop > 500) {
+      backToTop.classList.add("visible");
+    } else {
+      backToTop.classList.remove("visible");
+    }
+  }
+
+  // 回到顶部按钮点击事件
+  document.getElementById("back-to-top").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  window.addEventListener("scroll", onScrollNav, { passive: true });
+  onScrollNav();
+
+  document.querySelectorAll('#site-nav a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href").slice(1);
+      const target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+
+  const sectionIds = ["logic-chain", "methodology", "ai-empower", "framework", "skills"];
+  const navLinks = document.querySelectorAll("#site-nav a[data-section]");
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        let navKey = en.target.id;
+        if (navKey === "framework") navKey = "methodology";
+        navLinks.forEach((l) => {
+          l.classList.toggle("nav-active", l.getAttribute("data-section") === navKey);
+        });
+      });
+    },
+    { rootMargin: "-42% 0px -42% 0px", threshold: 0 }
+  );
+  sectionIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+
+  document.getElementById("hero-scroll-btn").addEventListener("click", () => {
+    document.getElementById("logic-chain").scrollIntoView({ behavior: "smooth" });
+  });
+
+  document.getElementById("track-ott").addEventListener("click", () => setTrack("ott"));
+  document.getElementById("track-ericsson").addEventListener("click", () => setTrack("ericsson"));
+
+  renderLogicChain();
+  renderKeyResults();
+  renderGrowthTimeline();
+  initTags();
+
+  /* ========== 滚动入场动画 ========== */
+  function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          if (entry.target.classList.contains("stats-grid")) {
+            animateNumbers(entry.target);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+    document.querySelectorAll(".section-head, .card, .stat-card, .growth-stage, .pain-card, .tag-category, .method-card").forEach((el, i) => {
+      el.classList.add("animate-on-scroll");
+      el.style.transitionDelay = (i % 5) * 0.08 + "s";
+      observer.observe(el);
+    });
+
+    document.querySelectorAll(".stats-grid, .ai-grid, .switch-grid, .hero-pain-points").forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  /* ========== 数字滚动动画 ========== */
+  function animateNumbers(container) {
+    const numElements = container.querySelectorAll(".stat-num");
+    numElements.forEach((el) => {
+      const text = el.textContent.trim();
+      const numMatch = text.match(/[\d.]+/);
+      if (!numMatch) return;
+
+      const targetNum = parseFloat(numMatch[0]);
+      const prefix = text.substring(0, text.indexOf(numMatch[0]));
+      const suffix = text.substring(text.indexOf(numMatch[0]) + numMatch[0].length);
+      const isDecimal = numMatch[0].includes(".");
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const currentNum = targetNum * easeProgress;
+
+        let displayNum;
+        if (isDecimal) {
+          displayNum = currentNum.toFixed(1);
+        } else if (targetNum >= 10000) {
+          displayNum = Math.floor(currentNum).toLocaleString();
+        } else if (targetNum >= 100) {
+          displayNum = Math.floor(currentNum);
+        } else {
+          displayNum = Math.round(currentNum * 10) / 10;
+          if (Number.isInteger(displayNum)) displayNum = Math.floor(displayNum);
+        }
+
+        el.textContent = prefix + displayNum + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = text;
+        }
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  /* ========== 卡片悬浮微交互 ========== */
+  function initCardHoverEffects() {
+    document.querySelectorAll(".card, .stat-card, .pain-card, .method-card").forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / centerY * -3;
+        const rotateY = (x - centerX) / centerX * 3;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+    });
+  }
+
+  /* ========== 案例导航 ========== */
+  function initCaseNav() {
+    document.querySelectorAll(".case-nav-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const caseId = btn.getAttribute("data-case");
+        showCase(caseId);
+        
+        // 更新导航按钮active状态
+        document.querySelectorAll(".case-nav-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+  }
+
+  initCaseNav();
+
+  /* ========== 主题切换 ========== */
+  function initThemeToggle() {
+    const toggleBtn = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const savedTheme = localStorage.getItem("portfolio-theme");
+
+    function applyTheme(theme) {
+      if (theme === "light") {
+        document.body.classList.add("light-theme");
+        themeIcon.textContent = "🌙";
+      } else {
+        document.body.classList.remove("light-theme");
+        themeIcon.textContent = "☀️";
+      }
+    }
+
+    // 初始化主题
+    if (savedTheme === "light") {
+      applyTheme("light");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.contains("light-theme");
+      const newTheme = isLight ? "dark" : "light";
+      applyTheme(newTheme);
+      localStorage.setItem("portfolio-theme", newTheme);
+    });
+  }
+
+  initThemeToggle();
+
+  if (window.requestAnimationFrame) {
+    initScrollAnimations();
+    initCardHoverEffects();
+  }
+
+  /* ========== 220万案例 · ECharts 桑基图 ========== */
+  let chart220wInstance = null;
+  let chart220wResizeBound = false;
+
+  function isCase220wVisible() {
+    const block = document.getElementById("case-220w");
+    if (!block) return false;
+    return block.classList.contains("visible") && block.style.display !== "none";
+  }
+
+  let echartsLoadPromise = null;
+
+  function loadEchartsScript() {
+    if (typeof echarts !== "undefined") return Promise.resolve();
+    if (echartsLoadPromise) return echartsLoadPromise;
+    echartsLoadPromise = new Promise(function (resolve, reject) {
+      const urls = [
+        "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
+        "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+      ];
+      let i = 0;
+      function tryNext() {
+        if (typeof echarts !== "undefined") { resolve(); return; }
+        if (i >= urls.length) {
+          reject(new Error("echarts load failed"));
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = urls[i++];
+        s.async = true;
+        s.onload = function () { resolve(); };
+        s.onerror = tryNext;
+        document.head.appendChild(s);
+      }
+      tryNext();
+    });
+    return echartsLoadPromise;
+  }
+
+  function getChart220wOption() {
+    const chartFont = '"PingFang SC", "Inter", system-ui, sans-serif';
+    const N = {
+      src: "旧口径 400万",
+      act: "有效激活设备 180万",
+      low: "仅开机一次 120万",
+      other: "其他差异 100万",
+      end: "真实活跃用户 22%"
+    };
+    return {
+      backgroundColor: "transparent",
+      textStyle: { fontFamily: chartFont },
+      tooltip: {
+        trigger: "item",
+        backgroundColor: "rgba(15, 23, 42, 0.95)",
+        borderColor: "rgba(255, 255, 255, 0.12)",
+        borderWidth: 1,
+        textStyle: { color: "#E5E7EB", fontSize: 12, fontFamily: chartFont },
+        formatter: function (p) {
+          if (p.dataType === "edge") {
+            return p.data.source + " → " + p.data.target + "<br/><b>" + p.data.value + " 万</b>";
+          }
+          return p.name.replace(/ /g, "<br/>");
+        }
+      },
+      series: [{
+        type: "sankey",
+        left: "4%",
+        right: "8%",
+        top: 20,
+        bottom: 12,
+        nodeWidth: 18,
+        nodeGap: 14,
+        layoutIterations: 16,
+        emphasis: { focus: "adjacency" },
+        lineStyle: { curveness: 0.5, opacity: 0.55 },
+        label: {
+          color: "#E5E7EB",
+          fontSize: 11,
+          fontFamily: chartFont,
+          formatter: function (p) { return p.name.replace(/ /g, "\n"); }
+        },
+        data: [
+          { name: N.src, itemStyle: { color: "#1E3A8A" }, depth: 0 },
+          { name: N.act, itemStyle: { color: "#10B981" }, depth: 1 },
+          { name: N.low, itemStyle: { color: "#F97316" }, depth: 1 },
+          { name: N.other, itemStyle: { color: "#9CA3AF" }, depth: 1 },
+          { name: N.end, itemStyle: { color: "#8B5CF6" }, depth: 2 }
+        ],
+        links: [
+          { source: N.src, target: N.act, value: 180, lineStyle: { color: "rgba(16,185,129,0.5)" } },
+          { source: N.src, target: N.low, value: 120, lineStyle: { color: "rgba(249,115,22,0.5)" } },
+          { source: N.src, target: N.other, value: 100, lineStyle: { color: "rgba(156,163,175,0.55)" } },
+          { source: N.act, target: N.end, value: 180, lineStyle: { color: "rgba(139,92,246,0.55)" } }
+        ]
+      }]
+    };
+  }
+
+  function ensureChart220wMetrics() {
+    if (!isCase220wVisible()) return;
+
+    const el = document.getElementById("chart-220w-metrics");
+    const loading = document.getElementById("chart-220w-loading");
+    if (!el) return;
+
+    if (el.clientWidth < 40 || el.clientHeight < 40) {
+      requestAnimationFrame(ensureChart220wMetrics);
+      return;
+    }
+
+    loadEchartsScript().then(function () {
+      if (!isCase220wVisible()) return;
+
+      if (chart220wInstance) {
+        chart220wInstance.dispose();
+        chart220wInstance = null;
+      }
+
+      if (loading) loading.style.display = "none";
+
+      chart220wInstance = echarts.init(el, null, { renderer: "canvas" });
+      chart220wInstance.setOption(getChart220wOption());
+      el.classList.add("is-ready");
+
+      if (!chart220wResizeBound) {
+        chart220wResizeBound = true;
+        window.addEventListener("resize", function () {
+          if (chart220wInstance && isCase220wVisible()) chart220wInstance.resize();
+        });
+      }
+      chart220wInstance.resize();
+    }).catch(function () {
+      if (loading) {
+        loading.textContent = "图表库加载失败，请检查网络后刷新";
+        loading.style.color = "#F87171";
+      }
+    });
+  }
+
+  const _showCaseOrig = showCase;
+  showCase = function (caseId) {
+    _showCaseOrig(caseId);
+    if (caseId === "case-220w") {
+      setTimeout(ensureChart220wMetrics, 380);
+    }
+  };
+
+  (function observeChart220w() {
+    const chartEl = document.getElementById("chart-220w-metrics");
+    const caseEl = document.getElementById("case-220w");
+    if (!chartEl || !caseEl) return;
+
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && isCase220wVisible()) ensureChart220wMetrics();
+        });
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(chartEl);
+
+    const mo = new MutationObserver(function () {
+      if (isCase220wVisible()) ensureChart220wMetrics();
+    });
+    mo.observe(caseEl, { attributes: true, attributeFilter: ["style", "class"] });
+  })();
+
+  </script>
+  <footer class="site-footer">
+    <div>麦焕晖 · 数据分析能力数字展馆</div>
+    <div>
+      <a href="https://littlehuihuihui.github.io/data-analyst-gallery/" target="_blank" rel="noopener">本展馆</a>
+      ·
+      <a href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener">多行业数据平台</a>
+      ·
+      <a href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">行业百科</a>
+      ·
+      <a href="#ai-empower">AI 协作跃迁</a>
+      ·
+      <a href="#case-deep-dive">案例复盘</a>
+    </div>
+    <div style="margin-top:0.5rem;opacity:0.8;">近9年 · OTT 用户增长 / 数据治理 · 通信设备异常闭环 · AI 协作分析</div>
+  </footer>
+  <!--
+  简历优化附录（用户文档第五节）：
+  二维码引导语：扫码查看数字展馆：近9年数据分析实战案例（数据治理·用户增长·BI体系·AI协作）
+  空窗期描述建议：家庭原因暂离职场一年。期间保持SQL/Python日常练习，并产出可验证成果：
+  ① AI辅助搭建个人分析能力数字展馆（简历二维码指向本文件）
+  ② 新能源汽车销售AI辅助分析全流程（数据探索→假设验证→Quick BI Agent看板）
+  ③ 多行业数据平台（零售/互联网/制造）开源静态演示
+  核心技能保持活跃，Cursor/Quick BI Agent已融入分析工作流，可随时投入工作。
+  -->
+</body>
+</html>

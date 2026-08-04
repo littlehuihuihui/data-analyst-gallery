@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>通信设备监测 · 知识框架</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0E17;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #00D4FF;
+      --positive: #10B981;
+      --danger: #EF4444;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --font-mono: "JetBrains Mono", Consolas, monospace;
+      --radius: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      min-height: 100vh;
+    }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    .breadcrumb {
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+      opacity: 0.85;
+    }
+    .breadcrumb a:hover { opacity: 1; text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; opacity: 0.5; }
+
+    .mono-prefix {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .header h1 {
+      margin: 0.5rem 0 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .header .sub {
+      margin: 0.5rem 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .btn-export {
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--text);
+      padding: 0.65rem 1.1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    }
+
+    .btn-export:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 212, 255, 0.15);
+      border-color: rgba(0, 212, 255, 0.6);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+      margin-bottom: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .tab-btn {
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: transparent;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      border-color: rgba(0, 212, 255, 0.4);
+      background: rgba(0, 212, 255, 0.12);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-card {
+      padding: 1rem 1.1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .metric-card h3 {
+      margin: 0 0 0.75rem;
+      font-size: 0.95rem;
+      color: #F9FAFB;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .metric-card .field {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-card .field span {
+      color: var(--text);
+      display: block;
+      margin-top: 3px;
+      line-height: 1.55;
+      font-size: 0.85rem;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      color: #D1D5DB;
+      margin: 0 0 0.75rem;
+      padding-left: 0.5rem;
+      border-left: 3px solid var(--accent);
+      font-weight: 600;
+    }
+
+    .table-wrap {
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      min-width: 480px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0.5rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* 流程 Tab */
+    .flow-intro {
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #D1D5DB;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .flow-intro strong {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .flow-track {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .flow-item {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .process-card {
+      width: 150px;
+      min-height: 130px;
+      padding: 1rem 0.9rem;
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .process-card:hover {
+      border-color: rgba(0, 212, 255, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .process-card .step-num {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .process-card h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.88rem;
+      color: #F9FAFB;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .process-card p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 1.5rem;
+      padding: 0 0.35rem;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .flow-table-wrap { margin-top: 0.5rem; }
+
+    @media (max-width: 900px) {
+      .tabs { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 16px 12px 32px; }
+      .metric-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.2rem; }
+      .header { padding: 1.1rem; }
+
+      .flow-track {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .flow-item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .process-card { width: 100%; min-height: auto; }
+
+      .flow-arrow {
+        text-align: center;
+        padding: 0.4rem 0;
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="breadcrumb">
+      <a href="../index.html#industry-knowledge">数字展馆</a>
+      <span>/</span>
+      <a href="index.html">行业知识库</a>
+      <span>/</span>
+      <span style="color:var(--text);">通信设备监测</span>
+    </div>
+
+    <header class="header">
+      <div>
+        <div class="mono-prefix">&gt;_ telecom_monitoring</div>
+        <h1>通信设备监测 · 知识框架</h1>
+        <p class="sub">基于 Linux 脚本巡检 → txt 日志 → 解析异常 → Excel 报表 → 邮件通知 → 运维修复 → 复查关闭的 8 步自动化闭环体系</p>
+      </div>
+      <button type="button" class="btn-export" id="btnExport">📦 导出 AI 知识库 (JSON)</button>
+    </header>
+
+    <nav class="tabs" id="tabNav" aria-label="知识模块">
+      <button type="button" class="tab-btn active" data-tab="tab1">告警检测指标</button>
+      <button type="button" class="tab-btn" data-tab="tab2">告警处理流程</button>
+      <button type="button" class="tab-btn" data-tab="tab3">自动化运维指标</button>
+    </nav>
+
+    <section id="tab1" class="tab-panel active"></section>
+    <section id="tab2" class="tab-panel"></section>
+    <section id="tab3" class="tab-panel"></section>
+  </div>
+
+  <script>
+    const INDUSTRY = "通信设备监测";
+    const EXPORT_FILE = "通信设备监测_知识库.json";
+    const DATA_ATTRS = ["data-name", "data-module", "data-type", "data-formula", "data-definition", "data-business-scene"];
+
+    const detectMetrics = [
+      { name: "告警产生数量", desc: "当日脚本扫描txt日志后，新发现的异常指标条数", scene: "衡量设备健康波动程度" },
+      { name: "告警关闭数量", desc: "昨日存在的告警，今日复查已恢复正常的数量", scene: "衡量运维修复效率" },
+      { name: "告警持续天数", desc: "某条告警从首次出现到现在的连续天数", scene: "识别长期未解决的顽固问题" },
+      { name: "重复告警率", desc: "同一设备同一类型告警在7天内重复出现的比例", scene: "识别反复发作的隐患，区分真修复和临时恢复" },
+      { name: "告警类型分布", desc: "按异常类型分类统计（如配置异常、性能异常、连接异常等）", scene: "识别当前网络中最集中的问题类型" },
+      { name: "设备告警TOP榜", desc: "按告警数量排序的设备列表", scene: "识别问题设备，优先安排检修" }
+    ];
+
+    const processSteps = [
+      { step: 1, title: "定时触发", desc: "Linux脚本在预定时间自动执行" },
+      { step: 2, title: "指令执行", desc: "脚本按预设指令列表逐条检查设备" },
+      { step: 3, title: "日志存储", desc: "执行结果写入txt日志文件" },
+      { step: 4, title: "日志解析", desc: "工具按指令拆分txt，提取异常指标" },
+      { step: 5, title: "报表生成", desc: "异常指标自动生成Excel格式报表" },
+      { step: 6, title: "邮件通知", desc: "报表通过邮件自动发送给运维团队" },
+      { step: 7, title: "运维修复", desc: "运维人员根据报表定位并修复问题" },
+      { step: 8, title: "复查关闭", desc: "第二天脚本再次检查，已恢复的自动关闭告警" }
+    ];
+
+    const autoMetrics = [
+      { name: "脚本执行成功率", desc: "脚本成功执行完成次数 / 总执行次数", scene: "监控自动化脚本本身的稳定性" },
+      { name: "日志解析覆盖率", desc: "成功解析的指令条数 / 总执行指令条数", scene: "衡量日志解析工具的覆盖完整度" },
+      { name: "报表生成耗时", desc: "从日志解析开始到Excel报表生成完成的时间", scene: "衡量自动化流程效率" },
+      { name: "告警自动关闭率", desc: "复查时自动关闭的告警数 / 上次总告警数", scene: "衡量运维修复效率，越高越好" },
+      { name: "人工介入次数", desc: "需要人工手动处理（非脚本自动完成）的次数", scene: "衡量自动化程度，越低越好" }
+    ];
+
+    function esc(s) {
+      return String(s).replace(/"/g, "&quot;");
+    }
+
+    function renderInfoCard(item, moduleName, type) {
+      const formula = item.formula || item.desc || "";
+      return `
+        <article class="metric-card kb-export"
+          data-name="${esc(item.name)}"
+          data-module="${esc(moduleName)}"
+          data-type="${type}"
+          data-formula="${esc(formula)}"
+          data-definition="${esc(item.desc)}"
+          data-business-scene="${esc(item.scene)}">
+          <h3>${item.name}</h3>
+          <div class="field">说明 <span>${item.desc}</span></div>
+          <div class="field">业务用途 <span>${item.scene}</span></div>
+        </article>`;
+    }
+
+    function renderTable(moduleName, rows, cols) {
+      const head = cols.map(c => `<th>${c}</th>`).join("");
+      const body = rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("");
+      return `
+        <h2 class="section-title">一览表 · ${moduleName}</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>${head}</tr></thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function renderTab1() {
+      const moduleName = "告警检测指标";
+      const cards = detectMetrics.map(m => renderInfoCard(m, moduleName, "indicator")).join("");
+      const tableRows = detectMetrics.map(m => [m.name, m.desc, m.scene]);
+      document.getElementById("tab1").innerHTML = `
+        <div class="metric-grid">${cards}</div>
+        ${renderTable(moduleName, tableRows, ["名称", "说明", "业务用途"])}`;
+    }
+
+    function renderProcessCard(s, moduleName) {
+      const fullName = `步骤${s.step}：${s.title}`;
+      return `
+        <article class="process-card kb-export"
+          data-name="${esc(fullName)}"
+          data-module="${esc(moduleName)}"
+          data-type="process"
+          data-formula=""
+          data-definition="${esc(s.desc)}"
+          data-business-scene="告警处理自动化闭环第${s.step}步">
+          <div class="step-num">STEP ${s.step}</div>
+          <h4>${s.title}</h4>
+          <p>${s.desc}</p>
+        </article>`;
+    }
+
+    function renderTab2() {
+      const moduleName = "告警处理流程";
+      const flowItems = processSteps.map((s, i) => {
+        const card = renderProcessCard(s, moduleName);
+        const arrow = i < processSteps.length - 1 ? '<span class="flow-arrow" aria-hidden="true">→</span>' : "";
+        return `<div class="flow-item">${card}${arrow}</div>`;
+      }).join("");
+
+      const tableRows = processSteps.map(s => [
+        `步骤${s.step}`,
+        s.title,
+        s.desc,
+        "告警处理自动化闭环"
+      ]);
+
+      document.getElementById("tab2").innerHTML = `
+        <div class="flow-intro">
+          <strong>自动化告警处理闭环</strong>：Linux 定时脚本执行设备检查 → 结果写入 txt → 解析提取异常 → 生成 Excel 报表邮件推送 → 运维修复 → 次日复查自动关闭或持续跟踪。
+        </div>
+        <div class="flow-track" role="list" aria-label="告警处理流程">${flowItems}</div>
+        <div class="flow-table-wrap">
+          ${renderTable(moduleName, tableRows, ["步骤", "名称", "说明", "业务用途"])}
+        </div>`;
+    }
+
+    function renderTab3() {
+      const moduleName = "自动化运维指标";
+      const cards = autoMetrics.map(m => renderInfoCard(m, moduleName, "indicator")).join("");
+      const tableRows = autoMetrics.map(m => [m.name, m.desc, m.scene]);
+      document.getElementById("tab3").innerHTML = `
+        <div class="metric-grid">${cards}</div>
+        ${renderTable(moduleName, tableRows, ["名称", "说明", "业务用途"])}`;
+    }
+
+    renderTab1();
+    renderTab2();
+    renderTab3();
+
+    document.querySelectorAll("#tabNav .tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#tabNav .tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    document.getElementById("btnExport").addEventListener("click", () => {
+      const elements = document.querySelectorAll(".kb-export[data-name]");
+      const indicators = [];
+      elements.forEach(el => {
+        const row = {};
+        DATA_ATTRS.forEach(attr => {
+          const key = attr.replace(/^data-/, "").replace(/-/g, "_");
+          row[key] = el.getAttribute(attr) || "";
+        });
+        indicators.push({
+          name: row.name,
+          module: row.module,
+          type: row.type,
+          formula: row.formula,
+          definition: row.definition,
+          business_scene: row.business_scene
+        });
+      });
+      const payload = {
+        industry: INDUSTRY,
+        version: "2.0",
+        export_time: new Date().toISOString(),
+        knowledge_base: { indicators }
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = EXPORT_FILE;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
