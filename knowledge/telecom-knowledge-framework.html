@@ -9,16 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0A0E17;
-      --card: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.06);
-      --accent: #00D4FF;
-      --positive: #10B981;
-      --danger: #EF4444;
+      --bg: #070B14;
+      --card: rgba(15, 23, 42, 0.55);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #38BDF8;
       --text: #E5E7EB;
-      --muted: #9CA3AF;
+      --muted: #94A3B8;
       --font-mono: "JetBrains Mono", Consolas, monospace;
       --radius: 14px;
+      --theme-gradient: linear-gradient(135deg, #38BDF8 0%, #22D3EE 45%, #6366F1 100%);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -31,13 +30,30 @@
       color: var(--text);
       line-height: 1.6;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 48px 48px;
       min-height: 100vh;
     }
 
-    .page { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      position: relative;
+    }
+    .page::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 220px;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 0%, rgba(56, 189, 248, 0.14), transparent),
+        radial-gradient(ellipse 40% 60% at 20% 20%, rgba(34, 211, 238, 0.1), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .page > * { position: relative; z-index: 1; }
 
     .breadcrumb {
       margin-bottom: 16px;
@@ -45,20 +61,9 @@
       font-size: 0.78rem;
       color: var(--muted);
     }
-    .breadcrumb a {
-      color: var(--accent);
-      text-decoration: none;
-      opacity: 0.85;
-    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; opacity: 0.9; }
     .breadcrumb a:hover { opacity: 1; text-decoration: underline; }
     .breadcrumb span { margin: 0 0.5rem; opacity: 0.5; }
-
-    .mono-prefix {
-      font-family: var(--font-mono);
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
 
     .header {
       display: flex;
@@ -66,57 +71,91 @@
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
+      padding: 1.5rem 1.5rem 1.25rem;
+      margin-bottom: 1rem;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.04), 0 20px 50px rgba(0, 0, 0, 0.25);
     }
-
+    .header-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      margin-bottom: 0.65rem;
+    }
     .header h1 {
-      margin: 0.5rem 0 0;
-      font-size: 1.5rem;
+      margin: 0;
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
       font-weight: 700;
+      background: var(--theme-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .header .sub {
-      margin: 0.5rem 0 0;
+      margin: 0.65rem 0 0;
       font-size: 0.88rem;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.65;
+      max-width: 760px;
+    }
+    .header-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      margin-top: 1.1rem;
+    }
+    .header-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .header-stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
     }
 
     .btn-export {
-      border: 1px solid rgba(0, 212, 255, 0.4);
-      background: rgba(0, 212, 255, 0.08);
-      color: var(--text);
-      padding: 0.65rem 1.1rem;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(99, 102, 241, 0.1));
+      color: #E0F2FE;
+      padding: 0.7rem 1.15rem;
       border-radius: 10px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-family: var(--font-mono);
       cursor: pointer;
       white-space: nowrap;
-      transition: transform 0.15s, background 0.15s, border-color 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
     }
-
     .btn-export:hover {
       transform: translateY(-1px);
-      background: rgba(0, 212, 255, 0.15);
-      border-color: rgba(0, 212, 255, 0.6);
+      border-color: rgba(56, 189, 248, 0.7);
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
     }
 
     .tabs {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      padding: 10px;
+      padding: 8px;
       margin-bottom: 1.25rem;
-      background: var(--card);
+      background: rgba(15, 23, 42, 0.7);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
     }
-
     .tab-btn {
-      padding: 0.75rem 0.5rem;
+      padding: 0.8rem 0.5rem;
       text-align: center;
       border-radius: 10px;
       border: 1px solid transparent;
@@ -127,73 +166,121 @@
       font-family: inherit;
       transition: all 0.2s;
     }
-
+    .tab-btn .tab-kicker {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      opacity: 0.7;
+      margin-bottom: 0.2rem;
+    }
     .tab-btn.active {
       color: #fff;
-      border-color: rgba(0, 212, 255, 0.4);
-      background: rgba(0, 212, 255, 0.12);
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.08);
     }
-
     .tab-btn:hover:not(.active) {
       color: var(--text);
       background: rgba(255, 255, 255, 0.03);
     }
 
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-panel.active { display: block; animation: fadeUp 0.28s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .module-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.14);
+    }
+    .module-banner .mono {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+    }
+    .module-banner .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
 
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
       margin-bottom: 1.5rem;
     }
 
     .metric-card {
-      padding: 1rem 1.1rem;
+      position: relative;
+      padding: 1.1rem 1.15rem 1rem;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
-
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.45;
+    }
     .metric-card:hover {
-      border-color: rgba(0, 212, 255, 0.3);
-      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
     }
+    .metric-card:hover::before { opacity: 1; }
 
     .metric-card h3 {
-      margin: 0 0 0.75rem;
+      margin: 0 0 0.85rem;
       font-size: 0.95rem;
-      color: #F9FAFB;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
+      color: #F8FAFC;
       font-family: var(--font-mono);
       font-weight: 600;
     }
 
-    .metric-card .field {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
+    .metric-card .field { margin-bottom: 0.7rem; }
+    .metric-card .field:last-child { margin-bottom: 0; }
+    .field-label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      padding: 0.12rem 0.4rem;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      margin-bottom: 0.35rem;
     }
-
     .metric-card .field span {
-      color: var(--text);
+      color: #CBD5E1;
       display: block;
-      margin-top: 3px;
       line-height: 1.55;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .section-title {
       font-size: 0.9rem;
-      color: #D1D5DB;
-      margin: 0 0 0.75rem;
-      padding-left: 0.5rem;
-      border-left: 3px solid var(--accent);
+      color: #E2E8F0;
+      margin: 0 0 0.85rem;
       font-weight: 600;
+      font-family: var(--font-mono);
     }
+    .section-title::before { content: ">_ "; color: var(--accent); }
 
     .table-wrap {
       padding: 1rem 1.1rem;
@@ -202,6 +289,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       margin-bottom: 1rem;
+      backdrop-filter: blur(8px);
     }
 
     table {
@@ -210,36 +298,31 @@
       font-size: 0.82rem;
       min-width: 480px;
     }
-
     th, td {
-      border-bottom: 1px solid var(--border);
-      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.7rem 0.55rem;
       text-align: left;
       vertical-align: top;
     }
-
     th {
       color: var(--accent);
       font-weight: 600;
       white-space: nowrap;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
     }
+    tr:hover td { background: rgba(56, 189, 248, 0.04); }
 
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-    /* 流程 Tab */
     .flow-intro {
-      padding: 1rem 1.1rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.88rem;
+      margin-bottom: 1rem;
+      padding: 0.95rem 1.05rem;
+      font-size: 0.86rem;
+      color: var(--muted);
       line-height: 1.7;
-      color: #D1D5DB;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.14);
+      border-radius: 12px;
     }
-
     .flow-intro strong {
       color: var(--accent);
       font-family: var(--font-mono);
@@ -255,7 +338,6 @@
       overflow-x: auto;
       padding-bottom: 8px;
     }
-
     .flow-item {
       display: flex;
       align-items: center;
@@ -263,37 +345,45 @@
     }
 
     .process-card {
-      width: 150px;
-      min-height: 130px;
+      position: relative;
+      width: 156px;
+      min-height: 138px;
       padding: 1rem 0.9rem;
       flex-shrink: 0;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
-
+    .process-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.45;
+    }
     .process-card:hover {
-      border-color: rgba(0, 212, 255, 0.35);
-      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
     }
-
     .process-card .step-num {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--accent);
       font-weight: 600;
       margin-bottom: 0.5rem;
       font-family: var(--font-mono);
     }
-
     .process-card h4 {
       margin: 0 0 0.5rem;
       font-size: 0.88rem;
-      color: #F9FAFB;
+      color: #F8FAFC;
       line-height: 1.35;
       font-weight: 600;
     }
-
     .process-card p {
       margin: 0;
       font-size: 0.75rem;
@@ -303,36 +393,23 @@
 
     .flow-arrow {
       color: var(--accent);
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       padding: 0 0.35rem;
       flex-shrink: 0;
-      opacity: 0.7;
+      opacity: 0.75;
     }
-
     .flow-table-wrap { margin-top: 0.5rem; }
 
     @media (max-width: 900px) {
       .tabs { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 768px) {
       .page { padding: 16px 12px 32px; }
       .metric-grid { grid-template-columns: 1fr; }
-      .header h1 { font-size: 1.2rem; }
-      .header { padding: 1.1rem; }
-
-      .flow-track {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .flow-item {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
+      .header { padding: 1.15rem; }
+      .flow-track { flex-direction: column; align-items: stretch; }
+      .flow-item { flex-direction: column; align-items: stretch; }
       .process-card { width: 100%; min-height: auto; }
-
       .flow-arrow {
         text-align: center;
         padding: 0.4rem 0;
@@ -353,17 +430,23 @@
 
     <header class="header">
       <div>
-        <div class="mono-prefix">&gt;_ telecom_monitoring</div>
+        <div class="header-badge">&gt;_ telecom_monitoring · knowledge_framework</div>
         <h1>通信设备监测 · 知识框架</h1>
-        <p class="sub">基于 Linux 脚本巡检 → txt 日志 → 解析异常 → Excel 报表 → 邮件通知 → 运维修复 → 复查关闭的 8 步自动化闭环体系</p>
+        <p class="sub">巡检脚本 → 日志解析 → 异常提取 → 结构化报表 → 邮件通知 → 运维修复 → 复查关闭：8 步自动化闭环体系</p>
+        <div class="header-stats" aria-label="框架规模">
+          <div><div class="header-stat-num">3</div><div class="header-stat-label">知识模块</div></div>
+          <div><div class="header-stat-num">8</div><div class="header-stat-label">闭环步骤</div></div>
+          <div><div class="header-stat-num">19</div><div class="header-stat-label">知识节点</div></div>
+          <div><div class="header-stat-num">JSON</div><div class="header-stat-label">可导出投喂</div></div>
+        </div>
       </div>
-      <button type="button" class="btn-export" id="btnExport">📦 导出 AI 知识库 (JSON)</button>
+      <button type="button" class="btn-export" id="btnExport">导出 AI 知识库 JSON</button>
     </header>
 
     <nav class="tabs" id="tabNav" aria-label="知识模块">
-      <button type="button" class="tab-btn active" data-tab="tab1">告警检测指标</button>
-      <button type="button" class="tab-btn" data-tab="tab2">告警处理流程</button>
-      <button type="button" class="tab-btn" data-tab="tab3">自动化运维指标</button>
+      <button type="button" class="tab-btn active" data-tab="tab1"><span class="tab-kicker">MODULE 01</span>告警检测指标</button>
+      <button type="button" class="tab-btn" data-tab="tab2"><span class="tab-kicker">MODULE 02</span>告警处理流程</button>
+      <button type="button" class="tab-btn" data-tab="tab3"><span class="tab-kicker">MODULE 03</span>自动化运维指标</button>
     </nav>
 
     <section id="tab1" class="tab-panel active"></section>
@@ -390,7 +473,7 @@
       { step: 2, title: "指令执行", desc: "脚本按预设指令列表逐条检查设备" },
       { step: 3, title: "日志存储", desc: "执行结果写入txt日志文件" },
       { step: 4, title: "日志解析", desc: "工具按指令拆分txt，提取异常指标" },
-      { step: 5, title: "报表生成", desc: "异常指标自动生成Excel格式报表" },
+      { step: 5, title: "报表生成", desc: "异常指标自动生成结构化报表" },
       { step: 6, title: "邮件通知", desc: "报表通过邮件自动发送给运维团队" },
       { step: 7, title: "运维修复", desc: "运维人员根据报表定位并修复问题" },
       { step: 8, title: "复查关闭", desc: "第二天脚本再次检查，已恢复的自动关闭告警" }
@@ -399,7 +482,7 @@
     const autoMetrics = [
       { name: "脚本执行成功率", desc: "脚本成功执行完成次数 / 总执行次数", scene: "监控自动化脚本本身的稳定性" },
       { name: "日志解析覆盖率", desc: "成功解析的指令条数 / 总执行指令条数", scene: "衡量日志解析工具的覆盖完整度" },
-      { name: "报表生成耗时", desc: "从日志解析开始到Excel报表生成完成的时间", scene: "衡量自动化流程效率" },
+      { name: "报表生成耗时", desc: "从日志解析开始到结构化报表生成完成的时间", scene: "衡量自动化流程效率" },
       { name: "告警自动关闭率", desc: "复查时自动关闭的告警数 / 上次总告警数", scene: "衡量运维修复效率，越高越好" },
       { name: "人工介入次数", desc: "需要人工手动处理（非脚本自动完成）的次数", scene: "衡量自动化程度，越低越好" }
     ];
@@ -419,8 +502,8 @@
           data-definition="${esc(item.desc)}"
           data-business-scene="${esc(item.scene)}">
           <h3>${item.name}</h3>
-          <div class="field">说明 <span>${item.desc}</span></div>
-          <div class="field">业务用途 <span>${item.scene}</span></div>
+          <div class="field"><div class="field-label">DEFINITION</div><span>${item.desc}</span></div>
+          <div class="field"><div class="field-label">SCENE</div><span>${item.scene}</span></div>
         </article>`;
     }
 
@@ -442,6 +525,10 @@
       const cards = detectMetrics.map(m => renderInfoCard(m, moduleName, "indicator")).join("");
       const tableRows = detectMetrics.map(m => [m.name, m.desc, m.scene]);
       document.getElementById("tab1").innerHTML = `
+        <div class="module-banner">
+          <div class="mono">MODULE · ${moduleName}</div>
+          <div class="hint">${detectMetrics.length} 个检测指标 · 说明 / 业务用途</div>
+        </div>
         <div class="metric-grid">${cards}</div>
         ${renderTable(moduleName, tableRows, ["名称", "说明", "业务用途"])}`;
     }
@@ -456,7 +543,7 @@
           data-formula=""
           data-definition="${esc(s.desc)}"
           data-business-scene="告警处理自动化闭环第${s.step}步">
-          <div class="step-num">STEP ${s.step}</div>
+          <div class="step-num">STEP ${String(s.step).padStart(2, "0")}</div>
           <h4>${s.title}</h4>
           <p>${s.desc}</p>
         </article>`;
@@ -479,7 +566,11 @@
 
       document.getElementById("tab2").innerHTML = `
         <div class="flow-intro">
-          <strong>自动化告警处理闭环</strong>：Linux 定时脚本执行设备检查 → 结果写入 txt → 解析提取异常 → 生成 Excel 报表邮件推送 → 运维修复 → 次日复查自动关闭或持续跟踪。
+          <strong>CLOSED_LOOP</strong>：定时巡检 → 日志落盘 → 异常解析 → 结构化报表推送 → 运维修复 → 次日复查自动关闭或持续跟踪。
+        </div>
+        <div class="module-banner">
+          <div class="mono">MODULE · ${moduleName}</div>
+          <div class="hint">8 步自动化闭环可视化</div>
         </div>
         <div class="flow-track" role="list" aria-label="告警处理流程">${flowItems}</div>
         <div class="flow-table-wrap">
@@ -492,6 +583,10 @@
       const cards = autoMetrics.map(m => renderInfoCard(m, moduleName, "indicator")).join("");
       const tableRows = autoMetrics.map(m => [m.name, m.desc, m.scene]);
       document.getElementById("tab3").innerHTML = `
+        <div class="module-banner">
+          <div class="mono">MODULE · ${moduleName}</div>
+          <div class="hint">${autoMetrics.length} 个效率指标 · 稳定性 / 覆盖 / 自动化程度</div>
+        </div>
         <div class="metric-grid">${cards}</div>
         ${renderTable(moduleName, tableRows, ["名称", "说明", "业务用途"])}`;
     }

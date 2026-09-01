@@ -9,15 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0A0E17;
-      --card: rgba(255, 255, 255, 0.03);
+      --bg: #070B14;
+      --card: rgba(255, 255, 255, 0.035);
+      --glass: rgba(15, 23, 42, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.08);
       --border: rgba(255, 255, 255, 0.06);
-      --accent: #00D4FF;
-      --positive: #10B981;
-      --danger: #EF4444;
+      --accent: #22D3EE;
+      --accent-2: #3B82F6;
       --text: #E5E7EB;
-      --muted: #9CA3AF;
+      --muted: #94A3B8;
       --font-mono: "JetBrains Mono", Consolas, monospace;
+      --theme-gradient: linear-gradient(135deg, #22D3EE 0%, #3B82F6 55%, #6366F1 100%);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -31,220 +33,378 @@
       color: var(--text);
       line-height: 1.6;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 48px 20px 40px;
     }
 
+    .top-nav {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      position: relative;
+      z-index: 2;
+    }
     .back-link {
-      align-self: flex-start;
-      margin-bottom: 24px;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--accent);
       text-decoration: none;
-      opacity: 0.85;
-      transition: opacity 0.2s;
+      opacity: 0.9;
     }
-    .back-link:hover { opacity: 1; text-decoration: underline; }
+    .back-link:hover { text-decoration: underline; opacity: 1; }
 
-    .page-header {
+    .hero {
+      position: relative;
+      overflow: hidden;
       text-align: center;
-      margin-bottom: 48px;
+      padding: 3.5rem 1.25rem 2.5rem;
     }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(34, 211, 238, 0.16), transparent),
+        radial-gradient(ellipse 55% 40% at 25% 25%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(ellipse 55% 40% at 75% 30%, rgba(99, 102, 241, 0.1), transparent);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
 
-    .mono-prefix {
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      margin-bottom: 1rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
       font-family: var(--font-mono);
       color: var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.22);
     }
 
-    h1 {
-      margin: 8px 0 12px;
-      font-size: 28px;
+    .hero-title {
+      margin: 0 0 0.85rem;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
       font-weight: 700;
       letter-spacing: 0.02em;
+      background: var(--theme-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .subtitle {
-      margin: 0;
-      font-size: 0.92rem;
-      color: var(--muted);
+    .hero-sub {
+      margin: 0 auto 1.75rem;
       max-width: 560px;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem 2.5rem;
+    }
+    .hero-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.2;
+      background: var(--theme-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .section-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+      color: #F8FAFC;
+    }
+    .section-desc {
+      margin: 0 0 1.5rem;
+      font-size: 0.88rem;
+      color: var(--muted);
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 900px;
+      gap: 1.25rem;
     }
 
     .card-link {
+      --card-color: #22D3EE;
+      position: relative;
+      display: block;
       text-decoration: none;
       color: inherit;
-      padding: 1.75rem 1.5rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      display: block;
+      padding: 1.5rem 1.4rem 1.35rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
     }
-
+    .card-link::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+      opacity: 0.55;
+      transition: opacity 0.22s;
+    }
     .card-link:hover {
       transform: translateY(-4px);
-      border-color: rgba(0, 212, 255, 0.4);
-      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+      border-color: color-mix(in srgb, var(--card-color) 45%, transparent);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(34, 211, 238, 0.08);
     }
+    .card-link:hover::before { opacity: 1; }
 
-    .card-link .icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      display: block;
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      background: color-mix(in srgb, var(--card-color) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--card-color) 28%, transparent);
+    }
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card-color) 14%, transparent);
+      color: var(--card-color);
+      border: 1px solid color-mix(in srgb, var(--card-color) 25%, transparent);
     }
 
     .card-link h2 {
-      margin: 0 0 0.75rem;
-      font-size: 1.25rem;
-      color: #F9FAFB;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      margin: 0 0 0.65rem;
+      font-size: 1.2rem;
+      color: #F8FAFC;
+      letter-spacing: 0.01em;
     }
-
-    .card-link h2 .tag {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      background: rgba(0, 212, 255, 0.12);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
     .card-link .desc {
-      margin: 0 0 1rem;
-      font-size: 0.9rem;
-      line-height: 1.7;
+      margin: 0 0 1.1rem;
+      font-size: 0.86rem;
+      line-height: 1.75;
       color: var(--muted);
     }
+    .card-link .desc strong { color: #E2E8F0; font-weight: 600; }
 
-    .card-link .metrics {
+    .chip-row {
       display: flex;
-      gap: 1rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 6px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .metrics {
+      display: flex;
+      gap: 1.25rem;
       padding-top: 1rem;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
-
-    .metric-item {
-      text-align: center;
-    }
-
     .metric-item .num {
       font-family: var(--font-mono);
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--accent);
     }
-
     .metric-item .label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       margin-top: 2px;
     }
 
-    .card-link .enter-hint {
+    .enter-hint {
       margin-top: 1rem;
       font-family: var(--font-mono);
       font-size: 0.78rem;
       color: var(--accent);
-      opacity: 0.8;
+      opacity: 0.85;
     }
 
-    footer {
-      margin-top: 56px;
-      font-size: 0.8rem;
+    .sister {
+      margin-top: 2rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 14px;
+      background: rgba(34, 211, 238, 0.05);
+      border: 1px solid rgba(34, 211, 238, 0.15);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+    }
+    .sister p {
+      margin: 0;
+      font-size: 0.85rem;
       color: var(--muted);
+      max-width: 640px;
+      line-height: 1.65;
+    }
+    .sister a {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .sister a:hover { text-decoration: underline; }
+
+    footer {
       text-align: center;
+      padding: 0 1.25rem 2.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
       font-family: var(--font-mono);
     }
 
     @media (max-width: 768px) {
-      body { padding: 32px 16px; }
-      h1 { font-size: 22px; }
-      .cards { grid-template-columns: 1fr; gap: 1rem; }
-      .card-link { padding: 1.25rem; }
+      .cards { grid-template-columns: 1fr; }
+      .hero { padding: 2.5rem 1rem 2rem; }
     }
   </style>
 </head>
 <body>
-  <a class="back-link" href="../index.html#industry-knowledge">← 返回数字展馆</a>
-  <a class="back-link" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener" style="margin-left:1rem;">多行业数据平台 ↗</a>
-
-  <header class="page-header">
-    <div class="mono-prefix">&gt;_ industry_knowledge_base</div>
-    <h1>行业知识库</h1>
-    <p class="subtitle">系统化沉淀的行业指标体系与知识框架，每个指标均包含口径定义、计算公式与业务场景，支持一键导出 AI 知识库 JSON</p>
-  </header>
-
-  <nav class="cards" aria-label="行业知识框架入口">
-    <a class="card-link" href="ott-knowledge-framework.html">
-      <span class="icon" aria-hidden="true">📺</span>
-      <h2>OTT视频行业 <span class="tag">23 指标</span></h2>
-      <p class="desc">
-        <strong style="color:var(--text)">用户画像</strong>：MAU / DAU / 留存率 / 地域设备分布<br />
-        <strong style="color:var(--text)">内容播放</strong>：VV / 播放时长 / 完播率 / 中断率<br />
-        <strong style="color:var(--text)">营收广告</strong>：CPM / 填充率 / ARPU / LTV / CAC
-      </p>
-      <div class="metrics">
-        <div class="metric-item">
-          <div class="num">3</div>
-          <div class="label">核心模块</div>
-        </div>
-        <div class="metric-item">
-          <div class="num">23</div>
-          <div class="label">指标定义</div>
-        </div>
-        <div class="metric-item">
-          <div class="num">JSON</div>
-          <div class="label">一键导出</div>
-        </div>
-      </div>
-      <div class="enter-hint">进入知识框架 →</div>
-    </a>
-
-    <a class="card-link" href="telecom-knowledge-framework.html">
-      <span class="icon" aria-hidden="true">📡</span>
-      <h2>通信设备监测 <span class="tag">19 节点</span></h2>
-      <p class="desc">
-        <strong style="color:var(--text)">告警检测</strong>：产生量 / 关闭量 / 持续天数 / 重复率<br />
-        <strong style="color:var(--text)">处理流程</strong>：8 步自动化闭环可视化<br />
-        <strong style="color:var(--text)">运维指标</strong>：成功率 / 覆盖率 / 自动关闭率
-      </p>
-      <div class="metrics">
-        <div class="metric-item">
-          <div class="num">3</div>
-          <div class="label">核心模块</div>
-        </div>
-        <div class="metric-item">
-          <div class="num">19</div>
-          <div class="label">知识节点</div>
-        </div>
-        <div class="metric-item">
-          <div class="num">JSON</div>
-          <div class="label">一键导出</div>
-        </div>
-      </div>
-      <div class="enter-hint">进入知识框架 →</div>
-    </a>
+  <nav class="top-nav" aria-label="返回">
+    <a class="back-link" href="../index.html#industry-knowledge">← 返回数字展馆</a>
+    <a class="back-link" href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">行业百科 ↗</a>
+    <a class="back-link" href="https://littlehuihuihui.github.io/financial-data-portfolio/" target="_blank" rel="noopener">多行业数据平台 ↗</a>
   </nav>
 
-  <footer>// 持续迭代中 · 更多行业框架建设中</footer>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">&gt;_ industry_knowledge_base</div>
+      <h1 class="hero-title">行业知识库</h1>
+      <p class="hero-sub">面向 OTT 与通信设备监测的指标体系与知识框架：口径 · 公式 · 业务场景结构化沉淀，支持一键导出 AI 知识库 JSON</p>
+      <div class="hero-stats" aria-label="知识库规模">
+        <div>
+          <div class="hero-stat-num">2</div>
+          <div class="hero-stat-label">行业框架</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">42</div>
+          <div class="hero-stat-label">知识节点</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">6</div>
+          <div class="hero-stat-label">分析模块</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">JSON</div>
+          <div class="hero-stat-label">可导出投喂</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-label">&gt;_ frameworks</div>
+    <h2 class="section-title">按行业进入知识框架</h2>
+    <p class="section-desc">与行业百科同构：指标可检索、口径可导出、场景可讲述；本站聚焦展馆双轨深度行业。</p>
+
+    <nav class="cards" aria-label="行业知识框架入口">
+      <a class="card-link" href="ott-knowledge-framework.html" style="--card-color:#22D3EE;">
+        <div class="card-top">
+          <div class="card-icon" aria-hidden="true">📺</div>
+          <span class="card-tag">23 指标</span>
+        </div>
+        <h2>OTT 视频行业</h2>
+        <p class="desc">
+          <strong>用户画像</strong>：MAU / DAU / 留存 / 地域设备<br />
+          <strong>内容播放</strong>：VV / 时长 / 完播 / 中断<br />
+          <strong>营收广告</strong>：CPM / 填充率 / ARPU / LTV / CAC
+        </p>
+        <div class="chip-row">
+          <span class="chip">用户规模</span>
+          <span class="chip">内容消费</span>
+          <span class="chip">商业变现</span>
+        </div>
+        <div class="metrics">
+          <div class="metric-item"><div class="num">3</div><div class="label">核心模块</div></div>
+          <div class="metric-item"><div class="num">23</div><div class="label">指标定义</div></div>
+          <div class="metric-item"><div class="num">JSON</div><div class="label">一键导出</div></div>
+        </div>
+        <div class="enter-hint">进入知识框架 →</div>
+      </a>
+
+      <a class="card-link" href="telecom-knowledge-framework.html" style="--card-color:#38BDF8;">
+        <div class="card-top">
+          <div class="card-icon" aria-hidden="true">📡</div>
+          <span class="card-tag">19 节点</span>
+        </div>
+        <h2>通信设备监测</h2>
+        <p class="desc">
+          <strong>告警检测</strong>：产生量 / 关闭量 / 持续 / 重复率<br />
+          <strong>处理流程</strong>：8 步自动化闭环<br />
+          <strong>运维指标</strong>：成功率 / 覆盖率 / 自动关闭率
+        </p>
+        <div class="chip-row">
+          <span class="chip">异常检测</span>
+          <span class="chip">闭环跟踪</span>
+          <span class="chip">运维效率</span>
+        </div>
+        <div class="metrics">
+          <div class="metric-item"><div class="num">3</div><div class="label">核心模块</div></div>
+          <div class="metric-item"><div class="num">19</div><div class="label">知识节点</div></div>
+          <div class="metric-item"><div class="num">JSON</div><div class="label">一键导出</div></div>
+        </div>
+        <div class="enter-hint">进入知识框架 →</div>
+      </a>
+    </nav>
+
+    <div class="sister">
+      <p>需要更多行业的指标字典、方法论与场景拆解？可前往姊妹站「多行业数据百科」继续按行业广度探索。</p>
+      <a href="https://littlehuihuihui.github.io/industry-data-encyclopedia/" target="_blank" rel="noopener">打开行业百科 ↗</a>
+    </div>
+  </section>
+
+  <footer>// knowledge_os · 持续迭代 · 与展馆双轨案例互证</footer>
 </body>
 </html>

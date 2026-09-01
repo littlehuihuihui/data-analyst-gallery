@@ -302,6 +302,70 @@
       color: var(--muted);
     }
 
+    /* ========== 当前工作（纳诺 · 静态，非轨道切换） ========== */
+    .current-role-card {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 1.15rem 1.35rem;
+      background: var(--card);
+      border: 1px solid rgba(0, 212, 255, 0.18);
+      border-radius: 12px;
+      cursor: default;
+      text-align: left;
+    }
+    .current-role-card:hover {
+      border-color: rgba(0, 212, 255, 0.28);
+      box-shadow: none;
+    }
+    .current-role-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .current-role-card h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .current-role-sub {
+      margin: 0 0 0.85rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .current-role-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .current-role-list li { margin-bottom: 0.35rem; }
+    .current-role-list strong { color: var(--text); font-weight: 600; }
+    .current-role-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.85rem;
+    }
+    .current-role-tags span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--accent);
+    }
+    body.light-theme .current-role-card {
+      border-color: #BAE6FD;
+    }
+    body.light-theme .current-role-tags span {
+      background: rgba(2, 132, 199, 0.1);
+      color: #0369A1;
+    }
+
     /* ========== 核心成果仪表盘 ========== */
     .stats-grid {
       display: grid;
@@ -1242,10 +1306,29 @@
       
       <div class="career-intro">
         <span class="mono-prefix">&gt;_ cross_industry_methodology</span>
-        <p>近9年跨行业经验 —— 从通信设备监测到OTT用户行为分析，底层都是同一套方法论：<strong style="color:var(--accent);">发现问题 → 数据诊断 → 体系化解决 → 推动落地</strong>。行业在变，数据驱动的核心能力不变。</p>
+        <p>近9年跨行业经验 —— 从通信设备监测到OTT用户行为分析，底层都是同一套方法论：<strong style="color:var(--accent);">发现问题 → 数据诊断 → 体系化解决 → 推动落地</strong>。行业在变，数据驱动的核心能力不变。当前在大数据平台侧补充建模加工与组件了解。</p>
       </div>
 
-      <div class="switch-grid">
+      <div class="card current-role-card" aria-label="当前工作">
+        <div class="current-role-eyebrow">&gt;_ bigdata_platform_extension</div>
+        <h3>广州纳诺科技 · 大数据分析师 · 2026.06 – 至今</h3>
+        <p class="current-role-sub">社会治安综合治理类大数据实战平台（企业级 · Hadoop / Spark 等）· 能力广度：可视化 · 数据建模 · 机器算法</p>
+        <ul class="current-role-list">
+          <li><strong>① 可视化</strong>：独立完成看板搭建与图表配置，覆盖柱状/折线/饼图等常规分析图，并具备地图、热力、关系、流向、时序等扩展图型表达能力，将指标与分析结果清晰呈现，支撑周期看数与跨角色沟通。</li>
+          <li><strong>② 数据建模（主）</strong>：负责分析数据集构建与加工：多源/多表关联整合，清洗转换，聚合汇总与派生字段，配置业务规则与判断逻辑，沉淀可复用的中间结果与结构化分析报表，支撑专题分析与指标交付。</li>
+          <li><strong>③ 机器算法（基础应用）</strong>：了解并应用常用数据挖掘方法（如聚类分析、分类判别等），结合业务场景做轻量建模落地，辅助分群、标签划分与结果解释。</li>
+          <li><strong>平台与组件</strong>：了解 Hadoop、Spark 及 Kafka、Redis 等常见大数据组件，能配合完成服务状态查看与重启等运行保障。深度业务案例见下方银河 / 爱立信复盘。</li>
+        </ul>
+        <div class="current-role-tags" aria-label="能力标签">
+          <span>看板可视化</span>
+          <span>扩展图型</span>
+          <span>数据建模</span>
+          <span>聚类 / 分类</span>
+          <span>Hadoop / Spark</span>
+        </div>
+      </div>
+
+      <div class="switch-grid" style="margin-top:1rem;">
         <button type="button" class="card career-card active-track" id="track-ott" data-track="ott">
           <h3>OTT互联网电视 · 银河互联网 · 3年</h3>
           <p>数据治理 · 用户增长 · 归因分析 · BI体系</p>
@@ -2837,13 +2920,13 @@
       ·
       <a href="#case-deep-dive">案例复盘</a>
     </div>
-    <div style="margin-top:0.5rem;opacity:0.8;">近9年 · OTT 用户增长 / 数据治理 · 通信设备异常闭环 · AI 协作分析</div>
+    <div style="margin-top:0.5rem;opacity:0.8;">近9年 · OTT / 通信设备深度复盘 · AI 协作分析 · 纳诺为当前平台能力补充（业务涉密）</div>
   </footer>
   <!--
   简历优化附录：
   二维码引导语：扫码查看数字展馆：近9年数据分析实战（数据治理·用户增长·BI体系）+ AI 协作数据产品
   可验证成果表述建议（勿写空窗细节）：
-  ① 能力数字展馆（本站）：银河 / 爱立信双轨案例复盘
+  ① 能力数字展馆（本站）：银河 / 爱立信深度复盘 · 纳诺为当前平台能力补充（业务涉密）
   ② 多行业数据平台（主证据）：零售财务 / 互联网 / 制造业 · 数仓+看板+方法论（Cursor / DeepSeek / 豆包协作，人审口径）
   ③ 多行业数据百科：结构化知识 + RAG 智能搜索
   工具栈：Cursor、DeepSeek、豆包、Superset；AI 用于交付可打开的数据产品，而非仅聊天问答。

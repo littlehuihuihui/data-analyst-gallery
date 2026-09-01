@@ -9,16 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0A0E17;
-      --card: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.06);
-      --accent: #00D4FF;
-      --positive: #10B981;
-      --danger: #EF4444;
+      --bg: #070B14;
+      --card: rgba(15, 23, 42, 0.55);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #22D3EE;
       --text: #E5E7EB;
-      --muted: #9CA3AF;
+      --muted: #94A3B8;
       --font-mono: "JetBrains Mono", Consolas, monospace;
       --radius: 14px;
+      --theme-gradient: linear-gradient(135deg, #22D3EE 0%, #3B82F6 55%, #6366F1 100%);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -31,13 +30,30 @@
       color: var(--text);
       line-height: 1.6;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 48px 48px;
       min-height: 100vh;
     }
 
-    .page { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      position: relative;
+    }
+    .page::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 220px;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 0%, rgba(34, 211, 238, 0.14), transparent),
+        radial-gradient(ellipse 40% 60% at 80% 20%, rgba(59, 130, 246, 0.1), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .page > * { position: relative; z-index: 1; }
 
     .breadcrumb {
       margin-bottom: 16px;
@@ -45,20 +61,9 @@
       font-size: 0.78rem;
       color: var(--muted);
     }
-    .breadcrumb a {
-      color: var(--accent);
-      text-decoration: none;
-      opacity: 0.85;
-    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; opacity: 0.9; }
     .breadcrumb a:hover { opacity: 1; text-decoration: underline; }
     .breadcrumb span { margin: 0 0.5rem; opacity: 0.5; }
-
-    .mono-prefix {
-      font-family: var(--font-mono);
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
 
     .header {
       display: flex;
@@ -66,57 +71,91 @@
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
+      padding: 1.5rem 1.5rem 1.25rem;
+      margin-bottom: 1rem;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.04), 0 20px 50px rgba(0, 0, 0, 0.25);
     }
-
+    .header-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      margin-bottom: 0.65rem;
+    }
     .header h1 {
-      margin: 0.5rem 0 0;
-      font-size: 1.5rem;
+      margin: 0;
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
       font-weight: 700;
+      background: var(--theme-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .header .sub {
-      margin: 0.5rem 0 0;
+      margin: 0.65rem 0 0;
       font-size: 0.88rem;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.65;
+      max-width: 720px;
+    }
+    .header-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      margin-top: 1.1rem;
+    }
+    .header-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .header-stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
     }
 
     .btn-export {
-      border: 1px solid rgba(0, 212, 255, 0.4);
-      background: rgba(0, 212, 255, 0.08);
-      color: var(--text);
-      padding: 0.65rem 1.1rem;
+      border: 1px solid rgba(34, 211, 238, 0.4);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(59, 130, 246, 0.1));
+      color: #E0F2FE;
+      padding: 0.7rem 1.15rem;
       border-radius: 10px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-family: var(--font-mono);
       cursor: pointer;
       white-space: nowrap;
-      transition: transform 0.15s, background 0.15s, border-color 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
     }
-
     .btn-export:hover {
       transform: translateY(-1px);
-      background: rgba(0, 212, 255, 0.15);
-      border-color: rgba(0, 212, 255, 0.6);
+      border-color: rgba(34, 211, 238, 0.7);
+      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.15);
     }
 
     .tabs {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      padding: 10px;
+      padding: 8px;
       margin-bottom: 1.25rem;
-      background: var(--card);
+      background: rgba(15, 23, 42, 0.7);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
     }
-
     .tab-btn {
-      padding: 0.75rem 0.5rem;
+      padding: 0.8rem 0.5rem;
       text-align: center;
       border-radius: 10px;
       border: 1px solid transparent;
@@ -127,73 +166,122 @@
       font-family: inherit;
       transition: all 0.2s;
     }
-
+    .tab-btn .tab-kicker {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      opacity: 0.7;
+      margin-bottom: 0.2rem;
+    }
     .tab-btn.active {
       color: #fff;
-      border-color: rgba(0, 212, 255, 0.4);
-      background: rgba(0, 212, 255, 0.12);
+      border-color: rgba(34, 211, 238, 0.4);
+      background: rgba(34, 211, 238, 0.12);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.08);
     }
-
     .tab-btn:hover:not(.active) {
       color: var(--text);
       background: rgba(255, 255, 255, 0.03);
     }
 
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-panel.active { display: block; animation: fadeUp 0.28s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .module-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(34, 211, 238, 0.06);
+      border: 1px solid rgba(34, 211, 238, 0.14);
+    }
+    .module-banner .mono {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+    }
+    .module-banner .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
 
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
       margin-bottom: 1.5rem;
     }
 
     .metric-card {
-      padding: 1rem 1.1rem;
+      position: relative;
+      padding: 1.1rem 1.15rem 1rem;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color 0.2s, transform 0.2s;
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
-
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.45;
+    }
     .metric-card:hover {
-      border-color: rgba(0, 212, 255, 0.3);
-      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
     }
+    .metric-card:hover::before { opacity: 1; }
 
     .metric-card h3 {
-      margin: 0 0 0.75rem;
+      margin: 0 0 0.85rem;
       font-size: 0.95rem;
-      color: #F9FAFB;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
+      color: #F8FAFC;
       font-family: var(--font-mono);
       font-weight: 600;
+      letter-spacing: 0.01em;
     }
 
-    .metric-card .field {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
+    .metric-card .field { margin-bottom: 0.7rem; }
+    .metric-card .field:last-child { margin-bottom: 0; }
+    .field-label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      padding: 0.12rem 0.4rem;
+      border-radius: 4px;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      margin-bottom: 0.35rem;
     }
-
     .metric-card .field span {
-      color: var(--text);
+      color: #CBD5E1;
       display: block;
-      margin-top: 3px;
       line-height: 1.55;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .section-title {
       font-size: 0.9rem;
-      color: #D1D5DB;
-      margin: 0 0 0.75rem;
-      padding-left: 0.5rem;
-      border-left: 3px solid var(--accent);
+      color: #E2E8F0;
+      margin: 0 0 0.85rem;
       font-weight: 600;
+      font-family: var(--font-mono);
     }
+    .section-title::before { content: ">_ "; color: var(--accent); }
 
     .table-wrap {
       padding: 1rem 1.1rem;
@@ -202,6 +290,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       margin-bottom: 1rem;
+      backdrop-filter: blur(8px);
     }
 
     table {
@@ -210,34 +299,29 @@
       font-size: 0.82rem;
       min-width: 480px;
     }
-
     th, td {
-      border-bottom: 1px solid var(--border);
-      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.7rem 0.55rem;
       text-align: left;
       vertical-align: top;
     }
-
     th {
       color: var(--accent);
       font-weight: 600;
       white-space: nowrap;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.02em;
     }
-
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    tr:hover td { background: rgba(34, 211, 238, 0.04); }
 
     @media (max-width: 900px) {
-      .tabs { grid-template-columns: repeat(2, 1fr); }
+      .tabs { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 768px) {
       .page { padding: 16px 12px 32px; }
       .metric-grid { grid-template-columns: 1fr; }
-      .tabs { grid-template-columns: 1fr; }
-      .header h1 { font-size: 1.2rem; }
-      .header { padding: 1.1rem; }
+      .header { padding: 1.15rem; }
     }
   </style>
 </head>
@@ -253,17 +337,23 @@
 
     <header class="header">
       <div>
-        <div class="mono-prefix">&gt;_ ott_video_industry</div>
+        <div class="header-badge">&gt;_ ott_video_industry · knowledge_framework</div>
         <h1>OTT视频行业 · 知识框架</h1>
         <p class="sub">用户画像 · 内容与播放 · 营收与广告 —— 三大模块 23 个核心指标，覆盖从用户规模到商业变现的完整分析维度</p>
+        <div class="header-stats" aria-label="框架规模">
+          <div><div class="header-stat-num">3</div><div class="header-stat-label">分析模块</div></div>
+          <div><div class="header-stat-num">23</div><div class="header-stat-label">核心指标</div></div>
+          <div><div class="header-stat-num">口径+场景</div><div class="header-stat-label">结构化字段</div></div>
+          <div><div class="header-stat-num">JSON</div><div class="header-stat-label">可导出投喂</div></div>
+        </div>
       </div>
-      <button type="button" class="btn-export" id="btnExport">📦 导出 AI 知识库 (JSON)</button>
+      <button type="button" class="btn-export" id="btnExport">导出 AI 知识库 JSON</button>
     </header>
 
     <nav class="tabs" id="tabNav" aria-label="指标模块">
-      <button type="button" class="tab-btn active" data-tab="tab1">用户画像指标</button>
-      <button type="button" class="tab-btn" data-tab="tab2">内容与播放指标</button>
-      <button type="button" class="tab-btn" data-tab="tab3">营收与广告指标</button>
+      <button type="button" class="tab-btn active" data-tab="tab1"><span class="tab-kicker">MODULE 01</span>用户画像指标</button>
+      <button type="button" class="tab-btn" data-tab="tab2"><span class="tab-kicker">MODULE 02</span>内容与播放指标</button>
+      <button type="button" class="tab-btn" data-tab="tab3"><span class="tab-kicker">MODULE 03</span>营收与广告指标</button>
     </nav>
 
     <section id="tab1" class="tab-panel active" data-module="用户画像指标"></section>
@@ -321,8 +411,9 @@
           data-definition="${esc(m.definition)}"
           data-business-scene="${esc(m.scene)}">
           <h3>${m.name}</h3>
-          <div class="field">计算口径 <span>${m.formula}</span></div>
-          <div class="field">业务用途 <span>${m.scene}</span></div>
+          <div class="field"><div class="field-label">DEFINITION</div><span>${m.definition}</span></div>
+          <div class="field"><div class="field-label">FORMULA</div><span>${m.formula}</span></div>
+          <div class="field"><div class="field-label">SCENE</div><span>${m.scene}</span></div>
         </article>`;
     }
 
@@ -345,6 +436,10 @@
     function renderTab(tabId, items, moduleName) {
       const panel = document.getElementById(tabId);
       panel.innerHTML = `
+        <div class="module-banner">
+          <div class="mono">MODULE · ${moduleName}</div>
+          <div class="hint">${items.length} 个结构化指标 · 口径 / 公式 / 场景</div>
+        </div>
         <div class="metric-grid">
           ${items.map(m => renderMetricCard(m, moduleName)).join("")}
         </div>
