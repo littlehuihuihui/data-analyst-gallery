@@ -522,9 +522,32 @@
       font-weight: 600;
       color: var(--text);
       list-style: none;
+      display: block;
+      position: relative;
+      z-index: 1;
+      padding: 0.15rem 0;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .method-card summary::-webkit-details-marker { display: none; }
-    .method-card details[open] summary { color: var(--accent); }
+    .method-card summary::after {
+      content: "▸";
+      float: right;
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+    details.method-card[open] > summary {
+      color: var(--accent);
+    }
+    details.method-card[open] > summary::after {
+      transform: rotate(90deg);
+    }
+    /* transform 打在 <details> 上会导致部分浏览器无法展开 */
+    details.method-card,
+    details.method-card.animate-on-scroll,
+    details.method-card.animate-on-scroll.visible {
+      transform: none !important;
+    }
     .method-body { margin-top: 0.75rem; font-size: 0.88rem; color: var(--muted); }
 
     /* ========== 分析框架区表格 ========== */
@@ -2635,6 +2658,8 @@
   /* ========== 卡片悬浮微交互 ========== */
   function initCardHoverEffects() {
     document.querySelectorAll(".card, .stat-card, .pain-card, .method-card").forEach((card) => {
+      // 勿对 <details> 施加 transform，否则 summary 点击无法展开
+      if (card.tagName === "DETAILS") return;
       card.addEventListener("mousemove", (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -2647,6 +2672,19 @@
       });
       card.addEventListener("mouseleave", () => {
         card.style.transform = "";
+      });
+    });
+  }
+
+  /* 方法论文档库：强制 toggle，避免 transform/动画干扰原生 details */
+  function initMethodCards() {
+    document.querySelectorAll("details.method-card").forEach((det) => {
+      const summary = det.querySelector(":scope > summary");
+      if (!summary || summary.dataset.bound === "1") return;
+      summary.dataset.bound = "1";
+      summary.addEventListener("click", (e) => {
+        e.preventDefault();
+        det.open = !det.open;
       });
     });
   }
@@ -2701,6 +2739,7 @@
   if (window.requestAnimationFrame) {
     initScrollAnimations();
     initCardHoverEffects();
+    initMethodCards();
   }
 
   /* ========== 220万案例 · ECharts 桑基图 ========== */
