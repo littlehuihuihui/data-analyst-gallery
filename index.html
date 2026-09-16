@@ -57,11 +57,41 @@
       border-color: rgba(0,0,0,0.1);
     }
     body.light-theme .metrics-highlight-panel {
-      background: linear-gradient(135deg, #F0F9FF, #FFFFFF);
-      border-color: #BAE6FD;
+      background: linear-gradient(145deg, #F8FAFC 0%, #F1F5F9 100%);
+      border-color: #CBD5E1;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      color: #334155;
     }
-    body.light-theme .mhp-title { color: #0C4A6E; }
-    body.light-theme .mhp-subtitle { color: #0369A1; }
+    body.light-theme .metrics-highlight-panel .mhp-title { color: #0F172A; }
+    body.light-theme .metrics-highlight-panel .mhp-subtitle { color: #64748B; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi {
+      background: #FFFFFF;
+      border-color: #E2E8F0;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-label { color: #64748B; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-value { color: #0F172A; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-value.blue { color: #2563EB; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-value.green { color: #059669; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-value.purple { color: #7C3AED; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-value.amber { color: #D97706; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi-delta { color: #64748B; }
+    body.light-theme .metrics-highlight-panel .mhp-kpi.highlight .mhp-kpi-delta { color: #059669; }
+    body.light-theme .metrics-highlight-panel .mhp-chart-wrap {
+      background: #FFFFFF;
+      border-color: #E2E8F0;
+    }
+    body.light-theme .metrics-highlight-panel .mhp-sankey-legend { color: #64748B; }
+    body.light-theme .metrics-highlight-panel .mhp-note-box {
+      background: #FFFFFF;
+      border-color: #E2E8F0;
+      color: #475569;
+    }
+    body.light-theme .metrics-highlight-panel .mhp-note-box strong { color: #0F172A; }
+    body.light-theme .metrics-highlight-panel .mhp-footer {
+      border-top-color: #E2E8F0;
+    }
+    body.light-theme .metrics-highlight-panel .mhp-chart-loading { color: #64748B; }
     body.light-theme .case-tags span {
       background: rgba(2, 132, 199, 0.1);
       color: #0369A1;
@@ -778,49 +808,89 @@
       display: inline-block;
       font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: var(--accent);
       margin: 0.35rem 0;
+      line-height: 1.45;
     }
     .result-pill.positive { color: var(--positive); }
     .result-pill.danger { color: var(--danger); }
 
     /* ========== 图表通用 ========== */
     .chart-wrap {
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid var(--border);
+      margin: 1.15rem 0;
+      padding: 1.25rem 1.15rem 1rem;
+      border-radius: 14px;
+      background: linear-gradient(160deg, rgba(30, 41, 59, 0.55) 0%, rgba(15, 23, 42, 0.4) 100%);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+    }
+    .chart-wrap svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      font-family: "PingFang SC", "Segoe UI", system-ui, sans-serif;
     }
     .chart-legend {
-      font-size: 0.72rem;
-      color: var(--muted);
+      font-size: 0.82rem;
+      color: #94A3B8;
       font-family: var(--font-mono);
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.65rem 1rem;
     }
     .legend-dot {
       display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
-      margin-right: 0.25rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 0.3rem;
       vertical-align: middle;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+    body.light-theme .chart-wrap {
+      background: linear-gradient(160deg, #FFFFFF 0%, #F8FAFC 100%);
+      border-color: #E2E8F0;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    body.light-theme .chart-legend { color: #64748B; }
+    body.light-theme .sankey-svg .node-label { fill: #0F172A; }
+    body.light-theme .sankey-svg .node-sub { fill: #64748B; }
+    body.light-theme .sankey-svg .flow-label { fill: #475569; }
+
+    /* 桑基图（纯 SVG，无需外部库） */
+    .sankey-svg .flow { transition: opacity 0.2s; }
+    .sankey-svg:hover .flow { opacity: 0.35; }
+    .sankey-svg .flow:hover { opacity: 0.85; }
+    .sankey-svg .node-label {
+      font-size: 13px;
+      font-weight: 600;
+      fill: #E2E8F0;
+    }
+    .sankey-svg .node-sub {
+      font-size: 11px;
+      fill: #94A3B8;
+    }
+    .sankey-svg .flow-label {
+      font-size: 11px;
+      font-weight: 600;
+      fill: #CBD5E1;
+      pointer-events: none;
     }
 
-    /* ========== 220万案例 · 可量化结果（桑基图 · 黑色高亮） ========== */
+    /* ========== 可量化结果高亮面板（与页面深色风格协调） ========== */
     .metrics-highlight-panel {
       margin: 1rem 0;
-      padding: 1.5rem;
+      padding: 1.5rem 1.6rem 1.25rem;
       border-radius: 16px;
-      font-family: "PingFang SC", "Inter", system-ui, -apple-system, sans-serif;
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      color: #E5E7EB;
+      font-family: "PingFang SC", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.72) 0%, rgba(15, 23, 42, 0.55) 100%);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      color: #CBD5E1;
     }
     .metrics-highlight-panel .mhp-inner {
       background: transparent;
@@ -829,153 +899,177 @@
       box-shadow: none;
     }
     .metrics-highlight-panel .mhp-title {
-      margin: 0 0 0.25rem;
-      font-size: 1.15rem;
+      margin: 0 0 0.35rem;
+      font-size: 1.28rem;
       font-weight: 700;
-      color: #F1F5F9;
+      letter-spacing: 0.01em;
+      color: #F8FAFC;
+      line-height: 1.35;
     }
     .metrics-highlight-panel .mhp-subtitle {
-      margin: 0 0 1.1rem;
-      font-size: 0.85rem;
-      color: #9CA3AF;
+      margin: 0 0 1.25rem;
+      font-size: 0.95rem;
+      color: #94A3B8;
+      line-height: 1.55;
     }
     .metrics-highlight-panel .mhp-kpi-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.1rem;
+      gap: 0.85rem;
+      margin-bottom: 1.2rem;
+    }
+    .metrics-highlight-panel .mhp-kpi-row.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    @media (max-width: 900px) {
+      .metrics-highlight-panel .mhp-kpi-row.cols-4 { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
-      .metrics-highlight-panel .mhp-kpi-row { grid-template-columns: 1fr; }
-      .metrics-highlight-panel { padding: 1rem; }
-      .metrics-highlight-panel .mhp-inner { padding: 1rem; }
+      .metrics-highlight-panel .mhp-kpi-row,
+      .metrics-highlight-panel .mhp-kpi-row.cols-4 { grid-template-columns: 1fr; }
+      .metrics-highlight-panel { padding: 1.15rem; }
+      .metrics-highlight-panel .mhp-inner { padding: 0; }
     }
     .metrics-highlight-panel .mhp-kpi {
       text-align: center;
-      padding: 1rem;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      padding: 1.1rem 0.9rem;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: none;
     }
     .metrics-highlight-panel .mhp-kpi.highlight {
-      border: 2px solid transparent;
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)) padding-box,
-        linear-gradient(135deg, #10B981, #34D399) border-box;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.08);
       position: relative;
     }
     .metrics-highlight-panel .mhp-kpi.highlight::after {
-      content: "↑";
+      content: "";
       position: absolute;
-      top: 0.6rem;
-      right: 0.7rem;
-      color: #10B981;
-      font-weight: 700;
-      font-size: 0.85rem;
+      top: 0.75rem;
+      right: 0.85rem;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 8px solid #34D399;
     }
     .metrics-highlight-panel .mhp-kpi-label {
       display: block;
-      font-size: 0.75rem;
-      color: #9CA3AF;
-      margin-bottom: 0.35rem;
+      font-size: 0.88rem;
+      color: #94A3B8;
+      margin-bottom: 0.45rem;
+      font-weight: 500;
     }
     .metrics-highlight-panel .mhp-kpi-value {
-      font-size: 1.5rem;
+      font-size: 1.85rem;
       font-weight: 700;
-      line-height: 1.15;
-      color: #F9FAFB;
+      line-height: 1.2;
+      color: #F1F5F9;
+      letter-spacing: -0.02em;
     }
-    .metrics-highlight-panel .mhp-kpi-value.blue { color: #60A5FA; }
-    .metrics-highlight-panel .mhp-kpi-value.green { color: #34D399; }
-    .metrics-highlight-panel .mhp-kpi-value.purple { color: #A78BFA; }
+    .metrics-highlight-panel .mhp-kpi-value small {
+      font-size: 1.05rem !important;
+      font-weight: 600 !important;
+      margin-left: 0.1rem;
+      opacity: 0.9;
+    }
+    .metrics-highlight-panel .mhp-kpi-value.blue { color: #7DD3FC; }
+    .metrics-highlight-panel .mhp-kpi-value.green { color: #6EE7B7; }
+    .metrics-highlight-panel .mhp-kpi-value.purple { color: #C4B5FD; }
+    .metrics-highlight-panel .mhp-kpi-value.amber { color: #FCD34D; }
     .metrics-highlight-panel .mhp-kpi-delta {
-      font-size: 0.75rem;
-      color: #9CA3AF;
-      margin-top: 0.35rem;
+      font-size: 0.88rem;
+      color: #94A3B8;
+      margin-top: 0.45rem;
+      line-height: 1.4;
     }
-    .metrics-highlight-panel .mhp-kpi.highlight .mhp-kpi-delta { color: #10B981; }
+    .metrics-highlight-panel .mhp-kpi.highlight .mhp-kpi-delta { color: #6EE7B7; }
     .metrics-highlight-panel .mhp-chart-wrap {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 16px;
-      padding: 0.75rem;
-      margin-bottom: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.35);
+      border-radius: 14px;
+      padding: 0.85rem;
+      margin-bottom: 0.85rem;
+      border: 1px solid rgba(148, 163, 184, 0.14);
     }
-    .metrics-highlight-panel .mhp-chart-shell {
-      position: relative;
+    .metrics-highlight-panel .mhp-chart-wrap > svg {
+      display: block;
       width: 100%;
-      height: 400px;
-      min-height: 400px;
+      height: auto;
     }
-    .metrics-highlight-panel .mhp-chart {
-      width: 100%;
-      height: 100%;
-      min-height: 400px;
-    }
-    .metrics-highlight-panel .mhp-chart-loading {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #9CA3AF;
-      font-size: 0.85rem;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .metrics-highlight-panel .mhp-chart-shell.is-ready .mhp-chart-loading { display: none !important; }
     .metrics-highlight-panel .mhp-sankey-legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-      font-size: 0.72rem;
-      color: #9CA3AF;
-      margin-bottom: 0.85rem;
+      gap: 0.55rem 1.15rem;
+      font-size: 0.88rem;
+      color: #94A3B8;
+      margin-bottom: 1rem;
     }
     .metrics-highlight-panel .mhp-sankey-legend span {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
     }
-    .metrics-highlight-panel .mhp-sankey-legend i {
-      width: 10px;
-      height: 10px;
+    .metrics-highlight-panel .mhp-swatch {
+      width: 12px;
+      height: 12px;
       border-radius: 3px;
       display: inline-block;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
     }
     .metrics-highlight-panel .mhp-notes {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
     @media (max-width: 640px) {
       .metrics-highlight-panel .mhp-notes { grid-template-columns: 1fr; }
     }
     .metrics-highlight-panel .mhp-note-box {
-      padding: 0.85rem 1rem;
+      padding: 1rem 1.1rem;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.8rem;
-      color: #9CA3AF;
-      line-height: 1.55;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      font-size: 0.92rem;
+      color: #94A3B8;
+      line-height: 1.6;
     }
     .metrics-highlight-panel .mhp-note-box strong {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--accent);
-      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.95rem;
+      color: #E2E8F0;
+      margin-bottom: 0.4rem;
       font-weight: 600;
     }
+    .metrics-highlight-panel .mhp-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background: rgba(0, 212, 255, 0.12);
+      color: var(--accent);
+    }
+    .metrics-highlight-panel .mhp-ico svg {
+      width: 0.85rem;
+      height: 0.85rem;
+      display: block;
+    }
     .metrics-highlight-panel .mhp-footer {
-      margin-top: 0.85rem;
-      padding-top: 0.65rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
     }
     .metrics-highlight-panel .case-tags span {
       background: rgba(0, 212, 255, 0.1);
       color: var(--accent);
       border: 1px solid rgba(0, 212, 255, 0.25);
+      font-size: 0.8rem;
     }
 
     /* ========== 占位框 ========== */
@@ -1130,8 +1224,9 @@
       .case-block h3 { font-size: 1rem; }
       .case-section-title { font-size: 0.8rem; }
       .framework-table { font-size: 0.78rem; }
-      .metrics-highlight-panel { padding: 1rem; }
-      .mhp-title { font-size: 0.95rem; }
+      .metrics-highlight-panel { padding: 1.15rem; }
+      .metrics-highlight-panel .mhp-title { font-size: 1.1rem; }
+      .metrics-highlight-panel .mhp-kpi-value { font-size: 1.65rem; }
     }
 
     @media (max-width: 480px) {
@@ -1672,40 +1767,96 @@
             <div class="mhp-kpi-row">
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">旧口径分母</span>
-                <div class="mhp-kpi-value blue">400<small style="font-size:1rem;font-weight:600">万</small></div>
+                <div class="mhp-kpi-value blue">400<small>万</small></div>
                 <div class="mhp-kpi-delta">移动营业厅登记</div>
               </div>
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">新口径分母</span>
-                <div class="mhp-kpi-value green">180<small style="font-size:1rem;font-weight:600">万</small></div>
+                <div class="mhp-kpi-value green">180<small>万</small></div>
                 <div class="mhp-kpi-delta">银河激活设备</div>
               </div>
               <div class="mhp-kpi highlight">
                 <span class="mhp-kpi-label">真实活跃率</span>
-                <div class="mhp-kpi-value purple">22<small style="font-size:1rem;font-weight:600">%</small></div>
+                <div class="mhp-kpi-value purple">22<small>%</small></div>
                 <div class="mhp-kpi-delta">较旧口径约10%修复</div>
               </div>
             </div>
             <div class="mhp-chart-wrap">
-              <div class="mhp-chart-shell">
-                <div id="chart-220w-metrics" class="mhp-chart" role="img" aria-label="用户规模桑基流向图"></div>
-                <div class="mhp-chart-loading" id="chart-220w-loading">图表加载中…</div>
-              </div>
+              <svg class="sankey-svg" viewBox="0 0 720 340" width="100%" height="340" role="img" aria-label="用户规模桑基流向图：旧口径400万拆解至有效激活、低质量与其他差异">
+                <defs>
+                  <linearGradient id="sk-g-act" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#10B981" stop-opacity="0.55"/>
+                  </linearGradient>
+                  <linearGradient id="sk-g-low" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#F97316" stop-opacity="0.5"/>
+                  </linearGradient>
+                  <linearGradient id="sk-g-other" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.45"/>
+                    <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.45"/>
+                  </linearGradient>
+                  <linearGradient id="sk-g-end" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#10B981" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.6"/>
+                  </linearGradient>
+                  <filter id="sk-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="2" result="b"/>
+                    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+
+                <!-- flows: 400 → 180 / 120 / 100；180 → 活跃 -->
+                <!-- mid ys: act 36–144 (h108), gap16, low 160–232 (h72), gap16, other 248–308 (h60) -->
+                <path class="flow" d="M88,36 C220,36 220,36 352,36 L352,144 C220,144 220,144 88,144 Z" fill="url(#sk-g-act)" opacity="0.72"/>
+                <path class="flow" d="M88,144 C220,144 220,160 352,160 L352,232 C220,232 220,216 88,216 Z" fill="url(#sk-g-low)" opacity="0.72"/>
+                <path class="flow" d="M88,216 C220,216 220,248 352,248 L352,308 C220,308 220,276 88,276 Z" fill="url(#sk-g-other)" opacity="0.72"/>
+                <path class="flow" d="M370,36 C480,36 480,36 590,36 L590,144 C480,144 480,144 370,144 Z" fill="url(#sk-g-end)" opacity="0.72"/>
+
+                <!-- nodes -->
+                <rect x="70" y="36" width="18" height="240" rx="4" fill="#1E3A8A" filter="url(#sk-glow)"/>
+                <rect x="352" y="36" width="18" height="108" rx="4" fill="#10B981"/>
+                <rect x="352" y="160" width="18" height="72" rx="4" fill="#F97316"/>
+                <rect x="352" y="248" width="18" height="60" rx="4" fill="#94A3B8"/>
+                <rect x="590" y="36" width="18" height="108" rx="4" fill="#8B5CF6" filter="url(#sk-glow)"/>
+
+                <!-- labels -->
+                <text class="node-label" x="20" y="148" text-anchor="end">旧口径</text>
+                <text class="node-sub" x="20" y="166" text-anchor="end">400万</text>
+
+                <text class="node-label" x="380" y="78">有效激活</text>
+                <text class="node-sub" x="380" y="96">180万</text>
+                <text class="flow-label" x="210" y="96" text-anchor="middle" opacity="0.9">180万</text>
+
+                <text class="node-label" x="380" y="192">仅开机一次</text>
+                <text class="node-sub" x="380" y="210">120万</text>
+                <text class="flow-label" x="210" y="196" text-anchor="middle" opacity="0.9">120万</text>
+
+                <text class="node-label" x="380" y="274">其他差异</text>
+                <text class="node-sub" x="380" y="292">100万</text>
+                <text class="flow-label" x="210" y="276" text-anchor="middle" opacity="0.9">100万</text>
+
+                <text class="node-label" x="620" y="82">真实活跃</text>
+                <text class="node-sub" x="620" y="100">22%</text>
+                <text class="flow-label" x="480" y="96" text-anchor="middle" opacity="0.9">→ 活跃率</text>
+
+                <text x="360" y="330" text-anchor="middle" fill="#64748B" font-size="11">从旧口径分母拆解质量结构，并还原真实活跃率</text>
+              </svg>
             </div>
             <div class="mhp-sankey-legend">
-              <span><i style="background:#1E3A8A"></i>旧口径</span>
-              <span><i style="background:#10B981"></i>有效激活</span>
-              <span><i style="background:#F97316"></i>仅开机一次</span>
-              <span><i style="background:#9CA3AF"></i>其他差异</span>
-              <span><i style="background:#8B5CF6"></i>真实活跃</span>
+              <span><span class="mhp-swatch" style="background:#1E3A8A"></span>旧口径</span>
+              <span><span class="mhp-swatch" style="background:#10B981"></span>有效激活</span>
+              <span><span class="mhp-swatch" style="background:#F97316"></span>仅开机一次</span>
+              <span><span class="mhp-swatch" style="background:#9CA3AF"></span>其他差异</span>
+              <span><span class="mhp-swatch" style="background:#8B5CF6"></span>真实活跃</span>
             </div>
             <div class="mhp-notes">
               <div class="mhp-note-box">
-                <strong>口径定义</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="10" width="3" height="6" rx="0.5" fill="currentColor" stroke="none"/><rect x="12" y="7" width="3" height="9" rx="0.5" fill="currentColor" stroke="none"/><rect x="17" y="12" width="3" height="4" rx="0.5" fill="currentColor" stroke="none"/></svg></span>口径定义</strong>
                 旧口径=移动营业厅登记（手机号，意向用户）；新口径=银河设备首次PB日志（MAC，行为激活）。
               </div>
               <div class="mhp-note-box">
-                <strong>差异诊断</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>差异诊断</strong>
                 400万-180万=220万差异中，约120万为「仅开机一次」低质量用户；其余为未激活/未绑定等设备映射差异。
               </div>
             </div>
@@ -1755,43 +1906,38 @@
         <p class="case-section-title">&gt; 影响</p>
         <p style="color:var(--muted);font-size:0.88rem;">两个根因叠加，使「播放时长为 0」的用户占比偏高，影响活跃指标准确性，也影响后续合作方关于「按有播放用户结算」口径的讨论。</p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 300 310" width="100%" height="310" aria-label="纵向漏斗：四层主干至拉起分支与0播放双根因">
-            <text x="110" y="14" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono">纵向漏斗（示意）</text>
-            <!-- 层1 开机用户 -->
-            <polygon points="30,22 270,22 250,48 50,48" fill="#1E3A5F" stroke="#374151" />
-            <text x="150" y="40" fill="#E5E7EB" font-size="10" text-anchor="middle">开机用户</text>
-            <!-- 层2 进入Launcher -->
-            <polygon points="50,54 250,54 235,78 65,78" fill="#1E3A5F" stroke="#374151" />
-            <text x="150" y="71" fill="#E5E7EB" font-size="10" text-anchor="middle">进入 Launcher</text>
-            <!-- 层3 点击模块 -->
-            <polygon points="70,84 230,84 218,108 82,108" fill="#1E3A5F" stroke="#374151" />
-            <text x="150" y="100" fill="#E5E7EB" font-size="10" text-anchor="middle">点击模块</text>
-            <!-- 层4 自动拉起 / 未拉起 -->
-            <polygon points="85,114 145,114 140,138 90,138" fill="#00D4FF" opacity="0.9" />
-            <text x="115" y="131" fill="#0A0E17" font-size="9" text-anchor="middle">自动拉起</text>
-            <polygon points="155,114 215,114 210,138 160,138" fill="#1E3A5F" stroke="#374151" />
-            <text x="185" y="131" fill="#E5E7EB" font-size="9" text-anchor="middle">未拉起</text>
-            <line x1="150" y1="108" x2="115" y2="114" stroke="#6B7280" stroke-width="1" />
-            <line x1="150" y1="108" x2="185" y2="114" stroke="#6B7280" stroke-width="1" />
-            <!-- 层5 有播放 / 0播放 -->
-            <polygon points="90,148 135,148 130,175 95,175" fill="#10B981" />
-            <text x="112" y="166" fill="#0A0E17" font-size="9" text-anchor="middle">有播放</text>
-            <polygon points="165,148 210,148 205,175 170,175" fill="#EF4444" stroke="#FCA5A5" />
-            <text x="187" y="166" fill="#fff" font-size="9" text-anchor="middle">0播放</text>
-            <line x1="115" y1="138" x2="112" y2="148" stroke="#6B7280" /><line x1="185" y1="138" x2="187" y2="148" stroke="#6B7280" />
-            <!-- 0播放 延伸诊断 -->
-            <line x1="187" y1="175" x2="187" y2="188" stroke="#EF4444" stroke-width="1.5" />
-            <line x1="187" y1="188" x2="95" y2="200" stroke="#EF4444" stroke-width="1.2" />
-            <line x1="187" y1="188" x2="255" y2="200" stroke="#EF4444" stroke-width="1.2" />
-            <rect x="8" y="202" width="130" height="36" rx="4" fill="rgba(239,68,68,0.15)" stroke="#EF4444" />
-            <text x="73" y="218" fill="#EF4444" font-size="8" text-anchor="middle">产品逻辑问题</text>
-            <text x="73" y="230" fill="#EF4444" font-size="7" text-anchor="middle">（自动拉起缺失）</text>
-            <rect x="162" y="202" width="130" height="36" rx="4" fill="rgba(239,68,68,0.15)" stroke="#EF4444" />
-            <text x="227" y="218" fill="#EF4444" font-size="8" text-anchor="middle">埋点问题</text>
-            <text x="227" y="230" fill="#EF4444" font-size="7" text-anchor="middle">（结束日志丢失）</text>
-            <text x="150" y="258" fill="#9CA3AF" font-size="8" text-anchor="middle">自上而下逐层收窄；0播放 分支接双根因</text>
+          <svg viewBox="0 0 420 360" width="100%" aria-label="纵向漏斗：四层主干至拉起分支与0播放双根因">
+            <defs>
+              <linearGradient id="zp-funnel" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1E40AF"/>
+                <stop offset="100%" stop-color="#0EA5E9"/>
+              </linearGradient>
+            </defs>
+            <text x="210" y="22" text-anchor="middle" fill="#94A3B8" font-size="13" font-weight="600">纵向漏斗诊断</text>
+            <polygon points="50,36 370,36 340,72 80,72" fill="url(#zp-funnel)" opacity="0.9"/>
+            <text x="210" y="60" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">开机用户</text>
+            <polygon points="80,82 340,82 315,118 105,118" fill="#1E3A8A" opacity="0.95"/>
+            <text x="210" y="106" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">进入 Launcher</text>
+            <polygon points="105,128 315,128 295,164 125,164" fill="#164E63"/>
+            <text x="210" y="152" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">点击模块</text>
+            <polygon points="125,174 205,174 198,214 132,214" fill="#38BDF8"/>
+            <text x="165" y="200" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">自动拉起</text>
+            <polygon points="215,174 295,174 288,214 222,214" fill="#334155"/>
+            <text x="255" y="200" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="600">未拉起</text>
+            <polygon points="132,224 198,224 190,264 140,264" fill="#34D399"/>
+            <text x="165" y="250" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">有播放</text>
+            <polygon points="222,224 288,224 280,264 230,264" fill="#F87171"/>
+            <text x="255" y="250" text-anchor="middle" fill="#FFF" font-size="13" font-weight="700">0播放</text>
+            <path d="M255 264 L255 278 L120 292" fill="none" stroke="#F87171" stroke-width="1.8"/>
+            <path d="M255 278 L340 292" fill="none" stroke="#F87171" stroke-width="1.8"/>
+            <rect x="40" y="298" width="160" height="44" rx="10" fill="rgba(248,113,113,0.12)" stroke="rgba(248,113,113,0.45)"/>
+            <text x="120" y="316" text-anchor="middle" fill="#FCA5A5" font-size="13" font-weight="600">产品逻辑问题</text>
+            <text x="120" y="334" text-anchor="middle" fill="#94A3B8" font-size="11">自动拉起缺失</text>
+            <rect x="220" y="298" width="160" height="44" rx="10" fill="rgba(248,113,113,0.12)" stroke="rgba(248,113,113,0.45)"/>
+            <text x="300" y="316" text-anchor="middle" fill="#FCA5A5" font-size="13" font-weight="600">埋点采集问题</text>
+            <text x="300" y="334" text-anchor="middle" fill="#94A3B8" font-size="11">结束日志丢失</text>
           </svg>
-          <div class="chart-legend"><span><i class="legend-dot" style="background:#10B981"></i>有播放</span><span><i class="legend-dot" style="background:#EF4444"></i>0播放 + 红色诊断</span></div>
+          <div class="chart-legend"><span><i class="legend-dot" style="background:#34D399"></i>有播放</span><span><i class="legend-dot" style="background:#F87171"></i>0播放 · 双根因</span></div>
         </div>
         <div class="case-tags"><span>#漏斗分析</span><span>#产品逻辑诊断</span><span>#埋点诊断</span></div>
       </article>
@@ -1803,11 +1949,13 @@
         <p class="case-section-title">&gt; 可量化结果</p>
         <p><span class="result-pill">180万激活中约120万「仅开机一次」</span></p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 300 100" width="100%" height="100">
-            <rect x="20" y="30" width="240" height="36" fill="#1E3A5F" />
-            <rect x="20" y="30" width="160" height="36" fill="#EF4444" opacity="0.85" />
-            <text x="28" y="52" fill="#fff" font-size="11" font-family="JetBrains Mono">120万 仅开机一次</text>
-            <text x="185" y="52" fill="#00D4FF" font-size="10" font-family="JetBrains Mono">其余激活</text>
+          <svg viewBox="0 0 480 140" width="100%" aria-label="180万激活中低质量占比">
+            <text x="24" y="28" fill="#94A3B8" font-size="13" font-weight="600">激活用户质量结构</text>
+            <rect x="24" y="48" width="432" height="48" rx="12" fill="#1E3A8A"/>
+            <rect x="24" y="48" width="288" height="48" rx="12" fill="#F87171"/>
+            <text x="48" y="78" fill="#FFF" font-size="15" font-weight="700">120万 · 仅开机一次（≈67%）</text>
+            <text x="330" y="78" fill="#7DD3FC" font-size="14" font-weight="600">其余 60万</text>
+            <text x="24" y="122" fill="#64748B" font-size="12">口径统一后：180万激活中约三分之二为低质量用户</text>
           </svg>
         </div>
         <div class="case-tags"><span>#用户质量分层</span><span>#同期群观察</span></div>
@@ -1843,25 +1991,31 @@
         <p class="case-section-title">&gt; 可量化结果</p>
         <p><span class="result-pill positive">自动化关联替代手工对账 · 效率约+90%</span> · 支持设备套现预警</p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 380 158" width="100%" height="158" aria-label="三方架构与关联字段">
-            <rect x="12" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
-            <text x="20" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">CRM</text>
-            <text x="20" y="48" fill="#E5E7EB" font-size="8">手机号/用户信息</text>
-            <rect x="136" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
-            <text x="144" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">设备库</text>
-            <text x="144" y="48" fill="#E5E7EB" font-size="8">SN码/设备信息+闹钟日历等</text>
-            <rect x="260" y="18" width="108" height="48" rx="4" fill="#1E3A5F" />
-            <text x="268" y="34" fill="#00D4FF" font-size="9" font-family="JetBrains Mono">APK</text>
-            <text x="268" y="48" fill="#E5E7EB" font-size="8">MAC地址/播放+点击行为</text>
-            <path d="M120 42 L136 42" stroke="#00D4FF" stroke-width="2" />
-            <text x="118" y="14" fill="#9CA3AF" font-size="7" font-family="JetBrains Mono">手机号↔SN码</text>
-            <path d="M244 42 L260 42" stroke="#00D4FF" stroke-width="2" />
-            <text x="242" y="14" fill="#9CA3AF" font-size="7" font-family="JetBrains Mono">SN码↔MAC地址</text>
-            <path d="M66 66 L190 88 L314 66" stroke="#00D4FF" fill="none" stroke-width="1.2" />
-            <rect x="95" y="100" width="190" height="28" rx="4" fill="#00D4FF" />
-            <text x="190" y="118" fill="#0A0E17" font-size="10" font-family="JetBrains Mono" text-anchor="middle">统一用户标识：SN码</text>
+          <svg viewBox="0 0 560 220" width="100%" aria-label="三方架构与关联字段">
+            <defs>
+              <marker id="arr-tri" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#38BDF8"/>
+              </marker>
+            </defs>
+            <text x="280" y="24" text-anchor="middle" fill="#94A3B8" font-size="13" font-weight="600">三方数据打通架构</text>
+            <rect x="24" y="48" width="150" height="72" rx="14" fill="#0F172A" stroke="rgba(56,189,248,0.35)" stroke-width="1.5"/>
+            <text x="99" y="78" text-anchor="middle" fill="#7DD3FC" font-size="15" font-weight="700">CRM</text>
+            <text x="99" y="100" text-anchor="middle" fill="#94A3B8" font-size="12">手机号 · 用户信息</text>
+            <rect x="205" y="48" width="150" height="72" rx="14" fill="#0F172A" stroke="rgba(56,189,248,0.35)" stroke-width="1.5"/>
+            <text x="280" y="78" text-anchor="middle" fill="#7DD3FC" font-size="15" font-weight="700">设备库</text>
+            <text x="280" y="100" text-anchor="middle" fill="#94A3B8" font-size="12">SN码 · 设备信息</text>
+            <rect x="386" y="48" width="150" height="72" rx="14" fill="#0F172A" stroke="rgba(56,189,248,0.35)" stroke-width="1.5"/>
+            <text x="461" y="78" text-anchor="middle" fill="#7DD3FC" font-size="15" font-weight="700">APK</text>
+            <text x="461" y="100" text-anchor="middle" fill="#94A3B8" font-size="12">MAC · 行为日志</text>
+            <line x1="174" y1="84" x2="205" y2="84" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-tri)"/>
+            <line x1="355" y1="84" x2="386" y2="84" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-tri)"/>
+            <text x="190" y="72" text-anchor="middle" fill="#64748B" font-size="11">手机↔SN</text>
+            <text x="370" y="72" text-anchor="middle" fill="#64748B" font-size="11">SN↔MAC</text>
+            <path d="M99 120 C99 150, 280 150, 280 150 C280 150, 461 150, 461 120" fill="none" stroke="rgba(56,189,248,0.45)" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <rect x="170" y="162" width="220" height="40" rx="12" fill="#38BDF8"/>
+            <text x="280" y="188" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="700">统一用户标识：SN 码</text>
           </svg>
-          <div class="chart-legend"><span>连线为关联字段</span><span><i class="legend-dot" style="background:#00D4FF"></i>汇聚 SN 主键</span></div>
+          <div class="chart-legend"><span>连线为关联字段</span><span><i class="legend-dot" style="background:#38BDF8"></i>汇聚 SN 主键</span></div>
         </div>
         <div class="case-tags"><span>#数据工程</span><span>#跨团队协作</span><span>#项目管理</span></div>
       </article>
@@ -1883,11 +2037,16 @@
         <p class="case-section-title">&gt; 可量化结果</p>
         <p><span class="result-pill positive">4小时 → 10分钟</span></p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 320 100" width="100%" height="100">
-            <text x="20" y="25" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono">Before / After</text>
-            <rect x="30" y="40" width="100" height="40" rx="4" fill="#1E3A5F" /><text x="42" y="66" fill="#E5E7EB" font-size="10">手工 4h/2人</text>
-            <text x="145" y="68" fill="#00D4FF" font-size="16">→</text>
-            <rect x="180" y="40" width="110" height="40" rx="4" fill="#00D4FF" /><text x="192" y="66" fill="#0A0E17" font-size="10">Python 10min</text>
+          <svg viewBox="0 0 480 150" width="100%" aria-label="报表自动化前后对比">
+            <text x="24" y="28" fill="#94A3B8" font-size="13" font-weight="600">效率对比 · Before / After</text>
+            <rect x="24" y="52" width="170" height="64" rx="14" fill="#334155"/>
+            <text x="109" y="80" text-anchor="middle" fill="#CBD5E1" font-size="14" font-weight="600">手工报表</text>
+            <text x="109" y="100" text-anchor="middle" fill="#FCA5A5" font-size="16" font-weight="700">4h / 2人</text>
+            <path d="M210 84 L250 84" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+            <polygon points="250,78 262,84 250,90" fill="#38BDF8"/>
+            <rect x="278" y="52" width="178" height="64" rx="14" fill="#34D399"/>
+            <text x="367" y="80" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="600">Python 自动化</text>
+            <text x="367" y="100" text-anchor="middle" fill="#0F172A" font-size="16" font-weight="700">10 分钟</text>
           </svg>
         </div>
         <div class="case-tags"><span>#自动化</span><span>#Python</span><span>#效率提升</span></div>
@@ -1924,34 +2083,33 @@
         <p class="case-section-title">&gt; 结果</p>
         <p style="color:var(--muted);font-size:0.88rem;">方案固化为新用户激活标准流程。</p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 300 248" width="100%" height="248" aria-label="纵向双层漏斗：每层左优化前浅蓝、右优化后亮绿">
-            <line x1="150" y1="28" x2="150" y2="220" stroke="#374151" stroke-dasharray="4 4" />
-            <text x="75" y="14" fill="#7dd3fc" font-size="9" text-anchor="middle" font-family="JetBrains Mono">优化前（浅蓝）</text>
-            <text x="225" y="14" fill="#10B981" font-size="9" text-anchor="middle" font-family="JetBrains Mono">优化后（亮绿）</text>
-            <!-- 第一层漏斗 -->
-            <text x="150" y="30" fill="#E5E7EB" font-size="10" text-anchor="middle">APK激活→设备开机</text>
-            <polygon points="20,38 150,38 150,58 70,58" fill="#38bdf8" fill-opacity="0.55" stroke="#7dd3fc" />
-            <text x="95" y="52" fill="#0A0E17" font-size="9" text-anchor="middle">40%</text>
-            <polygon points="150,34 280,34 280,72 150,72" fill="#10B981" stroke="#34d399" />
-            <text x="215" y="56" fill="#0A0E17" font-size="9" text-anchor="middle">90%</text>
-            <text x="95" y="70" fill="#9CA3AF" font-size="7" text-anchor="middle">优化前 40%</text>
-            <text x="215" y="78" fill="#9CA3AF" font-size="7" text-anchor="middle">优化后 90%</text>
-            <!-- 第二层漏斗 -->
-            <text x="150" y="96" fill="#E5E7EB" font-size="10" text-anchor="middle">开机→手机号登录</text>
-            <rect x="22" y="102" width="52" height="48" fill="#38bdf8" fill-opacity="0.55" stroke="#7dd3fc" />
-            <rect x="76" y="102" width="52" height="48" fill="#1E3A5F" stroke="#4b5563" />
-            <text x="48" y="128" fill="#0A0E17" font-size="8" text-anchor="middle">手机50%</text>
-            <text x="102" y="128" fill="#E5E7EB" font-size="8" text-anchor="middle">游客50%</text>
-            <text x="74" y="162" fill="#9CA3AF" font-size="7" text-anchor="middle">优化前 50%:50%</text>
-            <rect x="152" y="102" width="92" height="62" fill="#10B981" stroke="#34d399" />
-            <rect x="246" y="118" width="28" height="46" fill="#374151" stroke="#6b7280" />
-            <text x="198" y="138" fill="#0A0E17" font-size="8" text-anchor="middle">手机95%</text>
-            <text x="260" y="138" fill="#E5E7EB" font-size="8" text-anchor="middle">游客5%</text>
-            <text x="215" y="174" fill="#9CA3AF" font-size="7" text-anchor="middle">优化后 95%:5%</text>
-            <text x="150" y="200" fill="#00D4FF" font-size="9" text-anchor="middle" font-family="JetBrains Mono">纵向两层 · 左右高度差体现转化提升</text>
-            <text x="150" y="218" fill="#9CA3AF" font-size="8" text-anchor="middle">左半幅浅蓝=优化前 · 右半幅亮绿=优化后</text>
+          <svg viewBox="0 0 520 280" width="100%" aria-label="双重漏斗优化前后对比">
+            <text x="130" y="24" text-anchor="middle" fill="#7DD3FC" font-size="13" font-weight="600">优化前</text>
+            <text x="390" y="24" text-anchor="middle" fill="#34D399" font-size="13" font-weight="600">优化后</text>
+            <line x1="260" y1="36" x2="260" y2="250" stroke="rgba(148,163,184,0.2)" stroke-dasharray="5 5"/>
+
+            <text x="260" y="52" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="600">第一层 · APK激活 → 设备开机</text>
+            <rect x="40" y="68" width="180" height="44" rx="10" fill="rgba(56,189,248,0.2)" stroke="#7DD3FC"/>
+            <text x="130" y="96" text-anchor="middle" fill="#E0F2FE" font-size="18" font-weight="700">40%</text>
+            <rect x="300" y="62" width="180" height="56" rx="10" fill="#34D399"/>
+            <text x="390" y="96" text-anchor="middle" fill="#0F172A" font-size="20" font-weight="700">90%</text>
+
+            <text x="260" y="148" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="600">第二层 · 开机 → 手机号登录</text>
+            <rect x="40" y="164" width="88" height="52" rx="10" fill="rgba(56,189,248,0.25)" stroke="#7DD3FC"/>
+            <text x="84" y="186" text-anchor="middle" fill="#E0F2FE" font-size="13" font-weight="700">手机</text>
+            <text x="84" y="204" text-anchor="middle" fill="#94A3B8" font-size="12">50%</text>
+            <rect x="132" y="164" width="88" height="52" rx="10" fill="#334155"/>
+            <text x="176" y="186" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">游客</text>
+            <text x="176" y="204" text-anchor="middle" fill="#94A3B8" font-size="12">50%</text>
+            <rect x="300" y="164" width="140" height="52" rx="10" fill="#34D399"/>
+            <text x="370" y="186" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="700">手机</text>
+            <text x="370" y="204" text-anchor="middle" fill="#064E3B" font-size="12">95%</text>
+            <rect x="448" y="176" width="40" height="40" rx="8" fill="#475569"/>
+            <text x="468" y="200" text-anchor="middle" fill="#E2E8F0" font-size="11" font-weight="600">5%</text>
+
+            <text x="260" y="250" text-anchor="middle" fill="#7DD3FC" font-size="13" font-weight="600">叠加效果：日活 +200%</text>
           </svg>
-          <div class="chart-legend"><span><i class="legend-dot" style="background:#38bdf8"></i>优化前（浅蓝）</span><span><i class="legend-dot" style="background:#10B981"></i>优化后（亮绿）</span></div>
+          <div class="chart-legend"><span><i class="legend-dot" style="background:#7DD3FC"></i>优化前</span><span><i class="legend-dot" style="background:#34D399"></i>优化后</span></div>
         </div>
         <div class="case-tags"><span>#对比分析</span><span>#漏斗分析</span><span>#产品优化</span><span>#策略验证</span></div>
       </article>
@@ -1963,13 +2121,23 @@
         <p class="case-section-title">&gt; 可量化结果</p>
         <p><span class="result-pill positive">提前约12个月预警</span></p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 340 130" width="100%" height="130">
-            <line x1="30" y1="100" x2="310" y2="100" stroke="#374151" />
-            <rect x="200" y="35" width="24" height="65" fill="#EF4444" /><text x="188" y="120" fill="#9CA3AF" font-size="8">第13月</text>
-            <text x="175" y="28" fill="#EF4444" font-size="9" font-family="JetBrains Mono">流失高峰</text>
-            <rect x="50" y="75" width="16" height="25" fill="#1E3A5F" /><rect x="75" y="70" width="16" height="30" fill="#1E3A5F" />
-            <rect x="100" y="65" width="16" height="35" fill="#1E3A5F" /><rect x="125" y="60" width="16" height="40" fill="#1E3A5F" />
-            <text x="20" y="20" fill="#9CA3AF" font-size="9">流失率按月（示意柱）</text>
+          <svg viewBox="0 0 520 200" width="100%" aria-label="流失率按月示意柱状图">
+            <text x="24" y="28" fill="#94A3B8" font-size="13" font-weight="600">流失率按月（示意）</text>
+            <line x1="40" y1="160" x2="490" y2="160" stroke="rgba(148,163,184,0.25)"/>
+            <rect x="60" y="128" width="28" height="32" rx="6" fill="#334155"/>
+            <rect x="100" y="118" width="28" height="42" rx="6" fill="#334155"/>
+            <rect x="140" y="108" width="28" height="52" rx="6" fill="#475569"/>
+            <rect x="180" y="98" width="28" height="62" rx="6" fill="#475569"/>
+            <rect x="220" y="88" width="28" height="72" rx="6" fill="#64748B"/>
+            <rect x="260" y="78" width="28" height="82" rx="6" fill="#94A3B8"/>
+            <rect x="300" y="48" width="36" height="112" rx="8" fill="#F87171"/>
+            <rect x="350" y="92" width="28" height="68" rx="6" fill="#64748B"/>
+            <rect x="390" y="110" width="28" height="50" rx="6" fill="#475569"/>
+            <rect x="430" y="122" width="28" height="38" rx="6" fill="#334155"/>
+            <text x="318" y="40" text-anchor="middle" fill="#FCA5A5" font-size="13" font-weight="700">流失高峰 · 第13月</text>
+            <text x="74" y="178" text-anchor="middle" fill="#64748B" font-size="11">M1</text>
+            <text x="318" y="178" text-anchor="middle" fill="#FCA5A5" font-size="11" font-weight="600">M13</text>
+            <text x="444" y="178" text-anchor="middle" fill="#64748B" font-size="11">M16</text>
           </svg>
         </div>
         <div class="case-tags"><span>#同期群分析</span><span>#流失预估</span><span>#业务预警</span></div>
@@ -1982,12 +2150,16 @@
         <p class="case-section-title">&gt; 可量化结果</p>
         <p><span class="result-pill positive">维持原结算口径 · 避免收入损失</span></p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 300 110" width="100%" height="110">
-            <line x1="30" y1="90" x2="270" y2="90" stroke="#374151" />
-            <rect x="40" y="35" width="50" height="55" fill="#1E3A5F" /><text x="45" y="105" fill="#9CA3AF" font-size="8">开机口径</text>
-            <rect x="120" y="50" width="50" height="40" fill="#00D4FF" /><text x="118" y="105" fill="#9CA3AF" font-size="8">进入点播</text>
-            <rect x="200" y="65" width="50" height="25" fill="#EF4444" /><text x="195" y="105" fill="#9CA3AF" font-size="8">有播放</text>
-            <text x="20" y="20" fill="#9CA3AF" font-size="9">预估收入差异（示意）</text>
+          <svg viewBox="0 0 480 180" width="100%" aria-label="三种结算口径规模对比">
+            <text x="24" y="28" fill="#94A3B8" font-size="13" font-weight="600">结算口径规模对比（示意）</text>
+            <line x1="40" y1="150" x2="440" y2="150" stroke="rgba(148,163,184,0.25)"/>
+            <rect x="70" y="58" width="70" height="92" rx="10" fill="#1E40AF"/>
+            <text x="105" y="168" text-anchor="middle" fill="#94A3B8" font-size="12">开机口径</text>
+            <rect x="190" y="82" width="70" height="68" rx="10" fill="#38BDF8"/>
+            <text x="225" y="168" text-anchor="middle" fill="#94A3B8" font-size="12">进入点播</text>
+            <rect x="310" y="108" width="70" height="42" rx="10" fill="#F87171"/>
+            <text x="345" y="168" text-anchor="middle" fill="#94A3B8" font-size="12">有播放</text>
+            <text x="240" y="48" text-anchor="middle" fill="#64748B" font-size="12">有播放用户约为开机用户一半 · 新口径将显著压低收入</text>
           </svg>
         </div>
         <div class="case-tags"><span>#商业分析</span><span>#口径测算</span><span>#收入影响</span></div>
@@ -1998,14 +2170,28 @@
         <h3>用户兴趣标签体系（行为占比）</h3>
         <p>无画像系统前提下，用播放次数占比与播放时长占比双维度判定偏好；输出带标签 MAC 列表给运营，精选屏从千人一面到千人千面的冷启动方案。</p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 340 110" width="100%" height="110">
-            <rect x="20" y="40" width="50" height="36" rx="4" fill="#1E3A5F" /><text x="28" y="62" fill="#E5E7EB" font-size="10">用户</text>
-            <text x="78" y="62" fill="#00D4FF">→</text>
-            <rect x="95" y="40" width="70" height="36" rx="4" fill="#00D4FF" /><text x="100" y="62" fill="#0A0E17" font-size="10">行为分析</text>
-            <text x="175" y="62" fill="#00D4FF">→</text>
-            <rect x="190" y="35" width="40" height="22" fill="#10B981" /><rect x="235" y="35" width="40" height="22" fill="#10B981" /><rect x="280" y="35" width="40" height="22" fill="#10B981" />
-            <text x="188" y="85" fill="#9CA3AF" font-size="8">电影/电视剧/综艺偏好</text>
-            <text x="188" y="98" fill="#9CA3AF" font-size="8">差异化精选屏策略</text>
+          <svg viewBox="0 0 560 160" width="100%" aria-label="兴趣标签生成流程">
+            <defs>
+              <marker id="arr-pref" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#38BDF8"/>
+              </marker>
+            </defs>
+            <text x="24" y="28" fill="#94A3B8" font-size="13" font-weight="600">兴趣标签冷启动链路</text>
+            <rect x="24" y="52" width="100" height="56" rx="12" fill="#1E3A8A"/>
+            <text x="74" y="86" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="700">用户</text>
+            <line x1="124" y1="80" x2="158" y2="80" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-pref)"/>
+            <rect x="160" y="52" width="120" height="56" rx="12" fill="#0EA5E9"/>
+            <text x="220" y="86" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">行为双维度</text>
+            <line x1="280" y1="80" x2="314" y2="80" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-pref)"/>
+            <rect x="316" y="44" width="72" height="28" rx="8" fill="#34D399"/>
+            <text x="352" y="63" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="700">电影</text>
+            <rect x="400" y="44" width="72" height="28" rx="8" fill="#34D399"/>
+            <text x="436" y="63" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="700">电视剧</text>
+            <rect x="484" y="44" width="56" height="28" rx="8" fill="#34D399"/>
+            <text x="512" y="63" text-anchor="middle" fill="#0F172A" font-size="12" font-weight="700">综艺</text>
+            <rect x="316" y="84" width="224" height="28" rx="8" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.4)"/>
+            <text x="428" y="103" text-anchor="middle" fill="#6EE7B7" font-size="12" font-weight="600">差异化精选屏策略</text>
+            <text x="24" y="140" fill="#64748B" font-size="12">播放次数占比 × 播放时长占比 → 偏好标签 MAC 列表</text>
           </svg>
         </div>
         <div class="case-tags"><span>#用户画像</span><span>#行为占比分析</span><span>#推荐冷启动</span></div>
@@ -2016,25 +2202,36 @@
         <h3>用户全生命周期分析框架</h3>
         <p>开户→激活→活跃（R×F 四象限）→沉默→离网。四象限：高价值（R近F高）、休眠老用户（R远F高）、新用户/低活跃（R近F低）、流失（R远F低）。特殊：仅开机一次、深度沉默（≥3月）。覆盖开户质量、活跃分层、沉默诊断、离网预警、唤醒效果跟踪。</p>
         <div class="chart-wrap">
-          <svg viewBox="0 0 380 100" width="100%" height="100">
-            <text x="10" y="20" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono">全链路（示意）</text>
-            <rect x="10" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="22" y="52" fill="#E5E7EB" font-size="9">开户</text>
-            <text x="72" y="50" fill="#00D4FF">→</text>
-            <rect x="85" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="97" y="52" fill="#E5E7EB" font-size="9">激活</text>
-            <text x="147" y="50" fill="#00D4FF">→</text>
-            <rect x="160" y="35" width="58" height="26" rx="3" fill="#00D4FF" /><text x="172" y="52" fill="#0A0E17" font-size="9">活跃</text>
-            <text x="222" y="50" fill="#00D4FF">→</text>
-            <rect x="235" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="247" y="52" fill="#E5E7EB" font-size="9">沉默</text>
-            <text x="297" y="50" fill="#00D4FF">→</text>
-            <rect x="310" y="35" width="58" height="26" rx="3" fill="#1E3A5F" /><text x="322" y="52" fill="#E5E7EB" font-size="9">离网</text>
-          </svg>
-          <svg viewBox="0 0 200 120" width="200" height="120" style="margin-top:0.5rem;">
-            <line x1="100" y1="10" x2="100" y2="110" stroke="#374151" /><line x1="10" y1="60" x2="190" y2="60" stroke="#374151" />
-            <text x="120" y="25" fill="#10B981" font-size="8">高价值</text>
-            <text x="25" y="25" fill="#9CA3AF" font-size="8">休眠老用户</text>
-            <text x="120" y="100" fill="#9CA3AF" font-size="8">新/低活跃</text>
-            <text x="25" y="100" fill="#EF4444" font-size="8">流失</text>
-            <text x="55" y="58" fill="#00D4FF" font-size="8" font-family="JetBrains Mono">R×F</text>
+          <svg viewBox="0 0 560 240" width="100%" aria-label="用户全生命周期与RF四象限">
+            <defs>
+              <marker id="arr-life" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="#38BDF8"/>
+              </marker>
+            </defs>
+            <text x="24" y="26" fill="#94A3B8" font-size="13" font-weight="600">全生命周期链路</text>
+            <rect x="20" y="44" width="84" height="40" rx="10" fill="#1E3A8A"/>
+            <text x="62" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="700">开户</text>
+            <line x1="104" y1="64" x2="120" y2="64" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-life)"/>
+            <rect x="122" y="44" width="84" height="40" rx="10" fill="#1E3A8A"/>
+            <text x="164" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="700">激活</text>
+            <line x1="206" y1="64" x2="222" y2="64" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-life)"/>
+            <rect x="224" y="44" width="84" height="40" rx="10" fill="#38BDF8"/>
+            <text x="266" y="70" text-anchor="middle" fill="#0F172A" font-size="14" font-weight="700">活跃</text>
+            <line x1="308" y1="64" x2="324" y2="64" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-life)"/>
+            <rect x="326" y="44" width="84" height="40" rx="10" fill="#334155"/>
+            <text x="368" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="700">沉默</text>
+            <line x1="410" y1="64" x2="426" y2="64" stroke="#38BDF8" stroke-width="2" marker-end="url(#arr-life)"/>
+            <rect x="428" y="44" width="84" height="40" rx="10" fill="#334155"/>
+            <text x="470" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="700">离网</text>
+
+            <text x="24" y="116" fill="#94A3B8" font-size="13" font-weight="600">活跃期 R×F 四象限</text>
+            <rect x="160" y="130" width="240" height="96" rx="12" fill="rgba(15,23,42,0.5)" stroke="rgba(148,163,184,0.2)"/>
+            <line x1="280" y1="138" x2="280" y2="218" stroke="rgba(148,163,184,0.35)"/>
+            <line x1="168" y1="178" x2="392" y2="178" stroke="rgba(148,163,184,0.35)"/>
+            <text x="330" y="160" text-anchor="middle" fill="#6EE7B7" font-size="13" font-weight="700">高价值</text>
+            <text x="230" y="160" text-anchor="middle" fill="#94A3B8" font-size="13" font-weight="600">休眠老用户</text>
+            <text x="330" y="204" text-anchor="middle" fill="#94A3B8" font-size="13" font-weight="600">新/低活跃</text>
+            <text x="230" y="204" text-anchor="middle" fill="#FCA5A5" font-size="13" font-weight="700">流失风险</text>
           </svg>
         </div>
         <div class="case-tags"><span>#用户生命周期</span><span>#分层分析</span><span>#漏斗分析</span></div>
@@ -2050,81 +2247,77 @@
           <div class="mhp-inner">
             <h4 class="mhp-title">告警生命周期 · 闭环管理体系</h4>
             <p class="mhp-subtitle">从「只记录发生」升级到「全生命周期跟踪」，建立完整的状态机与自动化比对机制</p>
-            <div class="mhp-kpi-row">
+            <div class="mhp-kpi-row cols-4">
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">状态分类</span>
-                <div class="mhp-kpi-value blue">4<small style="font-size:1rem;font-weight:600;">种</small></div>
+                <div class="mhp-kpi-value blue">4<small>种</small></div>
                 <div class="mhp-kpi-delta">新增/持续/待观察/已解决</div>
               </div>
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">唯一键维度</span>
-                <div class="mhp-kpi-value green">5<small style="font-size:1rem;font-weight:600;">维</small></div>
+                <div class="mhp-kpi-value green">5<small>维</small></div>
                 <div class="mhp-kpi-delta">省市/类型/网元/告警/关键词</div>
               </div>
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">每日自动比对</span>
-                <div class="mhp-kpi-value purple">100<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-value purple">100<small>%</small></div>
                 <div class="mhp-kpi-delta">增量比对全自动化</div>
               </div>
               <div class="mhp-kpi highlight">
                 <span class="mhp-kpi-label">管理升级</span>
-                <div class="mhp-kpi-value" style="color:#F59E0B;">闭环</div>
+                <div class="mhp-kpi-value amber">闭环</div>
                 <div class="mhp-kpi-delta">从记录→管理完整生命周期</div>
               </div>
             </div>
             <div class="mhp-chart-wrap" style="margin-top:1rem;">
-              <svg viewBox="0 0 500 120" width="100%" height="120" style="display:block;">
+              <svg viewBox="0 0 560 150" width="100%" aria-label="告警生命周期四状态流转">
                 <defs>
                   <marker id="arrow-tracking" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-                    <path d="M0,0 L8,4 L0,8 Z" fill="#00D4FF" />
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#7DD3FC" />
                   </marker>
                   <linearGradient id="grad-new" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.8" />
-                    <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:0.9" />
+                    <stop offset="0%" stop-color="#60A5FA"/>
+                    <stop offset="100%" stop-color="#1D4ED8"/>
                   </linearGradient>
                   <linearGradient id="grad-continue" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:0.9" />
-                    <stop offset="100%" style="stop-color:#0284C7;stop-opacity:1" />
+                    <stop offset="0%" stop-color="#67E8F9"/>
+                    <stop offset="100%" stop-color="#0284C7"/>
                   </linearGradient>
                   <linearGradient id="grad-watch" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:0.8" />
-                    <stop offset="100%" style="stop-color:#D97706;stop-opacity:0.9" />
+                    <stop offset="0%" stop-color="#FCD34D"/>
+                    <stop offset="100%" stop-color="#D97706"/>
                   </linearGradient>
                   <linearGradient id="grad-done" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.9" />
-                    <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                    <stop offset="0%" stop-color="#6EE7B7"/>
+                    <stop offset="100%" stop-color="#059669"/>
                   </linearGradient>
                 </defs>
-                <rect x="20" y="30" width="90" height="60" rx="12" fill="url(#grad-new)" />
-                <text x="65" y="58" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">新增</text>
-                <text x="65" y="76" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">首次出现</text>
-                
-                <line x1="110" y1="60" x2="145" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
-                
-                <rect x="145" y="30" width="90" height="60" rx="12" fill="url(#grad-continue)" />
-                <text x="190" y="58" text-anchor="middle" fill="#0A0E17" font-size="14" font-weight="700">持续</text>
-                <text x="190" y="76" text-anchor="middle" fill="rgba(10,14,23,0.6)" font-size="10">连续存在</text>
-                
-                <line x1="235" y1="60" x2="270" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
-                
-                <rect x="270" y="30" width="90" height="60" rx="12" fill="url(#grad-watch)" />
-                <text x="315" y="58" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">待观察</text>
-                <text x="315" y="76" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10">间歇出现</text>
-                
-                <line x1="360" y1="60" x2="395" y2="60" stroke="#00D4FF" stroke-width="2" marker-end="url(#arrow-tracking)" />
-                
-                <rect x="395" y="30" width="90" height="60" rx="12" fill="url(#grad-done)" />
-                <text x="440" y="58" text-anchor="middle" fill="#0A0E17" font-size="14" font-weight="700">已解决</text>
-                <text x="440" y="76" text-anchor="middle" fill="rgba(10,14,23,0.6)" font-size="10">连续消失</text>
+                <text x="280" y="24" text-anchor="middle" fill="#94A3B8" font-size="13" font-weight="600">告警状态机 · 每日增量流转</text>
+                <rect x="20" y="44" width="100" height="70" rx="14" fill="url(#grad-new)"/>
+                <text x="70" y="76" text-anchor="middle" fill="#FFF" font-size="16" font-weight="700">新增</text>
+                <text x="70" y="96" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12">首次出现</text>
+                <line x1="120" y1="79" x2="148" y2="79" stroke="#7DD3FC" stroke-width="2.5" marker-end="url(#arrow-tracking)"/>
+                <rect x="150" y="44" width="100" height="70" rx="14" fill="url(#grad-continue)"/>
+                <text x="200" y="76" text-anchor="middle" fill="#0F172A" font-size="16" font-weight="700">持续</text>
+                <text x="200" y="96" text-anchor="middle" fill="rgba(15,23,42,0.7)" font-size="12">连续存在</text>
+                <line x1="250" y1="79" x2="278" y2="79" stroke="#7DD3FC" stroke-width="2.5" marker-end="url(#arrow-tracking)"/>
+                <rect x="280" y="44" width="100" height="70" rx="14" fill="url(#grad-watch)"/>
+                <text x="330" y="76" text-anchor="middle" fill="#FFF" font-size="16" font-weight="700">待观察</text>
+                <text x="330" y="96" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="12">间歇出现</text>
+                <line x1="380" y1="79" x2="408" y2="79" stroke="#7DD3FC" stroke-width="2.5" marker-end="url(#arrow-tracking)"/>
+                <rect x="410" y="44" width="100" height="70" rx="14" fill="url(#grad-done)"/>
+                <text x="460" y="76" text-anchor="middle" fill="#0F172A" font-size="16" font-weight="700">已解决</text>
+                <text x="460" y="96" text-anchor="middle" fill="rgba(15,23,42,0.7)" font-size="12">连续消失</text>
+                <text x="280" y="140" text-anchor="middle" fill="#64748B" font-size="12">对应 OTT：新增激活 → 持续活跃 → 沉默观察 → 流失销户</text>
               </svg>
             </div>
             <div class="mhp-notes" style="margin-top:1rem;">
               <div class="mhp-note-box">
-                <strong>📊 数据模型设计</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span>数据模型设计</strong>
                 唯一键：省市名 + 网元类型 + 网元名称 + 告警名称 + 告警描述关键词（正则匹配），确保同一告警被正确跟踪
               </div>
               <div class="mhp-note-box">
-                <strong>🔄 每日增量比对</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 14.3-4.9"/><path d="M20 12a8 8 0 0 1-14.3 4.9"/><path d="M18 3v5h-5"/><path d="M6 21v-5h5"/></svg></span>每日增量比对</strong>
                 自动比对昨日与今日告警状态，自动更新状态标签，无需人工干预
               </div>
             </div>
@@ -2144,88 +2337,69 @@
           <div class="mhp-inner">
             <h4 class="mhp-title">效率提升 · 全流程自动化</h4>
             <p class="mhp-subtitle">从人工日志分析到自动化检测报表，效率数量级提升</p>
-            <div class="mhp-kpi-row">
+            <div class="mhp-kpi-row cols-4">
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">报表生成</span>
-                <div class="mhp-kpi-value green">~95<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-value green">~95<small>%</small></div>
                 <div class="mhp-kpi-delta">3–4h → 10–15min</div>
               </div>
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">SQL查询</span>
-                <div class="mhp-kpi-value blue">75<small style="font-size:1rem;font-weight:600;">%</small></div>
+                <div class="mhp-kpi-value blue">75<small>%</small></div>
                 <div class="mhp-kpi-delta">月度告警 1h → 15min</div>
               </div>
               <div class="mhp-kpi">
                 <span class="mhp-kpi-label">告警分级</span>
-                <div class="mhp-kpi-value purple">3<small style="font-size:1rem;font-weight:600;">级</small></div>
+                <div class="mhp-kpi-value purple">3<small>级</small></div>
                 <div class="mhp-kpi-delta">高/中/低自动分类</div>
               </div>
               <div class="mhp-kpi highlight">
                 <span class="mhp-kpi-label">自动化程度</span>
-                <div class="mhp-kpi-value" style="color:#F59E0B;">全流程</div>
+                <div class="mhp-kpi-value amber">全流程</div>
                 <div class="mhp-kpi-delta">日志→检测→报表→推送</div>
               </div>
             </div>
             <div class="mhp-chart-wrap" style="margin-top:1rem;">
-              <svg viewBox="0 0 500 140" width="100%" height="140" style="display:block;">
+              <svg viewBox="0 0 560 220" width="100%" aria-label="自动化效率提升与工作流">
                 <defs>
-                  <linearGradient id="grad-before" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#EF4444;stop-opacity:0.8" />
-                    <stop offset="100%" style="stop-color:#B91C1C;stop-opacity:0.9" />
-                  </linearGradient>
-                  <linearGradient id="grad-after" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.9" />
-                    <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
-                  </linearGradient>
-                </defs>
-                <text x="20" y="30" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">报表生成</text>
-                <rect x="100" y="18" width="200" height="24" rx="6" fill="url(#grad-before)" />
-                <text x="310" y="35" fill="#EF4444" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">3–4 小时</text>
-                
-                <rect x="100" y="18" width="20" height="24" rx="6" fill="url(#grad-after)" />
-                <text x="130" y="35" fill="#10B981" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">10–15 分钟</text>
-                
-                <text x="20" y="75" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">SQL查询</text>
-                <rect x="100" y="63" width="150" height="24" rx="6" fill="url(#grad-before)" />
-                <text x="260" y="80" fill="#EF4444" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">约 1 小时</text>
-                
-                <rect x="100" y="63" width="37" height="24" rx="6" fill="url(#grad-after)" />
-                <text x="145" y="80" fill="#10B981" font-size="13" font-weight="700" font-family="JetBrains Mono, monospace">15 分钟</text>
-                
-                <text x="20" y="120" fill="#9CA3AF" font-size="12" font-family="JetBrains Mono, monospace">工作流</text>
-                <g transform="translate(100, 108)">
-                  <rect x="0" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
-                  <text x="35" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">TXT日志</text>
-                  
-                  <path d="M75 12 L88 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
-                  
-                  <rect x="92" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
-                  <text x="127" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">正则检测</text>
-                  
-                  <path d="M167 12 L180 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
-                  
-                  <rect x="184" y="0" width="70" height="24" rx="6" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" />
-                  <text x="219" y="16" text-anchor="middle" fill="#00D4FF" font-size="10" font-family="JetBrains Mono, monospace">自动入库</text>
-                  
-                  <path d="M259 12 L272 12" stroke="#00D4FF" stroke-width="1.5" marker-end="url(#arrow-auto)" />
-                  
-                  <rect x="276" y="0" width="70" height="24" rx="6" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" />
-                  <text x="311" y="16" text-anchor="middle" fill="#10B981" font-size="10" font-family="JetBrains Mono, monospace">报表推送</text>
-                </g>
-                <defs>
-                  <marker id="arrow-auto" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6 Z" fill="#00D4FF" />
+                  <marker id="arrow-auto" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                    <path d="M0,0 L7,3.5 L0,7 Z" fill="#7DD3FC"/>
                   </marker>
                 </defs>
+                <text x="24" y="26" fill="#94A3B8" font-size="13" font-weight="600">耗时对比</text>
+                <text x="120" y="52" fill="#94A3B8" font-size="12">报表生成</text>
+                <rect x="200" y="36" width="220" height="22" rx="8" fill="rgba(248,113,113,0.25)" stroke="#F87171"/>
+                <text x="430" y="52" fill="#FCA5A5" font-size="13" font-weight="700">3–4 小时</text>
+                <rect x="200" y="64" width="36" height="22" rx="8" fill="#34D399"/>
+                <text x="250" y="80" fill="#6EE7B7" font-size="13" font-weight="700">10–15 分钟</text>
+
+                <text x="120" y="118" fill="#94A3B8" font-size="12">SQL 查询</text>
+                <rect x="200" y="102" width="150" height="22" rx="8" fill="rgba(248,113,113,0.25)" stroke="#F87171"/>
+                <text x="360" y="118" fill="#FCA5A5" font-size="13" font-weight="700">约 1 小时</text>
+                <rect x="200" y="130" width="42" height="22" rx="8" fill="#34D399"/>
+                <text x="255" y="146" fill="#6EE7B7" font-size="13" font-weight="700">15 分钟</text>
+
+                <text x="24" y="178" fill="#94A3B8" font-size="13" font-weight="600">自动化工作流</text>
+                <rect x="24" y="190" width="100" height="28" rx="8" fill="rgba(125,211,252,0.12)" stroke="rgba(125,211,252,0.4)"/>
+                <text x="74" y="209" text-anchor="middle" fill="#7DD3FC" font-size="12" font-weight="600">TXT 日志</text>
+                <line x1="124" y1="204" x2="148" y2="204" stroke="#7DD3FC" stroke-width="2" marker-end="url(#arrow-auto)"/>
+                <rect x="150" y="190" width="100" height="28" rx="8" fill="rgba(125,211,252,0.12)" stroke="rgba(125,211,252,0.4)"/>
+                <text x="200" y="209" text-anchor="middle" fill="#7DD3FC" font-size="12" font-weight="600">正则检测</text>
+                <line x1="250" y1="204" x2="274" y2="204" stroke="#7DD3FC" stroke-width="2" marker-end="url(#arrow-auto)"/>
+                <rect x="276" y="190" width="100" height="28" rx="8" fill="rgba(125,211,252,0.12)" stroke="rgba(125,211,252,0.4)"/>
+                <text x="326" y="209" text-anchor="middle" fill="#7DD3FC" font-size="12" font-weight="600">自动入库</text>
+                <line x1="376" y1="204" x2="400" y2="204" stroke="#7DD3FC" stroke-width="2" marker-end="url(#arrow-auto)"/>
+                <rect x="402" y="190" width="110" height="28" rx="8" fill="rgba(110,231,183,0.15)" stroke="rgba(110,231,183,0.45)"/>
+                <text x="457" y="209" text-anchor="middle" fill="#6EE7B7" font-size="12" font-weight="700">报表推送</text>
               </svg>
             </div>
             <div class="mhp-notes" style="margin-top:1rem;">
               <div class="mhp-note-box">
-                <strong>🛠️ PST Tool</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>PST Tool</strong>
                 TXT 日志 → 关键词/正则匹配 → 异常判断 → 自动入库，支持多种日志格式解析
               </div>
               <div class="mhp-note-box">
-                <strong>📊 Psweb 系统</strong>
+                <strong><span class="mhp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="10" width="3" height="6" rx="0.5" fill="currentColor" stroke="none"/><rect x="12" y="7" width="3" height="9" rx="0.5" fill="currentColor" stroke="none"/><rect x="17" y="12" width="3" height="4" rx="0.5" fill="currentColor" stroke="none"/></svg></span>Psweb 系统</strong>
                 高中低告警分级处理，支持日/月/周多维度统计报表，自动推送运维团队
               </div>
             </div>
@@ -2741,209 +2915,6 @@
     initCardHoverEffects();
     initMethodCards();
   }
-
-  /* ========== 220万案例 · ECharts 桑基图 ========== */
-  let chart220wInstance = null;
-  let chart220wResizeBound = false;
-
-  function isCase220wVisible() {
-    const block = document.getElementById("case-220w");
-    if (!block) return false;
-    return block.classList.contains("visible") && block.style.display !== "none";
-  }
-
-  let echartsLoadPromise = null;
-
-  function loadEchartsScript() {
-    if (typeof echarts !== "undefined") return Promise.resolve();
-    if (echartsLoadPromise) return echartsLoadPromise;
-    echartsLoadPromise = new Promise(function (resolve, reject) {
-      // Prefer local vendor (GitHub Pages / 国内 CDN 常超时导致一直「图表加载中」)
-      const urls = [
-        "vendor/echarts.min.js",
-        "https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js",
-        "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"
-      ];
-      let i = 0;
-      function tryNext() {
-        if (typeof echarts !== "undefined") { resolve(); return; }
-        if (i >= urls.length) {
-          reject(new Error("echarts load failed"));
-          return;
-        }
-        const src = urls[i++];
-        const s = document.createElement("script");
-        s.src = src;
-        s.async = true;
-        let settled = false;
-        const timer = setTimeout(function () {
-          if (settled) return;
-          settled = true;
-          s.onload = s.onerror = null;
-          try { s.remove(); } catch (e) {}
-          tryNext();
-        }, 8000);
-        s.onload = function () {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          if (typeof echarts !== "undefined") resolve();
-          else tryNext();
-        };
-        s.onerror = function () {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          tryNext();
-        };
-        document.head.appendChild(s);
-      }
-      tryNext();
-    });
-    return echartsLoadPromise;
-  }
-
-  function getChart220wOption() {
-    const chartFont = '"PingFang SC", "Inter", system-ui, sans-serif';
-    const N = {
-      src: "旧口径 400万",
-      act: "有效激活设备 180万",
-      low: "仅开机一次 120万",
-      other: "其他差异 100万",
-      end: "真实活跃用户 22%"
-    };
-    return {
-      backgroundColor: "transparent",
-      textStyle: { fontFamily: chartFont },
-      tooltip: {
-        trigger: "item",
-        backgroundColor: "rgba(15, 23, 42, 0.95)",
-        borderColor: "rgba(255, 255, 255, 0.12)",
-        borderWidth: 1,
-        textStyle: { color: "#E5E7EB", fontSize: 12, fontFamily: chartFont },
-        formatter: function (p) {
-          if (p.dataType === "edge") {
-            return p.data.source + " → " + p.data.target + "<br/><b>" + p.data.value + " 万</b>";
-          }
-          return p.name.replace(/ /g, "<br/>");
-        }
-      },
-      series: [{
-        type: "sankey",
-        left: "4%",
-        right: "8%",
-        top: 20,
-        bottom: 12,
-        nodeWidth: 18,
-        nodeGap: 14,
-        layoutIterations: 16,
-        emphasis: { focus: "adjacency" },
-        lineStyle: { curveness: 0.5, opacity: 0.55 },
-        label: {
-          color: "#E5E7EB",
-          fontSize: 11,
-          fontFamily: chartFont,
-          formatter: function (p) { return p.name.replace(/ /g, "\n"); }
-        },
-        data: [
-          { name: N.src, itemStyle: { color: "#1E3A8A" }, depth: 0 },
-          { name: N.act, itemStyle: { color: "#10B981" }, depth: 1 },
-          { name: N.low, itemStyle: { color: "#F97316" }, depth: 1 },
-          { name: N.other, itemStyle: { color: "#9CA3AF" }, depth: 1 },
-          { name: N.end, itemStyle: { color: "#8B5CF6" }, depth: 2 }
-        ],
-        links: [
-          { source: N.src, target: N.act, value: 180, lineStyle: { color: "rgba(16,185,129,0.5)" } },
-          { source: N.src, target: N.low, value: 120, lineStyle: { color: "rgba(249,115,22,0.5)" } },
-          { source: N.src, target: N.other, value: 100, lineStyle: { color: "rgba(156,163,175,0.55)" } },
-          { source: N.act, target: N.end, value: 180, lineStyle: { color: "rgba(139,92,246,0.55)" } }
-        ]
-      }]
-    };
-  }
-
-  let chart220wSizeRetries = 0;
-
-  function ensureChart220wMetrics() {
-    if (!isCase220wVisible()) return;
-
-    const el = document.getElementById("chart-220w-metrics");
-    const shell = el && el.parentElement;
-    const loading = document.getElementById("chart-220w-loading");
-    if (!el) return;
-
-    if (el.clientWidth < 40 || el.clientHeight < 40) {
-      chart220wSizeRetries += 1;
-      if (chart220wSizeRetries < 60) {
-        requestAnimationFrame(ensureChart220wMetrics);
-        return;
-      }
-      // fall through: still try init after retries
-    }
-    chart220wSizeRetries = 0;
-
-    if (loading) loading.textContent = "图表加载中…";
-
-    loadEchartsScript().then(function () {
-      if (!isCase220wVisible()) return;
-      if (typeof echarts === "undefined") throw new Error("echarts missing");
-
-      if (chart220wInstance) {
-        chart220wInstance.dispose();
-        chart220wInstance = null;
-      }
-
-      chart220wInstance = echarts.init(el, null, { renderer: "canvas" });
-      chart220wInstance.setOption(getChart220wOption());
-      if (shell) shell.classList.add("is-ready");
-      if (loading) loading.style.display = "none";
-
-      if (!chart220wResizeBound) {
-        chart220wResizeBound = true;
-        window.addEventListener("resize", function () {
-          if (chart220wInstance && isCase220wVisible()) chart220wInstance.resize();
-        });
-      }
-      chart220wInstance.resize();
-    }).catch(function () {
-      if (shell) shell.classList.remove("is-ready");
-      if (loading) {
-        loading.style.display = "flex";
-        loading.textContent = "图表库加载失败，请刷新重试";
-        loading.style.color = "#F87171";
-      }
-    });
-  }
-
-  const _showCaseOrig = showCase;
-  showCase = function (caseId) {
-    _showCaseOrig(caseId);
-    if (caseId === "case-220w") {
-      setTimeout(ensureChart220wMetrics, 380);
-    }
-  };
-
-  (function observeChart220w() {
-    const chartEl = document.getElementById("chart-220w-metrics");
-    const caseEl = document.getElementById("case-220w");
-    if (!chartEl || !caseEl) return;
-
-    const io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting && isCase220wVisible()) ensureChart220wMetrics();
-        });
-      },
-      { threshold: 0.15 }
-    );
-    io.observe(chartEl);
-
-    const mo = new MutationObserver(function () {
-      if (isCase220wVisible()) ensureChart220wMetrics();
-    });
-    mo.observe(caseEl, { attributes: true, attributeFilter: ["style", "class"] });
-  })();
 
   </script>
   <footer class="site-footer">
